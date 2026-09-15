@@ -1,0 +1,33 @@
+{
+  "name": "aminck-nova-edgeser",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Nova Edge Minecraft God Server — Cloudflare Workers admin panel, shop, AI bots, Java/Bedrock plugins",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "setup": "node scripts/setup.mjs",
+    "cf-typegen": "wrangler types",
+    "test": "node scripts/test-godserver.mjs",
+    "gen:spec": "node scripts/gen-spec-js.mjs",
+    "test:e2e": "node scripts/e2e.mjs",
+    "lint:binds": "node scripts/lint-binds.mjs",
+    "test:god": "node scripts/test-godserver.mjs",
+    "test:all": "node scripts/lint-binds.mjs && node scripts/lint-php.mjs && node scripts/lint-java.mjs && node scripts/test-godserver.mjs && node scripts/e2e.mjs",
+    "sim:match": "node scripts/sim-match.mjs",
+    "verify:parity": "node scripts/verify-parity.mjs",
+    "lint:java": "node scripts/lint-java.mjs",
+    "lint:php": "node scripts/lint-php.mjs",
+    "build:assets": "node scripts/build-assets.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "wrangler": "^4.125.0"
+  }
+}

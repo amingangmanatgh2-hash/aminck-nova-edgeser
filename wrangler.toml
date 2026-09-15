@@ -1,0 +1,37 @@
+# ═══════════════════════════════════════════════════════════════════
+#  AMINCK Nova Edge — Minecraft God Server on Cloudflare Workers
+#
+#  Deploy button:
+#     https://deploy.workers.cloudflare.com/?url=https://github.com/amingangmanatgh2-hash/AMINCK-Nova-Edge
+#
+#  Manual deploy:
+#     npx wrangler deploy
+# ═══════════════════════════════════════════════════════════════════
+name = "aminck-nova-edgeser"
+main = "src/index.js"
+compatibility_date = "2026-08-01"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+# Lightweight keep-warm/status job. Game/economy logic is request-driven.
+[triggers]
+crons = ["*/15 * * * *"]
+
+# SQLite Durable Object: no D1/KV project needs to be created manually.
+[[durable_objects.bindings]]
+name = "STORE"
+class_name = "NovaStore"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["NovaStore"]
+
+# Cloudflare Workers AI: bot escalation, AI brand generation, receipt review.
+[ai]
+binding = "AI"
+
+# Static Minecraft assets: generated mode/rank/shop/cosmetic art.
+[assets]
+directory = "./public"
+binding = "ASSETS"
+not_found_handling = "none"
