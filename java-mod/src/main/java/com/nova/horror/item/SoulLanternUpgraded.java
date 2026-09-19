@@ -24,7 +24,6 @@ public class SoulLanternUpgraded extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
             int found = 0;
             for (BlockPos p : BlockPos.betweenClosed(player.blockPosition().offset(-10,-5,-10), player.blockPosition().offset(10,5,10))) {
                 var state = level.getBlockState(p);
@@ -43,7 +42,6 @@ public class SoulLanternUpgraded extends Item {
             level.playSound(null, player.blockPosition(), SoundEvents.SOUL_ESCAPE, SoundSource.AMBIENT, 0.8F, 0.8F);
             player.displayClientMessage(Component.literal("§dفانوس روح ارتقا یافته "+found+" مخفی رو نشون داد!"), true);
             player.getCooldowns().addCooldown(this, 250);
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

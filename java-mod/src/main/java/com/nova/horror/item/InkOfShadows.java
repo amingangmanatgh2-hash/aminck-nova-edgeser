@@ -24,7 +24,6 @@ public class InkOfShadows extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
             for (var e : level.getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class, player.getBoundingBox().inflate(10))) {
                 if (e != player) {
                     e.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100, 0));
@@ -37,7 +36,6 @@ public class InkOfShadows extends Item {
             level.playSound(null, player.blockPosition(), SoundEvents.INK_SAC_USE, SoundSource.PLAYERS, 1.0F, 0.7F);
             player.displayClientMessage(Component.literal("§8جوهر سایه همه رو کور کرد!"), true);
             if (!player.isCreative()) stack.shrink(1);
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

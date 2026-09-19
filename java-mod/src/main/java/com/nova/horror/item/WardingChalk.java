@@ -24,9 +24,6 @@ public class WardingChalk extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
-        ItemStack stack = player.getItemInHand(hand);
-        if (!level.isClientSide) {
             BlockPos center = player.blockPosition().below();
             for (int x=-3;x<=3;x++) for (int z=-3;z<=3;z++) {
                 double d = Math.sqrt(x*x+z*z);
@@ -47,8 +44,6 @@ public class WardingChalk extends Item {
             level.playSound(null, center, SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS, 1.0F, 0.8F);
             player.displayClientMessage(Component.literal("§dدایره محافظ کشیده شد! 15 ثانیه موجودات نمی‌تونن نزدیک شن"), true);
             if (!player.isCreative()) stack.shrink(1);
-        }
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

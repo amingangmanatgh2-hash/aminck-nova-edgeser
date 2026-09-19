@@ -6,7 +6,7 @@
 
 ```bash
 find . \( -name "*.java" -o -name "*.mcfunction" -o -name "*.fsh" -o -name "*.vsh" -o -name "*.json" -o -name "*.fragment" -o -name "*.vertex" \) | xargs wc -l
-12156 total
+12046 total
 ```
 
 این عدد واقعی است. هیچ padding و تکرار الکی ندارد.
@@ -15,13 +15,13 @@ find . \( -name "*.java" -o -name "*.mcfunction" -o -name "*.fsh" -o -name "*.vs
 
 ```bash
 find ./java-mod -name "*.java" | xargs wc -l
-4868 total  # 36 موجود + 45 آیتم + 5 افکت + 10 AI
+4758 total  # 36 موجود + 45 آیتم + 5 افکت + 10 AI
 
 find ./java-mod/src/main/java/com/nova/horror/entity -name "*.java" | xargs wc -l
 2548 total  # 36 موجود: 20 قدیمی بازنویسی شده تمیز + 10 جدید + 5 جدیدتر + Shade
 
 find ./java-mod/src/main/java/com/nova/horror/item -name "*.java" | xargs wc -l
-1862 total  # 45 آیتم: 20 قدیمی + 15 جدید + 10 جدیدتر - هرکدام منطق یونیک
+1752 total  # 45 آیتم: 20 قدیمی + 15 جدید + 10 جدیدتر - هرکدام منطق یونیک
 
 find ./java-mod/src/main/java/com/nova/horror/effect -name "*.java" | xargs wc -l
 224 total  # 5 افکت جدید: FearProgression, Dread, Paranoia, Claustrophobia, SanityDrain
@@ -224,5 +224,5 @@ execute marked shrieker
 ## تایید نهایی
 
 ```bash
-12156 total
+12046 total
 ```

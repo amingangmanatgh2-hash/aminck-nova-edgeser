@@ -32,9 +32,7 @@ public class RustedMansionKey extends Item {
             stack.shrink(1);
         } else {
             player.displayClientMessage(Component.literal("§7باید نزدیک در اصلی عمارت باشی..."), true);
-        }
-    
-        }
+                }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }
 }

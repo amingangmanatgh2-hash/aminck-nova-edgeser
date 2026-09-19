@@ -24,7 +24,6 @@ public class EchoShard extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
             BlockPos echoPos = player.blockPosition().offset(level.random.nextInt(16)-8, 0, level.random.nextInt(16)-8);
             net.minecraft.sounds.SoundEvent[] sounds = {SoundEvents.WARDEN_AMBIENT, SoundEvents.AMBIENT_CAVE, SoundEvents.GHAST_SCREAM, SoundEvents.ENDERMAN_SCREAM, SoundEvents.WOLF_HOWL};
             var chosen = sounds[level.random.nextInt(sounds.length)];
@@ -35,7 +34,6 @@ public class EchoShard extends Item {
             }
             player.displayClientMessage(Component.literal("§7اکو صدا رو اونور پخش کرد - موجودات منحرف شدن!"), true);
             player.getCooldowns().addCooldown(this, 200);
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

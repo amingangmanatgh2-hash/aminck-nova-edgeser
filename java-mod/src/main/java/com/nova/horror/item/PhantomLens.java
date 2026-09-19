@@ -24,7 +24,6 @@ public class PhantomLens extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
             for (var e : level.getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(20))) {
                 if (e.isInvisible() || e.hasEffect(MobEffects.INVISIBILITY)) {
                     e.removeEffect(MobEffects.INVISIBILITY);
@@ -36,7 +35,6 @@ public class PhantomLens extends Item {
             level.playSound(null, player.blockPosition(), SoundEvents.SPYGLASS_USE, SoundSource.PLAYERS, 1.0F, 0.8F);
             player.displayClientMessage(Component.literal("§5لنز شبح همه نامرئی‌ها رو نشون داد! عقل -5"), true);
             player.getCooldowns().addCooldown(this, 300);
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

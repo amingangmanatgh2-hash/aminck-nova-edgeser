@@ -24,25 +24,15 @@ public class CursedMirror extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
-        ItemStack stack = player.getItemInHand(hand);
-        if (!level.isClientSide) {
             for (var e : level.getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(25))) {
                 e.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100, 0));
                 e.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100, 0));
             }
             player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 100, 0));
             level.playSound(null, player.blockPosition(), SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 0.7F, 0.5F);
-            // Delayed blindness via scheduled task simulation: apply after 100 ticks via cooldown check? Simplified immediate after message
             player.displayClientMessage(Component.literal("§5آینه نفرین شده همه رو نشون داد... ولی چشات تار میشه..."), true);
-            // Apply blindness after 5 sec using delayed effect - we simulate with long duration that starts after via second effect
             player.getCooldowns().addCooldown(this, 300);
-            // Schedule blindness via server tick? For now apply weakness as cost
-            level.getServer().tell(new net.minecraft.network.chat.Component[]{Component.literal("mirror delayed blindness scheduled")});
-            // Real delayed blindness would need ticker, simplified:
             player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60, 0, false, false));
-        }
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

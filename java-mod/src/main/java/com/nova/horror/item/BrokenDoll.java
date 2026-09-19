@@ -24,9 +24,6 @@ public class BrokenDoll extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
-        ItemStack stack = player.getItemInHand(hand);
-        if (!level.isClientSide) {
             var entities = level.getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(30));
             if (!entities.isEmpty()) {
                 Monster nearest = entities.get(0);
@@ -35,9 +32,6 @@ public class BrokenDoll extends Item {
                     double d = m.distanceTo(player);
                     if (d < minDist) { minDist = d; nearest = m; }
                 }
-                double dx = nearest.getX() - player.getX();
-                double dz = nearest.getZ() - player.getZ();
-                double angle = Math.toDegrees(Math.atan2(dz, dx)) - 90;
                 player.displayClientMessage(Component.literal("§cعروسک به سمت §4"+String.format("%.0f", minDist)+"§c بلاک اونجا اشاره می‌کنه..."), true);
                 level.playSound(null, player.blockPosition(), SoundEvents.VILLAGER_AMBIENT, SoundSource.HOSTILE, 0.7F, 1.7F);
                 player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 30, 0));
@@ -45,8 +39,6 @@ public class BrokenDoll extends Item {
                 player.displayClientMessage(Component.literal("§7عروسک ساکته... چیزی نزدیک نیست"), true);
             }
             player.getCooldowns().addCooldown(this, 100);
-        }
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

@@ -24,9 +24,6 @@ public class BloodiedKnife extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
-        ItemStack stack = player.getItemInHand(hand);
-        if (!level.isClientSide) {
             player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 1));
             player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 0));
             if (level.getServer()!=null) level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players add "+player.getName().getString()+" novahorror.fear 5");
@@ -34,8 +31,6 @@ public class BloodiedKnife extends Item {
             level.playSound(null, player.blockPosition(), SoundEvents.PLAYER_HURT, SoundSource.PLAYERS, 0.8F, 0.6F);
             player.displayClientMessage(Component.literal("§4چاقوی خونین قدرت میده ولی ترس میاره..."), true);
             player.getCooldowns().addCooldown(this, 200);
-        }
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

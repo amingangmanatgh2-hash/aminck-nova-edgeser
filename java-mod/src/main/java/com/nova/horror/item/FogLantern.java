@@ -24,17 +24,13 @@ public class FogLantern extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
-        ItemStack stack = player.getItemInHand(hand);
-        if (!level.isClientSide) {
             var pos = player.blockPosition();
             int cleared = 0;
             for (BlockPos p : BlockPos.betweenClosed(pos.offset(-8,-3,-8), pos.offset(8,3,8))) {
-                if (level.getBlockState(p).is(net.minecraft.world.level.block.Blocks.COBWEB) || level.getBlockState(p).getBlock().toString().contains("fog") ) {
+                if (level.getBlockState(p).is(net.minecraft.world.level.block.Blocks.COBWEB)) {
                     level.setBlock(p, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 3);
                     cleared++;
                 }
-                // Clear particles by adding air particles? just count
             }
             for (var e : level.getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(10))) {
                 if (e.hasEffect(MobEffects.INVISIBILITY)) {
@@ -47,8 +43,6 @@ public class FogLantern extends Item {
             player.displayClientMessage(Component.literal("§eفانوس مه "+cleared+" بلاک رو روشن کرد!"), true);
             player.getCooldowns().addCooldown(this, 200);
             if (!player.isCreative() && level.random.nextFloat() < 0.15) stack.shrink(1);
-        }
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

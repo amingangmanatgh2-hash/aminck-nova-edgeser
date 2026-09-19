@@ -24,7 +24,6 @@ public class VoidShard extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
             BlockPos center = player.blockPosition();
             for (var e : level.getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class, player.getBoundingBox().inflate(8))) {
                 e.hurt(level.damageSources().magic(), 4.0F);
@@ -38,7 +37,6 @@ public class VoidShard extends Item {
             level.playSound(null, center, SoundEvents.PORTAL_AMBIENT, SoundSource.HOSTILE, 1.0F, 0.3F);
             player.displayClientMessage(Component.literal("§5شکاف خلاء همه ترس رو پاک کرد! ولی به همه آسیب زد!"), true);
             if (!player.isCreative()) stack.shrink(1);
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

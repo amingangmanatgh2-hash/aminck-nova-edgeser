@@ -24,14 +24,10 @@ public class LostLocket extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
-        ItemStack stack = player.getItemInHand(hand);
-        if (!level.isClientSide) {
             BlockPos mansion = new BlockPos(0, 70, 0);
             BlockPos basement = new BlockPos(5, 45, 5);
             double distMansion = player.blockPosition().distSqr(mansion);
             if (distMansion < 10000) {
-                // Show trail to basement
                 Vec3 start = player.position();
                 Vec3 end = new Vec3(basement.getX()+0.5, basement.getY(), basement.getZ()+0.5);
                 Vec3 dir = end.subtract(start).normalize();
@@ -48,8 +44,6 @@ public class LostLocket extends Item {
                 player.displayClientMessage(Component.literal("§7گردنبند سرده... باید نزدیک عمارت باشی"), true);
             }
             player.getCooldowns().addCooldown(this, 200);
-        }
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

@@ -24,7 +24,6 @@ public class HerbBundle extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
             player.removeEffect(MobEffects.DARKNESS);
             player.removeEffect(MobEffects.BLINDNESS);
             player.removeEffect(MobEffects.WEAKNESS);
@@ -40,7 +39,6 @@ public class HerbBundle extends Item {
             level.playSound(null, player.blockPosition(), SoundEvents.GRASS_BREAK, SoundSource.PLAYERS, 0.8F, 1.2F);
             player.displayClientMessage(Component.literal("§aگیاهان مقدس اثر منفی رو پاک کردن! ترس -8"), true);
             if (!player.isCreative()) stack.shrink(1);
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

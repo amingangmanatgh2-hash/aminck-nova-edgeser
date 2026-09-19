@@ -24,9 +24,6 @@ public class RavenFeather extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
-        ItemStack stack = player.getItemInHand(hand);
-        if (!level.isClientSide) {
             player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 300, 0));
             player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 0));
             player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 300, 0));
@@ -38,8 +35,6 @@ public class RavenFeather extends Item {
             level.playSound(null, player.blockPosition(), SoundEvents.PARROT_FLY, SoundSource.AMBIENT, 0.8F, 1.2F);
             player.displayClientMessage(Component.literal("§8پر کلاغ تو رو سبک کرد و راه رو نشون میده..."), true);
             if (!player.isCreative()) stack.shrink(1);
-        }
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

@@ -24,9 +24,6 @@ public class OldPhotograph extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
-        ItemStack stack = player.getItemInHand(hand);
-        if (!level.isClientSide) {
             BlockPos pos = player.blockPosition();
             int found = 0;
             for (BlockPos p : BlockPos.betweenClosed(pos.offset(-6,-3,-6), pos.offset(6,3,6))) {
@@ -44,8 +41,6 @@ public class OldPhotograph extends Item {
                 player.displayClientMessage(Component.literal("§7عکس چیزی نشون نمیده... شاید جای دیگه..."), true);
             }
             player.getCooldowns().addCooldown(this, 150);
-        }
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

@@ -32,9 +32,7 @@ public class HeartOfDread extends Item {
             double dz = mob.getZ() - player.getZ();
             mob.setDeltaMovement(dx*0.35, 0.25, dz*0.35);
             mob.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100, 0));
-        }
-    
-        }
+                }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }
 }

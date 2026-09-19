@@ -24,9 +24,6 @@ public class FlickeringCandle extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
-        ItemStack stack = player.getItemInHand(hand);
-        if (!level.isClientSide) {
             var nearby = level.getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(15));
             float flickerIntensity = 0.2F + nearby.size()*0.15F;
             for (int i=0;i<10;i++) {
@@ -44,8 +41,6 @@ public class FlickeringCandle extends Item {
                 level.playSound(null, player.blockPosition(), SoundEvents.CANDLE_EXTINGUISH, SoundSource.AMBIENT, 0.6F, 0.7F);
             }
             player.getCooldowns().addCooldown(this, 80);
-        }
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

@@ -24,7 +24,6 @@ public class BoneWhistle extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
             var target = level.getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(15)).stream().min((a,b)->Double.compare(a.distanceTo(player), b.distanceTo(player))).orElse(null);
             if (target!=null) {
                 for (int i=0;i<5;i++) {
@@ -43,7 +42,6 @@ public class BoneWhistle extends Item {
             }
             player.getCooldowns().addCooldown(this, 200);
             if (!player.isCreative() && level.random.nextFloat()<0.1) stack.shrink(1);
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

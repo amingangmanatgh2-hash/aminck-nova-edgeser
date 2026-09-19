@@ -24,9 +24,6 @@ public class NightmareFuel extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
-        ItemStack stack = player.getItemInHand(hand);
-        if (!level.isClientSide) {
             player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 300, 1));
             player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 300, 1));
             player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 0));
@@ -36,8 +33,6 @@ public class NightmareFuel extends Item {
             player.displayClientMessage(Component.literal("§4سوخت کابوس قدرت داد ولی ترس 15 تا رفت بالا!"), true);
             player.getCooldowns().addCooldown(this, 400);
             if (!player.isCreative()) stack.shrink(1);
-        }
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

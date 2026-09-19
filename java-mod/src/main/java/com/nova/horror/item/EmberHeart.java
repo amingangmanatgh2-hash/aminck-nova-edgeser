@@ -24,12 +24,10 @@ public class EmberHeart extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
             player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 400, 0));
             player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 0));
             for (BlockPos p : BlockPos.betweenClosed(player.blockPosition().offset(-8,-3,-8), player.blockPosition().offset(8,3,8))) {
                 if (level.getBlockState(p).is(net.minecraft.world.level.block.Blocks.AIR)) {
-                    // Try place torch if dark
                     if (level.getBrightness(net.minecraft.world.level.LightLayer.BLOCK, p) < 4 && level.random.nextFloat()<0.05) {
                         level.setBlock(p, net.minecraft.world.level.block.Blocks.TORCH.defaultBlockState(), 3);
                     }
@@ -43,7 +41,6 @@ public class EmberHeart extends Item {
             player.displayClientMessage(Component.literal("§6قلب اخگر گرمات کرد و موجودات رو سوزوند!"), true);
             player.getCooldowns().addCooldown(this, 300);
             if (!player.isCreative() && level.random.nextFloat()<0.15) stack.shrink(1);
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

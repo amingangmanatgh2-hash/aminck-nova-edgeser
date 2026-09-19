@@ -24,9 +24,6 @@ public class ChainsOfBinding extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
-        ItemStack stack = player.getItemInHand(hand);
-        if (!level.isClientSide) {
             var target = level.getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(8)).stream().min((a,b)->Double.compare(a.distanceTo(player), b.distanceTo(player))).orElse(null);
             if (target!=null) {
                 target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 5));
@@ -41,8 +38,6 @@ public class ChainsOfBinding extends Item {
                 player.displayClientMessage(Component.literal("§7چیزی برای بستن نزدیک نیست"), true);
             }
             player.getCooldowns().addCooldown(this, 250);
-        }
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

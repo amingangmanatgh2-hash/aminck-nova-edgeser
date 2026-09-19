@@ -24,7 +24,6 @@ public class FrostbiteCharm extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
             for (BlockPos p : BlockPos.betweenClosed(player.blockPosition().offset(-5,-2,-5), player.blockPosition().offset(5,2,5))) {
                 if (level.getBlockState(p).is(net.minecraft.world.level.block.Blocks.WATER)) {
                     level.setBlock(p, net.minecraft.world.level.block.Blocks.ICE.defaultBlockState(), 3);
@@ -41,7 +40,6 @@ public class FrostbiteCharm extends Item {
             player.displayClientMessage(Component.literal("§bطلسم یخ همه رو منجمد کرد!"), true);
             player.getCooldowns().addCooldown(this, 350);
             if (!player.isCreative()) stack.shrink(1);
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

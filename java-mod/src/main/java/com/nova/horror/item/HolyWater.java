@@ -24,9 +24,6 @@ public class HolyWater extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
-        ItemStack stack = player.getItemInHand(hand);
-        if (!level.isClientSide) {
             for (var m : level.getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(6))) {
                 m.hurt(level.damageSources().magic(), 8.0F);
                 m.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100, 1));
@@ -38,8 +35,6 @@ public class HolyWater extends Item {
             level.playSound(null, player.blockPosition(), SoundEvents.BOTTLE_FILL, SoundSource.PLAYERS, 1.0F, 1.2F);
             player.displayClientMessage(Component.literal("§bآب مقدس ترس رو شست!"), true);
             if (!player.isCreative()) stack.shrink(1);
-        }
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

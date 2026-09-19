@@ -24,9 +24,6 @@ public class EctoplasmVial extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
-        ItemStack stack = player.getItemInHand(hand);
-        if (!level.isClientSide) {
             var pos = player.blockPosition();
             for (int i=0;i<30;i++) {
                 double x = pos.getX()+level.random.nextDouble()*10-5;
@@ -44,8 +41,6 @@ public class EctoplasmVial extends Item {
             level.playSound(null, pos, SoundEvents.BOTTLE_BREAK, SoundSource.PLAYERS, 1.0F, 0.8F);
             player.displayClientMessage(Component.literal("§aمه اکتوپلاسمی پخش شد - موجودات نامرئی نمایان شدند!"), true);
             if (!player.isCreative()) stack.shrink(1);
-        }
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

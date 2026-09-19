@@ -24,7 +24,6 @@ public class RustyBell extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
             for (var m : level.getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(20))) {
                 m.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 4));
                 m.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 80, 1));
@@ -36,7 +35,6 @@ public class RustyBell extends Item {
             level.playSound(null, player.blockPosition(), SoundEvents.BELL_RESONATE, SoundSource.BLOCKS, 1.0F, 0.6F);
             player.displayClientMessage(Component.literal("§6زنگ زنگ زد! همه موجودات 4 ثانیه گیج شدن!"), true);
             player.getCooldowns().addCooldown(this, 400);
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

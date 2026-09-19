@@ -24,9 +24,6 @@ public class SoulCompass extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            
-        ItemStack stack = player.getItemInHand(hand);
-        if (!level.isClientSide) {
             BlockPos mansion = new BlockPos(0, 70, 0);
             double dx = mansion.getX() - player.getX();
             double dz = mansion.getZ() - player.getZ();
@@ -46,8 +43,6 @@ public class SoulCompass extends Item {
                 level.playSound(null, player.blockPosition(), SoundEvents.COMPASS_LOCK, SoundSource.PLAYERS, 0.8F, 1.0F);
             }
             player.getCooldowns().addCooldown(this, 60);
-        }
-
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }
