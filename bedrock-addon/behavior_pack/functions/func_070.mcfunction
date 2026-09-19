@@ -16,4 +16,9 @@ playsound mob.ender_dragon.growl @a ~ ~ ~ 0.6 0.50
 particle minecraft:basic_smoke ~ ~ ~ 1 1 1 0.1 14
 tag @a[scores={novahorror.fear=74..}] add novahorror_forest
 execute as @a[tag=novahorror_forest] at @s run particle minecraft:witch ~ ~2 ~ 0.5 0.5 0.5 0.02 5
-# End 70 forest
+execute as @a[scores={novahorror.fear=61..}] at @s run particle minecraft:white_ash ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=21..}] weakness 3 0 true
+playsound mob.warden.heartbeat @a ~ ~ ~ 0.7 0.72
+tag @a[scores={novahorror.fear=73..}] add novahorror_enhanced_70
+execute as @a[tag=novahorror_enhanced_70] at @s run titleraw @s actionbar {"rawtext":[{"text":"§5...زمان برگشت..."}]}
+# End 70 enhanced 22 diverse

@@ -16,4 +16,9 @@ playsound ambient.cave @a ~ ~ ~ 0.8 0.68
 particle minecraft:sculk_soul ~ ~ ~ 1 1 1 0.1 7
 tag @a[scores={novahorror.fear=61..}] add novahorror_mansion
 execute as @a[tag=novahorror_mansion] at @s run particle minecraft:spore_blossom_air ~ ~2 ~ 0.5 0.5 0.5 0.02 5
-# End 55 mansion
+execute as @a[scores={novahorror.fear=84..}] at @s run particle minecraft:soul ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=35..}] weakness 3 0 true
+playsound ambient.cave @a ~ ~ ~ 0.7 0.60
+tag @a[scores={novahorror.fear=85..}] add novahorror_enhanced_55
+execute as @a[tag=novahorror_enhanced_55] at @s run titleraw @s actionbar {"rawtext":[{"text":"§8در بسته است..."}]}
+# End 55 enhanced 22 diverse

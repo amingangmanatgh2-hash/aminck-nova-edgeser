@@ -16,4 +16,9 @@ playsound mob.warden.roar @a ~ ~ ~ 0.6 0.60
 particle minecraft:sculk_soul ~ ~ ~ 1 1 1 0.1 13
 tag @a[scores={novahorror.fear=68..}] add novahorror_low_health
 execute as @a[tag=novahorror_low_health] at @s run particle minecraft:campfire_cosy_smoke ~ ~2 ~ 0.5 0.5 0.5 0.02 5
-# End 67 low_health
+execute as @a[scores={novahorror.fear=77..}] at @s run particle minecraft:ash ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=38..}] slowness 3 0 true
+playsound mob.warden.heartbeat @a ~ ~ ~ 0.7 0.89
+tag @a[scores={novahorror.fear=76..}] add novahorror_enhanced_67
+execute as @a[tag=novahorror_enhanced_67] at @s run titleraw @s actionbar {"rawtext":[{"text":"§8در بسته است..."}]}
+# End 67 enhanced 22 diverse

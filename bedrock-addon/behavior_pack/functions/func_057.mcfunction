@@ -16,4 +16,9 @@ playsound mob.warden.heartbeat @a ~ ~ ~ 0.5 0.53
 particle minecraft:white_ash ~ ~ ~ 1 1 1 0.1 8
 tag @a[scores={novahorror.fear=75..}] add novahorror_jumpscare
 execute as @a[tag=novahorror_jumpscare] at @s run particle minecraft:basic_smoke ~ ~2 ~ 0.5 0.5 0.5 0.02 5
-# End 57 jumpscare
+execute as @a[scores={novahorror.fear=83..}] at @s run particle minecraft:ash ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=39..}] weakness 3 0 true
+playsound mob.wolf.howl @a ~ ~ ~ 0.7 0.75
+tag @a[scores={novahorror.fear=78..}] add novahorror_enhanced_57
+execute as @a[tag=novahorror_enhanced_57] at @s run titleraw @s actionbar {"rawtext":[{"text":"§8در بسته است..."}]}
+# End 57 enhanced 22 diverse

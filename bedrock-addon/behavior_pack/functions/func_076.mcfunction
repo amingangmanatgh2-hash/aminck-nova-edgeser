@@ -16,4 +16,9 @@ playsound mob.ghast.scream @a ~ ~ ~ 0.7 0.79
 particle minecraft:witch ~ ~ ~ 1 1 1 0.1 9
 tag @a[scores={novahorror.fear=67..}] add novahorror_jumpscare
 execute as @a[tag=novahorror_jumpscare] at @s run particle minecraft:sculk_soul ~ ~2 ~ 0.5 0.5 0.5 0.02 5
-# End 76 jumpscare
+execute as @a[scores={novahorror.fear=74..}] at @s run particle minecraft:ash ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=26..}] weakness 3 0 true
+playsound ambient.cave @a ~ ~ ~ 0.7 0.45
+tag @a[scores={novahorror.fear=70..}] add novahorror_enhanced_76
+execute as @a[tag=novahorror_enhanced_76] at @s run titleraw @s actionbar {"rawtext":[{"text":"§8...واقعی نیست..."}]}
+# End 76 enhanced 22 diverse

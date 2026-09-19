@@ -16,4 +16,9 @@ playsound mob.ender_dragon.growl @a ~ ~ ~ 0.6 0.47
 particle minecraft:ash ~ ~ ~ 1 1 1 0.1 14
 tag @a[scores={novahorror.fear=71..}] add novahorror_forest
 execute as @a[tag=novahorror_forest] at @s run particle minecraft:spore_blossom_air ~ ~2 ~ 0.5 0.5 0.5 0.02 5
-# End 71 forest
+execute as @a[scores={novahorror.fear=83..}] at @s run particle minecraft:ash ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=49..}] slowness 3 0 true
+playsound ambient.cave @a ~ ~ ~ 0.7 0.61
+tag @a[scores={novahorror.fear=75..}] add novahorror_enhanced_71
+execute as @a[tag=novahorror_enhanced_71] at @s run titleraw @s actionbar {"rawtext":[{"text":"§4او می‌بینه..."}]}
+# End 71 enhanced 22 diverse

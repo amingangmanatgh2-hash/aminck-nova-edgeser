@@ -16,4 +16,9 @@ playsound mob.ghast.scream @a ~ ~ ~ 0.6 0.80
 particle minecraft:white_ash ~ ~ ~ 1 1 1 0.1 6
 tag @a[scores={novahorror.fear=74..}] add novahorror_mansion
 execute as @a[tag=novahorror_mansion] at @s run particle minecraft:spore_blossom_air ~ ~2 ~ 0.5 0.5 0.5 0.02 5
-# End 75 mansion
+execute as @a[scores={novahorror.fear=85..}] at @s run particle minecraft:ash ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=31..}] weakness 3 0 true
+playsound mob.wolf.howl @a ~ ~ ~ 0.7 0.65
+tag @a[scores={novahorror.fear=71..}] add novahorror_enhanced_75
+execute as @a[tag=novahorror_enhanced_75] at @s run titleraw @s actionbar {"rawtext":[{"text":"§cکمک..."}]}
+# End 75 enhanced 22 diverse

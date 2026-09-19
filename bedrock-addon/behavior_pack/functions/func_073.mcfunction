@@ -16,4 +16,9 @@ playsound mob.ender_dragon.growl @a ~ ~ ~ 0.8 0.67
 particle minecraft:witch ~ ~ ~ 1 1 1 0.1 11
 tag @a[scores={novahorror.fear=73..}] add novahorror_whisper
 execute as @a[tag=novahorror_whisper] at @s run particle minecraft:basic_smoke ~ ~2 ~ 0.5 0.5 0.5 0.02 5
-# End 73 whisper
+execute as @a[scores={novahorror.fear=65..}] at @s run particle minecraft:white_ash ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=43..}] slowness 3 0 true
+playsound mob.warden.heartbeat @a ~ ~ ~ 0.7 0.58
+tag @a[scores={novahorror.fear=82..}] add novahorror_enhanced_73
+execute as @a[tag=novahorror_enhanced_73] at @s run titleraw @s actionbar {"rawtext":[{"text":"§7...صدای کلاغ از ماه..."}]}
+# End 73 enhanced 22 diverse

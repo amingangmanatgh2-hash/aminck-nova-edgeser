@@ -16,4 +16,9 @@ playsound mob.warden.roar @a ~ ~ ~ 0.8 0.46
 particle minecraft:ash ~ ~ ~ 1 1 1 0.1 12
 tag @a[scores={novahorror.fear=70..}] add novahorror_night
 execute as @a[tag=novahorror_night] at @s run particle minecraft:soul_fire_flame ~ ~2 ~ 0.5 0.5 0.5 0.02 5
-# End 62 night
+execute as @a[scores={novahorror.fear=68..}] at @s run particle minecraft:ash ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=50..}] weakness 3 0 true
+playsound ambient.cave @a ~ ~ ~ 0.7 0.73
+tag @a[scores={novahorror.fear=87..}] add novahorror_enhanced_62
+execute as @a[tag=novahorror_enhanced_62] at @s run titleraw @s actionbar {"rawtext":[{"text":"§8...کسی دنبالم میاد..."}]}
+# End 62 enhanced 22 diverse

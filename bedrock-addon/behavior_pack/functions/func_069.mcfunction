@@ -16,4 +16,9 @@ playsound mob.warden.heartbeat @a ~ ~ ~ 0.7 0.43
 particle minecraft:white_ash ~ ~ ~ 1 1 1 0.1 5
 tag @a[scores={novahorror.fear=64..}] add novahorror_basement
 execute as @a[tag=novahorror_basement] at @s run particle minecraft:campfire_cosy_smoke ~ ~2 ~ 0.5 0.5 0.5 0.02 5
-# End 69 basement
+execute as @a[scores={novahorror.fear=62..}] at @s run particle minecraft:soul ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=44..}] weakness 3 0 true
+playsound ambient.cave @a ~ ~ ~ 0.7 0.51
+tag @a[scores={novahorror.fear=84..}] add novahorror_enhanced_69
+execute as @a[tag=novahorror_enhanced_69] at @s run titleraw @s actionbar {"rawtext":[{"text":"§4او می‌بینه..."}]}
+# End 69 enhanced 22 diverse

@@ -19,4 +19,9 @@ execute if predicate novahorror:is_night run playsound minecraft:block.sculk_sen
 execute if predicate novahorror:is_raining run particle minecraft:campfire_cosy_smoke ~ ~5 ~ 3 1 3 0.02 7
 tag @a[scores={novahorror.fear=86..}] add novahorror_marked
 execute as @a[tag=novahorror_marked] at @s run playsound minecraft:entity.warden.heartbeat hostile @s ~ ~ ~ 1 0.6
-# End horror 113 player_low_health
+execute if predicate novahorror:is_high_fear as @a at @s run particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.02 6
+execute if predicate novahorror:is_in_basement as @a at @s run effect give @s minecraft:darkness 3 0 true
+execute if predicate novahorror:is_night as @a at @s run playsound minecraft:entity.warden.heartbeat hostile @s ~ ~ ~ 0.6 0.47
+summon minecraft:parrot ~-4 ~11 ~-10 {CustomName:'"§8Raven 113-21"',NoGravity:0b,Tags:["raven_113"]}
+title @a[scores={novahorror.fear=84..}] actionbar {"text":"§4خون...","color":"dark_red"}
+# End horror 113 enhanced 25 diverse

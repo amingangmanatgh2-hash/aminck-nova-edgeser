@@ -19,4 +19,9 @@ execute if predicate novahorror:is_night run playsound minecraft:entity.ghast.sc
 execute if predicate novahorror:is_raining run particle minecraft:soul ~ ~5 ~ 3 1 3 0.02 15
 tag @a[scores={novahorror.fear=78..}] add novahorror_marked
 execute as @a[tag=novahorror_marked] at @s run playsound minecraft:entity.soul_sand_valley_mood hostile @s ~ ~ ~ 1 0.6
-# End horror 085
+execute if predicate novahorror:is_high_fear as @a at @s run particle minecraft:soul_fire_flame_emitter ~ ~1 ~ 0.5 0.5 0.5 0.02 6
+execute if predicate novahorror:is_in_basement as @a at @s run effect give @s minecraft:confusion 3 0 true
+execute if predicate novahorror:is_night as @a at @s run playsound minecraft:entity.warden.roar hostile @s ~ ~ ~ 0.6 0.79
+summon minecraft:parrot ~-2 ~7 ~-1 {CustomName:'"§8Raven 85-21"',NoGravity:0b,Tags:["raven_85"]}
+title @a[scores={novahorror.fear=59..}] actionbar {"text":"§7مه غلیظ...","color":"dark_red"}
+# End horror 085 enhanced 25 diverse

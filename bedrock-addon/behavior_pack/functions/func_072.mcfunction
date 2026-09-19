@@ -16,4 +16,9 @@ playsound block.bell.hit @a ~ ~ ~ 0.6 0.57
 particle minecraft:campfire_cosy_smoke ~ ~ ~ 1 1 1 0.1 8
 tag @a[scores={novahorror.fear=80..}] add novahorror_mansion
 execute as @a[tag=novahorror_mansion] at @s run particle minecraft:soul_fire_flame ~ ~2 ~ 0.5 0.5 0.5 0.02 5
-# End 72 mansion
+execute as @a[scores={novahorror.fear=69..}] at @s run particle minecraft:white_ash ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=50..}] weakness 3 0 true
+playsound mob.warden.heartbeat @a ~ ~ ~ 0.7 0.45
+tag @a[scores={novahorror.fear=76..}] add novahorror_enhanced_72
+execute as @a[tag=novahorror_enhanced_72] at @s run titleraw @s actionbar {"rawtext":[{"text":"§7صدای پا..."}]}
+# End 72 enhanced 22 diverse

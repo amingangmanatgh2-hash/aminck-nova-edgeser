@@ -16,4 +16,9 @@ playsound mob.warden.heartbeat @a ~ ~ ~ 0.8 0.51
 particle minecraft:spore_blossom_air ~ ~ ~ 1 1 1 0.1 10
 tag @a[scores={novahorror.fear=74..}] add novahorror_rain
 execute as @a[tag=novahorror_rain] at @s run particle minecraft:campfire_cosy_smoke ~ ~2 ~ 0.5 0.5 0.5 0.02 5
-# End 78 rain
+execute as @a[scores={novahorror.fear=72..}] at @s run particle minecraft:ash ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=28..}] slowness 3 0 true
+playsound mob.warden.heartbeat @a ~ ~ ~ 0.7 0.60
+tag @a[scores={novahorror.fear=82..}] add novahorror_enhanced_78
+execute as @a[tag=novahorror_enhanced_78] at @s run titleraw @s actionbar {"rawtext":[{"text":"§cقلبم تند میزنه..."}]}
+# End 78 enhanced 22 diverse

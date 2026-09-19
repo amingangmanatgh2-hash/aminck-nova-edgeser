@@ -16,4 +16,9 @@ playsound mob.ghast.scream @a ~ ~ ~ 0.9 0.78
 particle minecraft:basic_smoke ~ ~ ~ 1 1 1 0.1 13
 tag @a[scores={novahorror.fear=63..}] add novahorror_mansion
 execute as @a[tag=novahorror_mansion] at @s run particle minecraft:campfire_cosy_smoke ~ ~2 ~ 0.5 0.5 0.5 0.02 5
-# End 50 mansion
+execute as @a[scores={novahorror.fear=80..}] at @s run particle minecraft:soul ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=32..}] slowness 3 0 true
+playsound mob.warden.heartbeat @a ~ ~ ~ 0.7 0.76
+tag @a[scores={novahorror.fear=70..}] add novahorror_enhanced_50
+execute as @a[tag=novahorror_enhanced_50] at @s run titleraw @s actionbar {"rawtext":[{"text":"§7...صدای کلاغ از ماه..."}]}
+# End 50 enhanced 22 diverse

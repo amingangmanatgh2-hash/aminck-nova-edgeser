@@ -16,4 +16,9 @@ playsound ambient.cave @a ~ ~ ~ 0.6 0.48
 particle minecraft:white_ash ~ ~ ~ 1 1 1 0.1 8
 tag @a[scores={novahorror.fear=64..}] add novahorror_rain
 execute as @a[tag=novahorror_rain] at @s run particle minecraft:ash ~ ~2 ~ 0.5 0.5 0.5 0.02 5
-# End 79 rain
+execute as @a[scores={novahorror.fear=74..}] at @s run particle minecraft:ash ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=32..}] weakness 3 0 true
+playsound mob.wolf.howl @a ~ ~ ~ 0.7 0.67
+tag @a[scores={novahorror.fear=90..}] add novahorror_enhanced_79
+execute as @a[tag=novahorror_enhanced_79] at @s run titleraw @s actionbar {"rawtext":[{"text":"§7...نمی‌تونی فرار کنی..."}]}
+# End 79 enhanced 22 diverse

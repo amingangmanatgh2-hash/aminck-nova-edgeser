@@ -16,4 +16,9 @@ playsound mob.warden.heartbeat @a ~ ~ ~ 0.9 0.42
 particle minecraft:soul ~ ~ ~ 1 1 1 0.1 5
 tag @a[scores={novahorror.fear=71..}] add novahorror_low_health
 execute as @a[tag=novahorror_low_health] at @s run particle minecraft:soul ~ ~2 ~ 0.5 0.5 0.5 0.02 5
-# End 60 low_health
+execute as @a[scores={novahorror.fear=68..}] at @s run particle minecraft:soul ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=35..}] slowness 3 0 true
+playsound mob.wolf.howl @a ~ ~ ~ 0.7 0.84
+tag @a[scores={novahorror.fear=86..}] add novahorror_enhanced_60
+execute as @a[tag=novahorror_enhanced_60] at @s run titleraw @s actionbar {"rawtext":[{"text":"§7...باد نجوا می‌کند..."}]}
+# End 60 enhanced 22 diverse

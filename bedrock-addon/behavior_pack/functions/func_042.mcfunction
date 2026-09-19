@@ -14,4 +14,9 @@ scoreboard players add @a[distance=..7] novahorror.dark 1
 tellraw @a {"rawtext":[{"text":"§8در بسته است..."}]}
 playsound ambient.cave @a ~ ~ ~ 0.6 0.70
 particle minecraft:spore_blossom_air ~ ~ ~ 1 1 1 0.1 7
-# End 42
+execute as @a[scores={novahorror.fear=84..}] at @s run particle minecraft:ash ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=26..}] slowness 3 0 true
+playsound mob.wolf.howl @a ~ ~ ~ 0.7 0.62
+tag @a[scores={novahorror.fear=85..}] add novahorror_enhanced_42
+execute as @a[tag=novahorror_enhanced_42] at @s run titleraw @s actionbar {"rawtext":[{"text":"§5...زمان برگشت..."}]}
+# End 42 enhanced 22 diverse

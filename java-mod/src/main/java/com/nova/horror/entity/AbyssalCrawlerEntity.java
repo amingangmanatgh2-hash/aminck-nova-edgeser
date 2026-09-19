@@ -1,0 +1,101 @@
+
+package com.nova.horror.entity;
+
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import java.util.Random;
+
+
+/**
+ * AbyssalCrawlerEntity - Crawls from void, drags into abyss, leaves void particles
+ * Real unique AI - rich logic
+ */
+public class AbyssalCrawlerEntity extends Monster {
+    private int cooldown = 0;
+    private int phase = 0;
+    private Random rand = new Random();
+    private BlockPos lastPos = null;
+
+    public AbyssalCrawlerEntity(EntityType<? extends Monster> type, Level level) { super(type, level); }
+
+    public static AttributeSupplier.Builder createAttributes() {
+        return Monster.createMonsterAttributes()
+            .add(Attributes.MAX_HEALTH, 38.0).add(Attributes.MOVEMENT_SPEED, 0.36).add(Attributes.ATTACK_DAMAGE, 7.0).add(Attributes.FOLLOW_RANGE, 32.0);
+    }
+
+    @Override
+    protected void registerGoals() {
+        goalSelector.addGoal(0, new FloatGoal(this)); goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.25, false)); goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 0.75)); targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (level().isClientSide) return;
+        if (cooldown > 0) cooldown--;
+        phase++;
+        
+        // Void particles
+        if (phase % 15 == 0) {
+            level().addParticle(net.minecraft.core.particles.ParticleTypes.PORTAL, getX()+rand.nextDouble()-0.5, getY()+1, getZ()+rand.nextDouble()-0.5, rand.nextDouble()-0.5, 0.1, rand.nextDouble()-0.5);
+            level().addParticle(net.minecraft.core.particles.ParticleTypes.SOUL, getX(), getY()+0.5, getZ(), 0, 0.02, 0);
+        }
+        // Abyss pull
+        if (getTarget() instanceof Player p && distanceTo(p) < 8 && cooldown==0) {
+            Vec3 pull = new Vec3(getX()-p.getX(), -0.5, getZ()-p.getZ()).normalize().scale(0.8);
+            p.setDeltaMovement(p.getDeltaMovement().add(pull));
+            p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 70, 0));
+            p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 90, 1));
+            p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100, 0));
+            level().playSound(null, p.blockPosition(), SoundEvents.PORTAL_AMBIENT, SoundSource.HOSTILE, 0.9F, 0.3F);
+            if (p.getY() < 10) {
+                p.hurt(level().damageSources().outOfWorld(), 2.0F);
+                p.displayClientMessage(Component.literal("§5...ورطه..."), true);
+            }
+            cooldown = 130;
+        }
+        // Bonus in low Y
+        if (getY() < 20) {
+            addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 40, 1));
+            addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 40, 0));
+        }
+        // Fear aura
+        if (phase % 50 == 0) {
+            for (Player pl : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(10))) {
+                if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level().getServer().createCommandSourceStack(), "scoreboard players add "+pl.getName().getString()+" novahorror.fear 1");
+            }
+        }
+
+    }
+
+    
+    public void abyssPull(Player player) {
+        Vec3 dir = new Vec3(getX()-player.getX(), -1, getZ()-player.getZ()).normalize();
+        player.setDeltaMovement(dir.scale(1.0));
+        player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 60, 0));
+    }
+    public void spawnVoidParticles() {
+        for (int i=0;i<10;i++) level().addParticle(net.minecraft.core.particles.ParticleTypes.PORTAL, getX()+rand.nextDouble()-0.5, getY()+rand.nextDouble(), getZ()+rand.nextDouble()-0.5, 0, 0.1, 0);
+    }
+    public boolean isInAbyss() { return getY() < 15; }
+
+
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+}

@@ -14,4 +14,9 @@ scoreboard players add @a[distance=..4] novahorror.dark 1
 tellraw @a {"rawtext":[{"text":"§8...کسی دنبالم میاد..."}]}
 playsound ambient.cave @a ~ ~ ~ 0.6 0.63
 particle minecraft:witch ~ ~ ~ 1 1 1 0.1 12
-# End 11
+execute as @a[scores={novahorror.fear=63..}] at @s run particle minecraft:ash ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=28..}] slowness 3 0 true
+playsound ambient.cave @a ~ ~ ~ 0.7 0.60
+tag @a[scores={novahorror.fear=90..}] add novahorror_enhanced_11
+execute as @a[tag=novahorror_enhanced_11] at @s run titleraw @s actionbar {"rawtext":[{"text":"§5...زمان برگشت..."}]}
+# End 11 enhanced 22 diverse

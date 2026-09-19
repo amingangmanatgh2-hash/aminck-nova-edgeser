@@ -14,4 +14,9 @@ scoreboard players add @a[distance=..7] novahorror.dark 1
 tellraw @a {"rawtext":[{"text":"§cقلبم تند میزنه..."}]}
 playsound mob.ender_dragon.growl @a ~ ~ ~ 0.6 0.53
 particle minecraft:basic_smoke ~ ~ ~ 1 1 1 0.1 9
-# End 29
+execute as @a[scores={novahorror.fear=69..}] at @s run particle minecraft:soul ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=22..}] slowness 3 0 true
+playsound mob.warden.heartbeat @a ~ ~ ~ 0.7 0.77
+tag @a[scores={novahorror.fear=81..}] add novahorror_enhanced_29
+execute as @a[tag=novahorror_enhanced_29] at @s run titleraw @s actionbar {"rawtext":[{"text":"§4خون..."}]}
+# End 29 enhanced 22 diverse

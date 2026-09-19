@@ -16,4 +16,9 @@ playsound mob.ghast.scream @a ~ ~ ~ 0.9 0.58
 particle minecraft:white_ash ~ ~ ~ 1 1 1 0.1 12
 tag @a[scores={novahorror.fear=69..}] add novahorror_rain
 execute as @a[tag=novahorror_rain] at @s run particle minecraft:soul_fire_flame ~ ~2 ~ 0.5 0.5 0.5 0.02 5
-# End 58 rain
+execute as @a[scores={novahorror.fear=73..}] at @s run particle minecraft:soul ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=24..}] weakness 3 0 true
+playsound ambient.cave @a ~ ~ ~ 0.7 0.60
+tag @a[scores={novahorror.fear=82..}] add novahorror_enhanced_58
+execute as @a[tag=novahorror_enhanced_58] at @s run titleraw @s actionbar {"rawtext":[{"text":"§7...نمی‌تونی فرار کنی..."}]}
+# End 58 enhanced 22 diverse

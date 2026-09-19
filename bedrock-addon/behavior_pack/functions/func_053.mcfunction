@@ -16,4 +16,9 @@ playsound mob.wolf.howl @a ~ ~ ~ 0.6 0.74
 particle minecraft:campfire_cosy_smoke ~ ~ ~ 1 1 1 0.1 8
 tag @a[scores={novahorror.fear=64..}] add novahorror_rain
 execute as @a[tag=novahorror_rain] at @s run particle minecraft:sculk_soul ~ ~2 ~ 0.5 0.5 0.5 0.02 5
-# End 53 rain
+execute as @a[scores={novahorror.fear=73..}] at @s run particle minecraft:white_ash ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=37..}] weakness 3 0 true
+playsound ambient.cave @a ~ ~ ~ 0.7 0.58
+tag @a[scores={novahorror.fear=80..}] add novahorror_enhanced_53
+execute as @a[tag=novahorror_enhanced_53] at @s run titleraw @s actionbar {"rawtext":[{"text":"§7...باد نجوا می‌کند..."}]}
+# End 53 enhanced 22 diverse

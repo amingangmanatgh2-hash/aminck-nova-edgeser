@@ -14,4 +14,9 @@ scoreboard players add @a[distance=..5] novahorror.dark 1
 tellraw @a {"rawtext":[{"text":"§7...صدای کلاغ از ماه..."}]}
 playsound block.bell.hit @a ~ ~ ~ 0.7 0.62
 particle minecraft:white_ash ~ ~ ~ 1 1 1 0.1 9
-# End 34
+execute as @a[scores={novahorror.fear=69..}] at @s run particle minecraft:ash ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=28..}] weakness 3 0 true
+playsound mob.wolf.howl @a ~ ~ ~ 0.7 0.44
+tag @a[scores={novahorror.fear=82..}] add novahorror_enhanced_34
+execute as @a[tag=novahorror_enhanced_34] at @s run titleraw @s actionbar {"rawtext":[{"text":"§4فرار کن!"}]}
+# End 34 enhanced 22 diverse

@@ -16,4 +16,9 @@ playsound mob.wolf.howl @a ~ ~ ~ 0.9 0.44
 particle minecraft:spore_blossom_air ~ ~ ~ 1 1 1 0.1 6
 tag @a[scores={novahorror.fear=75..}] add novahorror_forest
 execute as @a[tag=novahorror_forest] at @s run particle minecraft:witch ~ ~2 ~ 0.5 0.5 0.5 0.02 5
-# End 52 forest
+execute as @a[scores={novahorror.fear=72..}] at @s run particle minecraft:white_ash ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=20..}] weakness 3 0 true
+playsound mob.warden.heartbeat @a ~ ~ ~ 0.7 0.73
+tag @a[scores={novahorror.fear=90..}] add novahorror_enhanced_52
+execute as @a[tag=novahorror_enhanced_52] at @s run titleraw @s actionbar {"rawtext":[{"text":"§7...صدای کلاغ از ماه..."}]}
+# End 52 enhanced 22 diverse

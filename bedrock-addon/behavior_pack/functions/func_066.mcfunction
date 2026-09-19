@@ -16,4 +16,9 @@ playsound ambient.cave @a ~ ~ ~ 0.7 0.46
 particle minecraft:soul_fire_flame ~ ~ ~ 1 1 1 0.1 11
 tag @a[scores={novahorror.fear=65..}] add novahorror_forest
 execute as @a[tag=novahorror_forest] at @s run particle minecraft:basic_smoke ~ ~2 ~ 0.5 0.5 0.5 0.02 5
-# End 66 forest
+execute as @a[scores={novahorror.fear=77..}] at @s run particle minecraft:ash ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=31..}] slowness 3 0 true
+playsound mob.wolf.howl @a ~ ~ ~ 0.7 0.84
+tag @a[scores={novahorror.fear=85..}] add novahorror_enhanced_66
+execute as @a[tag=novahorror_enhanced_66] at @s run titleraw @s actionbar {"rawtext":[{"text":"§5...زمان برگشت..."}]}
+# End 66 enhanced 22 diverse

@@ -16,4 +16,9 @@ playsound block.bell.hit @a ~ ~ ~ 0.5 0.71
 particle minecraft:ash ~ ~ ~ 1 1 1 0.1 8
 tag @a[scores={novahorror.fear=62..}] add novahorror_mansion
 execute as @a[tag=novahorror_mansion] at @s run particle minecraft:basic_smoke ~ ~2 ~ 0.5 0.5 0.5 0.02 5
-# End 68 mansion
+execute as @a[scores={novahorror.fear=84..}] at @s run particle minecraft:ash ~ ~2 ~ 0.5 0.5 0.5 0.02 5
+effect @a[scores={novahorror.fear=40..}] slowness 3 0 true
+playsound mob.warden.heartbeat @a ~ ~ ~ 0.7 0.66
+tag @a[scores={novahorror.fear=82..}] add novahorror_enhanced_68
+execute as @a[tag=novahorror_enhanced_68] at @s run titleraw @s actionbar {"rawtext":[{"text":"§8...الارا منتظره..."}]}
+# End 68 enhanced 22 diverse
