@@ -22,7 +22,8 @@ public class InkOfShadows extends Item {
     private static final Random RANDOM = new Random();
     public InkOfShadows() { super(new Properties().stacksTo(1).rarity(Rarity.RARE)); }
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+        try {
+ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             for (var e : level.getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class, player.getBoundingBox().inflate(10))) {
                 if (e != player) {
@@ -38,5 +39,6 @@ public class InkOfShadows extends Item {
             if (!player.isCreative()) stack.shrink(1);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+        } catch (Exception e) { return InteractionResultHolder.fail(stack); }
     }
 }

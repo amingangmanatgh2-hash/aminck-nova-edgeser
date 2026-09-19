@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -46,55 +52,58 @@ public class CeilingCrawlerEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        
-        BlockPos ceil = blockPosition().above(2);
-        boolean hasCeiling = !level().getBlockState(ceil).isAir() && !level().getBlockState(ceil).is(net.minecraft.world.level.block.Blocks.AIR);
-        boolean isDark = level().getBrightness(LightLayer.BLOCK, blockPosition()) < 5;
-        if (hasCeiling && isDark) {
-            setNoGravity(true);
-            if (phase % 20 == 0) {
-                setDeltaMovement(0, 0.015, 0);
-                level().addParticle(net.minecraft.core.particles.ParticleTypes.ASH, getX(), getY()+0.5, getZ(), 0, -0.01, 0);
-            }
-            // Hide when ceiling
-            if (phase % 80 == 0) addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 60, 0, false, false));
-            if (getTarget() instanceof Player p) {
-                double distSqr = p.blockPosition().distSqr(blockPosition());
-                boolean playerBelow = p.getY() < getY() - 1.5;
-                if (distSqr < 25 && playerBelow && cooldown==0) {
-                    setNoGravity(false);
-                    setDeltaMovement(0, -1.6, 0);
-                    p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 70, 0));
-                    p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 90, 1));
-                    p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 40, 0));
-                    level().playSound(null, blockPosition(), SoundEvents.ENTITY_SPIDER_AMBIENT, SoundSource.HOSTILE, 1.0F, 0.3F);
-                    level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_PLAYER_HURT, SoundSource.PLAYERS, 0.6F, 0.8F);
-                    if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level().getServer().createCommandSourceStack(), "scoreboard players add "+p.getName().getString()+" novahorror.fear 3");
-                    cooldown = 140;
-                }
-            }
-        } else {
-            setNoGravity(false);
-            if (phase % 60 == 0) {
-                // Search for ceiling
-                for (BlockPos pos : BlockPos.betweenClosed(blockPosition().offset(-8,0,-8), blockPosition().offset(8,4,8))) {
-                    if (!level().getBlockState(pos.above()).isAir() && level().getBlockState(pos).isAir()) {
-                        getNavigation().moveTo(pos.getX(), pos.getY(), pos.getZ(), 0.9);
-                        break;
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    
+                    BlockPos ceil = blockPosition().above(2);
+                    boolean hasCeiling = !level().getBlockState(ceil).isAir() && !level().getBlockState(ceil).is(net.minecraft.world.level.block.Blocks.AIR);
+                    boolean isDark = level().getBrightness(LightLayer.BLOCK, blockPosition()) < 5;
+                    if (hasCeiling && isDark) {
+                        setNoGravity(true);
+                        if (phase % 20 == 0) {
+                            setDeltaMovement(0, 0.015, 0);
+                            level().addParticle(net.minecraft.core.particles.ParticleTypes.ASH, getX(), getY()+0.5, getZ(), 0, -0.01, 0);
+                        }
+                        // Hide when ceiling
+                        if (phase % 80 == 0) addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 60, 0, false, false));
+                        if (getTarget() instanceof Player p) {
+                            double distSqr = p.blockPosition().distSqr(blockPosition());
+                            boolean playerBelow = p.getY() < getY() - 1.5;
+                            if (distSqr < 25 && playerBelow && cooldown==0) {
+                                setNoGravity(false);
+                                setDeltaMovement(0, -1.6, 0);
+                                p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 70, 0));
+                                p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 90, 1));
+                                p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 40, 0));
+                                level().playSound(null, blockPosition(), SoundEvents.ENTITY_SPIDER_AMBIENT, SoundSource.HOSTILE, 1.0F, 0.3F);
+                                level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_PLAYER_HURT, SoundSource.PLAYERS, 0.6F, 0.8F);
+                                if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level().getServer().createCommandSourceStack(), "scoreboard players add "+p.getName().getString()+" novahorror.fear 3");
+                                cooldown = 140;
+                            }
+                        }
+                    } else {
+                        setNoGravity(false);
+                        if (phase % 60 == 0) {
+                            // Search for ceiling
+                            for (BlockPos pos : BlockPos.betweenClosed(blockPosition().offset(-8,0,-8), blockPosition().offset(8,4,8))) {
+                                if (!level().getBlockState(pos.above()).isAir() && level().getBlockState(pos).isAir()) {
+                                    getNavigation().moveTo(pos.getX(), pos.getY(), pos.getZ(), 0.9);
+                                    break;
+                                }
+                            }
+                        }
                     }
-                }
-            }
-        }
-        // Fear aura when on ceiling
-        if (hasCeiling && phase % 50 == 0) {
-            for (Player pl : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(8))) {
-                pl.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 0, false, false));
-            }
-        }
-
+                    // Fear aura when on ceiling
+                    if (hasCeiling && phase % 50 == 0) {
+                        for (Player pl : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(8))) {
+                            pl.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 0, false, false));
+                        }
+                    }
+        } catch (Exception e) {}
     }
 
     

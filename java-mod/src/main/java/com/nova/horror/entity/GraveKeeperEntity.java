@@ -9,6 +9,13 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.util.EntitySpawnLimiter;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -46,40 +53,43 @@ public class GraveKeeperEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        
-        if (phase % 105 == 0) {
-            for (int i=0;i<3;i++) {
-                double x=getX()+rand.nextDouble()*12-6;
-                double y=getY()+10+rand.nextDouble()*5;
-                double z=getZ()+rand.nextDouble()*12-6;
-                var bat=new net.minecraft.world.entity.ambient.Bat(net.minecraft.world.entity.EntityType.BAT, level());
-                bat.moveTo(x,y,z);
-                bat.setCustomName(Component.literal("§8Grave Crow"));
-                bat.setNoGravity(true);
-                bat.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100, 0));
-                level().addFreshEntity(bat);
-                level().addParticle(net.minecraft.core.particles.ParticleTypes.ASH, x, y, z, 0, -0.02, 0);
-            }
-            level().playSound(null, blockPosition(), SoundEvents.PARTICLE_SOUL_ESCAPE, SoundSource.HOSTILE, 0.9F, 0.4F);
-            level().addParticle(net.minecraft.core.particles.ParticleTypes.SOUL, getX(), getY()+1, getZ(), 0, 0.08, 0);
-            level().addParticle(net.minecraft.core.particles.ParticleTypes.CAMPFIRE_COSY_SMOKE, getX(), getY()+0.5, getZ(), 0, 0.04, 0);
-        }
-        if (phase % 60 == 0) {
-            for (Player pl : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(10))) {
-                pl.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 0, false, false));
-                pl.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 30, 0, false, false));
-                if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players add "+pl.getName().getString()+" novahorror.fear 1");
-            }
-        }
-        if (getTarget() instanceof Player p && distanceTo(p) < 5 && cooldown==0) {
-            p.addEffect(new MobEffectInstance(MobEffects.WITHER, 60, 0));
-            level().playSound(null, p.blockPosition(), SoundEvents.PARTICLE_SOUL_ESCAPE, SoundSource.HOSTILE, 1.0F, 0.3F);
-            cooldown = 120;
-        }
-
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    
+                    if (phase % 105 == 0) {
+                        for (int i=0;i<3;i++) {
+                            double x=getX()+rand.nextDouble()*12-6;
+                            double y=getY()+10+rand.nextDouble()*5;
+                            double z=getZ()+rand.nextDouble()*12-6;
+                            var bat=new net.minecraft.world.entity.ambient.Bat(net.minecraft.world.entity.EntityType.BAT, level());
+                            bat.moveTo(x,y,z);
+                            bat.setCustomName(Component.literal("§8Grave Crow"));
+                            bat.setNoGravity(true);
+                            bat.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100, 0));
+                            EntitySpawnLimiter.safeAddEntity(level(),(bat);
+                            level().addParticle(net.minecraft.core.particles.ParticleTypes.ASH, x, y, z, 0, -0.02, 0);
+                        }
+                        level().playSound(null, blockPosition(), SoundEvents.PARTICLE_SOUL_ESCAPE, SoundSource.HOSTILE, 0.9F, 0.4F);
+                        level().addParticle(net.minecraft.core.particles.ParticleTypes.SOUL, getX(), getY()+1, getZ(), 0, 0.08, 0);
+                        level().addParticle(net.minecraft.core.particles.ParticleTypes.CAMPFIRE_COSY_SMOKE, getX(), getY()+0.5, getZ(), 0, 0.04, 0);
+                    }
+                    if (phase % 60 == 0) {
+                        for (Player pl : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(10))) {
+                            pl.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 0, false, false));
+                            pl.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 30, 0, false, false));
+                            if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players add "+pl.getName().getString()+" novahorror.fear 1");
+                        }
+                    }
+                    if (getTarget() instanceof Player p && distanceTo(p) < 5 && cooldown==0) {
+                        p.addEffect(new MobEffectInstance(MobEffects.WITHER, 60, 0));
+                        level().playSound(null, p.blockPosition(), SoundEvents.PARTICLE_SOUL_ESCAPE, SoundSource.HOSTILE, 1.0F, 0.3F);
+                        cooldown = 120;
+                    }
+        } catch (Exception e) {}
     }
 
     
@@ -92,7 +102,7 @@ public class GraveKeeperEntity extends Monster {
             bat.moveTo(x,y,z);
             bat.setCustomName(Component.literal("§8Grave Crow"));
             bat.setNoGravity(true);
-            level().addFreshEntity(bat);
+            EntitySpawnLimiter.safeAddEntity(level(),(bat);
         }
     }
     public void raiseFog() {

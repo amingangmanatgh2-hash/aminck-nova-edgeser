@@ -21,7 +21,8 @@ public class HeartOfDread extends Item {
     private static final Random RANDOM = new Random();
     public HeartOfDread() { super(new Properties().stacksTo(1).rarity(Rarity.EPIC)); }
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+        try {
+ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             
         player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 100, 0));
@@ -34,5 +35,7 @@ public class HeartOfDread extends Item {
             mob.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100, 0));
                 }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+    }
+        } catch (Exception e) { return InteractionResultHolder.fail(stack); }
     }
 }

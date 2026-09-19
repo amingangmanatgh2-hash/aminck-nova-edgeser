@@ -9,6 +9,13 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.util.EntitySpawnLimiter;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -46,10 +53,14 @@ public class HorrorEntity08 extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        if (phase % 120 == 0) { for (int i=0;i<2;i++) { double x = getX()+rand.nextDouble()*10-5; double y = getY()+8+rand.nextDouble()*4; double z = getZ()+rand.nextDouble()*10-5; var bat = new net.minecraft.world.entity.ambient.Bat(EntityType.BAT, level()); bat.moveTo(x,y,z); bat.setCustomName(Component.literal("§8Grave Crow")); bat.setNoGravity(true); level().addFreshEntity(bat); } level().playSound(null, blockPosition(), SoundEvents.PARTICLE_SOUL_ESCAPE, SoundSource.HOSTILE, 0.8F, 0.5F); }
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    if (phase % 120 == 0) { for (int i=0;i<2;i++) { double x = getX()+rand.nextDouble()*10-5; double y = getY()+8+rand.nextDouble()*4; double z = getZ()+rand.nextDouble()*10-5; var bat = new net.minecraft.world.entity.ambient.Bat(EntityType.BAT, level()); bat.moveTo(x,y,z); bat.setCustomName(Component.literal("§8Grave Crow")); bat.setNoGravity(true); EntitySpawnLimiter.safeAddEntity(level(),(bat); } level().playSound(null, blockPosition(), SoundEvents.PARTICLE_SOUL_ESCAPE, SoundSource.HOSTILE, 0.8F, 0.5F); }
+        } catch (Exception e) {}
     }
 
     public void raiseFog() { level().addParticle(net.minecraft.core.particles.ParticleTypes.CAMPFIRE_COSY_SMOKE, getX(), getY(), getZ(), 0, 0.05, 0); }

@@ -5,6 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.util.SafeScoreboardUtil;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -22,7 +23,8 @@ public class SoulCompass extends Item {
     private static final Random RANDOM = new Random();
     public SoulCompass() { super(new Properties().stacksTo(1).rarity(Rarity.RARE)); }
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+        try {
+ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             BlockPos mansion = new BlockPos(0, 70, 0);
             double dx = mansion.getX() - player.getX();
@@ -67,7 +69,7 @@ public class SoulCompass extends Item {
                 player.displayClientMessage(Component.literal("§cقطب‌نما دیوانه‌وار می‌چرخه! ترست خیلی بالاست!"+crowInfo+horrorInfo), true);
                 level.playSound(null, player.blockPosition(), SoundEvents.BLOCK_BELL_USE, SoundSource.PLAYERS, 1.0F, 0.3F);
                 player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 60, 0));
-                for (int i=0;i<10;i++) level.addParticle(net.minecraft.core.particles.ParticleTypes.SMOKE, player.getX()+level.random.nextDouble()-0.5, player.getY()+1, player.getZ()+level.random.nextDouble()-0.5, 0, 0.05, 0);
+                for (int i=0;i<10;i++) level.addParticle(net.minecraft.core.particles.ParticleTypes.SMOKE, player.getX()+player.getRandom().nextDouble()-0.5, player.getY()+1, player.getZ()+player.getRandom().nextDouble()-0.5, 0, 0.05, 0);
             } else {
                 player.displayClientMessage(Component.literal("§aعمارت "+String.format("%.0f", dist)+" بلاک زاویه "+String.format("%.0f", ang)+crowInfo+horrorInfo), true);
                 level.playSound(null, player.blockPosition(), SoundEvents.BLOCK_BELL_USE, SoundSource.PLAYERS, 0.8F, 1.0F);
@@ -80,5 +82,6 @@ public class SoulCompass extends Item {
             player.getCooldowns().addCooldown(this, 60);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+        } catch (Exception e) { return InteractionResultHolder.fail(stack); }
     }
 }

@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -46,10 +52,14 @@ public class HorrorEntity13 extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        BlockPos below = blockPosition().below(); boolean onGrass = level().getBlockState(below).getBlock().toString().contains("grass") || level().getBlockState(below).getBlock().toString().contains("moss"); if (onGrass) { addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 60, 0)); if (getTarget() instanceof Player p && distanceTo(p) < 3 && cooldown==0) { removeEffect(MobEffects.INVISIBILITY); p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60, 0)); level().playSound(null, blockPosition(), SoundEvents.BLOCK_GRASS_BREAK, SoundSource.HOSTILE, 1.0F, 0.5F); cooldown=120; } }
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    BlockPos below = blockPosition().below(); boolean onGrass = level().getBlockState(below).getBlock().toString().contains("grass") || level().getBlockState(below).getBlock().toString().contains("moss"); if (onGrass) { addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 60, 0)); if (getTarget() instanceof Player p && distanceTo(p) < 3 && cooldown==0) { removeEffect(MobEffects.INVISIBILITY); p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60, 0)); level().playSound(null, blockPosition(), SoundEvents.BLOCK_GRASS_BREAK, SoundSource.HOSTILE, 1.0F, 0.5F); cooldown=120; } }
+        } catch (Exception e) {}
     }
 
     public void camouflage() { addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 100, 0)); }

@@ -21,10 +21,12 @@ public class UniqueItem07 extends Item {
     private static final Random RANDOM = new Random();
     public UniqueItem07() { super(new Properties().stacksTo(1).rarity(Rarity.UNCOMMON)); }
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+        try {
+ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 200, 0)); level.playSound(null, player.blockPosition(), SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 0.8F, 1.5F);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+        } catch (Exception e) { return InteractionResultHolder.fail(stack); }
     }
 }

@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -46,10 +52,14 @@ public class HorrorEntity06 extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        if (getTarget() instanceof Player p) { double mx = p.getX() + (p.getX() - getX())*0.5; double mz = p.getZ() + (p.getZ() - getZ())*0.5; if (phase % 60 == 0 && cooldown==0) { teleportTo(mx, p.getY(), mz); level().playSound(null, blockPosition(), SoundEvents.BLOCK_GLASS_BREAK, SoundSource.HOSTILE, 0.5F, 0.8F); cooldown=80; } }
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    if (getTarget() instanceof Player p) { double mx = p.getX() + (p.getX() - getX())*0.5; double mz = p.getZ() + (p.getZ() - getZ())*0.5; if (phase % 60 == 0 && cooldown==0) { teleportTo(mx, p.getY(), mz); level().playSound(null, blockPosition(), SoundEvents.BLOCK_GLASS_BREAK, SoundSource.HOSTILE, 0.5F, 0.8F); cooldown=80; } }
+        } catch (Exception e) {}
     }
 
     public void shatterMirror() { level().playSound(null, blockPosition(), SoundEvents.BLOCK_GLASS_BREAK, SoundSource.BLOCKS, 1.0F, 0.5F); }

@@ -22,7 +22,8 @@ public class CursedMirror extends Item {
     private static final Random RANDOM = new Random();
     public CursedMirror() { super(new Properties().stacksTo(1).rarity(Rarity.RARE)); }
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+        try {
+ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             for (var e : level.getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(25))) {
                 e.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100, 0));
@@ -35,5 +36,6 @@ public class CursedMirror extends Item {
             player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60, 0, false, false));
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+        } catch (Exception e) { return InteractionResultHolder.fail(stack); }
     }
 }

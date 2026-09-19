@@ -22,7 +22,8 @@ public class SpiritLantern extends Item {
     private static final Random RANDOM = new Random();
     public SpiritLantern() { super(new Properties().stacksTo(1).rarity(Rarity.RARE)); }
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+        try {
+ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             BlockPos pos = player.blockPosition();
             int found = 0;
@@ -69,5 +70,6 @@ public class SpiritLantern extends Item {
             player.getCooldowns().addCooldown(this, 180);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+        } catch (Exception e) { return InteractionResultHolder.fail(stack); }
     }
 }

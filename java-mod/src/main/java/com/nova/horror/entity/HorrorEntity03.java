@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -51,32 +57,35 @@ public class HorrorEntity03 extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        
-        // Fog check via rain or low light
-        boolean foggy = level().isRaining() || level().getBrightness(LightLayer.BLOCK, blockPosition()) < 4;
-        if (foggy) {
-            addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 40, 0, false, false));
-            if (phase % 20 == 0) {
-                level().addParticle(net.minecraft.core.particles.ParticleTypes.CAMPFIRE_COSY_SMOKE, getX(), getY()+1, getZ(), 0, 0.02, 0);
-            }
-            if (getTarget() != null && rand.nextInt(60)==0 && cooldown==0) {
-                // Teleport near target in fog
-                double tx = getTarget().getX() + rand.nextDouble()*12-6;
-                double tz = getTarget().getZ() + rand.nextDouble()*12-6;
-                teleportTo(tx, getTarget().getY(), tz);
-                level().playSound(null, blockPosition(), SoundEvents.ENTITY_FOX_SNIFF, SoundSource.HOSTILE, 0.8F, 0.5F);
-                cooldown = 80;
-            }
-        }
-        if (phase % 50 == 0) {
-            for (Player p : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(8))) {
-                p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 0));
-            }
-        }
-
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    
+                    // Fog check via rain or low light
+                    boolean foggy = level().isRaining() || level().getBrightness(LightLayer.BLOCK, blockPosition()) < 4;
+                    if (foggy) {
+                        addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 40, 0, false, false));
+                        if (phase % 20 == 0) {
+                            level().addParticle(net.minecraft.core.particles.ParticleTypes.CAMPFIRE_COSY_SMOKE, getX(), getY()+1, getZ(), 0, 0.02, 0);
+                        }
+                        if (getTarget() != null && rand.nextInt(60)==0 && cooldown==0) {
+                            // Teleport near target in fog
+                            double tx = getTarget().getX() + rand.nextDouble()*12-6;
+                            double tz = getTarget().getZ() + rand.nextDouble()*12-6;
+                            teleportTo(tx, getTarget().getY(), tz);
+                            level().playSound(null, blockPosition(), SoundEvents.ENTITY_FOX_SNIFF, SoundSource.HOSTILE, 0.8F, 0.5F);
+                            cooldown = 80;
+                        }
+                    }
+                    if (phase % 50 == 0) {
+                        for (Player p : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(8))) {
+                            p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 0));
+                        }
+                    }
+        } catch (Exception e) {}
     }
 
     

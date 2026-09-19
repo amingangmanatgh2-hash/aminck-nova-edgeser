@@ -5,6 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.util.SafeScoreboardUtil;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -22,7 +23,8 @@ public class WardensAmulet extends Item {
     private static final Random RANDOM = new Random();
     public WardensAmulet() { super(new Properties().stacksTo(1).rarity(Rarity.RARE)); }
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+        try {
+ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             var pos = player.blockPosition();
             int repelled = 0;
@@ -44,12 +46,13 @@ public class WardensAmulet extends Item {
             if (level.getServer()!=null) {
                 level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players remove "+player.getName().getString()+" novahorror.fear 3");
             }
-            for (int i=0;i<15;i++) level.addParticle(net.minecraft.core.particles.ParticleTypes.SCULK_SOUL, pos.getX()+level.random.nextDouble()*4-2, pos.getY()+level.random.nextDouble()*2, pos.getZ()+level.random.nextDouble()*4-2, 0, 0.02, 0);
+            for (int i=0;i<15;i++) level.addParticle(net.minecraft.core.particles.ParticleTypes.SCULK_SOUL, pos.getX()+player.getRandom().nextDouble()*4-2, pos.getY()+player.getRandom().nextDouble()*2, pos.getZ()+player.getRandom().nextDouble()*4-2, 0, 0.02, 0);
             level.playSound(null, pos, SoundEvents.ENTITY_WARDEN_HEARTBEAT, SoundSource.PLAYERS, 0.8F, 1.2F);
             level.playSound(null, pos, SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS, 0.7F, 1.0F);
             player.displayClientMessage(Component.literal("§bطلسم واردن "+repelled+" Shade رو دفع کرد! ترس -3"), true);
             player.getCooldowns().addCooldown(this, 300);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+        } catch (Exception e) { return InteractionResultHolder.fail(stack); }
     }
 }

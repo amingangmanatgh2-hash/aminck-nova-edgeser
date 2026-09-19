@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -46,38 +52,41 @@ public class MirrorEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        
-        if (getTarget() instanceof Player p) {
-            if (phase % 65 == 0 && cooldown==0) {
-                double mx = p.getX() + (p.getX() - getX());
-                double mz = p.getZ() + (p.getZ() - getZ());
-                BlockPos mirrorPos = new BlockPos((int)mx, (int)p.getY(), (int)mz);
-                if (level().getBlockState(mirrorPos).isAir() && level().getBlockState(mirrorPos.above()).isAir()) {
-                    teleportTo(mx, p.getY(), mz);
-                    level().playSound(null, blockPosition(), SoundEvents.BLOCK_GLASS_BREAK, SoundSource.HOSTILE, 0.6F, 0.7F);
-                    level().addParticle(net.minecraft.core.particles.ParticleTypes.CRIT, getX(), getY()+1, getZ(), 0, 0.1, 0);
-                    p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 50, 0));
-                    cooldown = 90;
-                }
-            }
-            if (phase % 100 == 0) {
-                level().playSound(null, blockPosition(), SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS, 0.6F, 0.8F);
-                level().addParticle(net.minecraft.core.particles.ParticleTypes.ENCHANT, getX(), getY()+1, getZ(), 0, 0.05, 0);
-            }
-            if (distanceTo(p) < 4 && cooldown==0) {
-                // Swap health?
-                p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 40, 0));
-                level().playSound(null, p.blockPosition(), SoundEvents.BLOCK_GLASS_BREAK, SoundSource.PLAYERS, 0.5F, 1.2F);
-                cooldown = 80;
-            }
-        }
-        if (phase % 50 == 0) {
-            level().addParticle(net.minecraft.core.particles.ParticleTypes.WITCH, getX()+rand.nextDouble()-0.5, getY()+1, getZ()+rand.nextDouble()-0.5, 0, 0.02, 0);
-        }
-
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    
+                    if (getTarget() instanceof Player p) {
+                        if (phase % 65 == 0 && cooldown==0) {
+                            double mx = p.getX() + (p.getX() - getX());
+                            double mz = p.getZ() + (p.getZ() - getZ());
+                            BlockPos mirrorPos = new BlockPos((int)mx, (int)p.getY(), (int)mz);
+                            if (level().getBlockState(mirrorPos).isAir() && level().getBlockState(mirrorPos.above()).isAir()) {
+                                teleportTo(mx, p.getY(), mz);
+                                level().playSound(null, blockPosition(), SoundEvents.BLOCK_GLASS_BREAK, SoundSource.HOSTILE, 0.6F, 0.7F);
+                                level().addParticle(net.minecraft.core.particles.ParticleTypes.CRIT, getX(), getY()+1, getZ(), 0, 0.1, 0);
+                                p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 50, 0));
+                                cooldown = 90;
+                            }
+                        }
+                        if (phase % 100 == 0) {
+                            level().playSound(null, blockPosition(), SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS, 0.6F, 0.8F);
+                            level().addParticle(net.minecraft.core.particles.ParticleTypes.ENCHANT, getX(), getY()+1, getZ(), 0, 0.05, 0);
+                        }
+                        if (distanceTo(p) < 4 && cooldown==0) {
+                            // Swap health?
+                            p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 40, 0));
+                            level().playSound(null, p.blockPosition(), SoundEvents.BLOCK_GLASS_BREAK, SoundSource.PLAYERS, 0.5F, 1.2F);
+                            cooldown = 80;
+                        }
+                    }
+                    if (phase % 50 == 0) {
+                        level().addParticle(net.minecraft.core.particles.ParticleTypes.WITCH, getX()+rand.nextDouble()-0.5, getY()+1, getZ()+rand.nextDouble()-0.5, 0, 0.02, 0);
+                    }
+        } catch (Exception e) {}
     }
 
     

@@ -8,6 +8,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -79,37 +85,41 @@ public class ShadeEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        stalkTicks++;
-        if (teleportCooldown > 0) teleportCooldown--;
-        int blockLight = level().getBrightness(LightLayer.BLOCK, blockPosition());
-        if (blockLight > 7) {
-            this.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 60, 0, false, false));
-        }
-        if (getTarget() instanceof Player player && teleportCooldown == 0) {
-            Vec3 playerLook = player.getLookAngle();
-            Vec3 toShade = new Vec3(getX() - player.getX(), 0, getZ() - player.getZ()).normalize();
-            double dot = playerLook.dot(toShade);
-            boolean playerLookingAway = dot < -0.3;
-            double dist = distanceTo(player);
-            if (dist > 8 && dist < 25 && playerLookingAway && random.nextInt(80) == 0) {
-                double yaw = Math.toRadians(player.getYRot());
-                double behindX = player.getX() - Math.sin(yaw) * 2.5;
-                double behindZ = player.getZ() + Math.cos(yaw) * 2.5;
-                BlockPos behind = new BlockPos((int)behindX, (int)player.getY(), (int)behindZ);
-                if (level().getBlockState(behind).isAir() && level().getBlockState(behind.above()).isAir()) {
-                    this.teleportTo(behindX, player.getY(), behindZ);
-                    level().playSound(null, behind, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundSource.HOSTILE, 0.7F, 0.4F);
-                    player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 40, 0));
-                    teleportCooldown = 200;
-                }
-            }
-        }
-        if (stalkTicks % 40 == 0) {
-            for (Player p : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(10))) {
-                p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 0, false, false));
-            }
-        }
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            stalkTicks++;
+                    if (teleportCooldown > 0) teleportCooldown--;
+                    int blockLight = level().getBrightness(LightLayer.BLOCK, blockPosition());
+                    if (blockLight > 7) {
+                        this.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 60, 0, false, false));
+                    }
+                    if (getTarget() instanceof Player player && teleportCooldown == 0) {
+                        Vec3 playerLook = player.getLookAngle();
+                        Vec3 toShade = new Vec3(getX() - player.getX(), 0, getZ() - player.getZ()).normalize();
+                        double dot = playerLook.dot(toShade);
+                        boolean playerLookingAway = dot < -0.3;
+                        double dist = distanceTo(player);
+                        if (dist > 8 && dist < 25 && playerLookingAway && random.nextInt(80) == 0) {
+                            double yaw = Math.toRadians(player.getYRot());
+                            double behindX = player.getX() - Math.sin(yaw) * 2.5;
+                            double behindZ = player.getZ() + Math.cos(yaw) * 2.5;
+                            BlockPos behind = new BlockPos((int)behindX, (int)player.getY(), (int)behindZ);
+                            if (level().getBlockState(behind).isAir() && level().getBlockState(behind.above()).isAir()) {
+                                this.teleportTo(behindX, player.getY(), behindZ);
+                                level().playSound(null, behind, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundSource.HOSTILE, 0.7F, 0.4F);
+                                player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 40, 0));
+                                teleportCooldown = 200;
+                            }
+                        }
+                    }
+                    if (stalkTicks % 40 == 0) {
+                        for (Player p : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(10))) {
+                            p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 0, false, false));
+                        }
+                    }
+        } catch (Exception e) {}
     }
 
     public void performAmbush(Player player) {

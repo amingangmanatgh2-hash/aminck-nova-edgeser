@@ -21,10 +21,12 @@ public class UniqueItem15 extends Item {
     private static final Random RANDOM = new Random();
     public UniqueItem15() { super(new Properties().stacksTo(1).rarity(Rarity.UNCOMMON)); }
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+        try {
+ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 0)); player.displayClientMessage(Component.literal("§eدید در شب فعال - 15"), true);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+        } catch (Exception e) { return InteractionResultHolder.fail(stack); }
     }
 }

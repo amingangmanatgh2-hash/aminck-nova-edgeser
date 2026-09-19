@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -51,28 +57,31 @@ public class HorrorEntity04 extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        
-        if (blockPosition().getY() < 50) {
-            // Bonus in basement
-            addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 40, 0, false, false));
-        }
-        if (getTarget() instanceof Player p && distanceTo(p) < 5 && cooldown==0) {
-            // Emerge from floor effect
-            BlockPos floor = p.blockPosition().below();
-            if (!level().getBlockState(floor).isAir()) {
-                level().playSound(null, floor, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundSource.HOSTILE, 1.0F, 0.3F);
-                p.setDeltaMovement(p.getDeltaMovement().x, -0.8, p.getDeltaMovement().z);
-                p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 80, 0));
-                p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 2));
-                p.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 100, 1));
-                teleportTo(p.getX(), p.getY(), p.getZ());
-                cooldown = 150;
-            }
-        }
-
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    
+                    if (blockPosition().getY() < 50) {
+                        // Bonus in basement
+                        addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 40, 0, false, false));
+                    }
+                    if (getTarget() instanceof Player p && distanceTo(p) < 5 && cooldown==0) {
+                        // Emerge from floor effect
+                        BlockPos floor = p.blockPosition().below();
+                        if (!level().getBlockState(floor).isAir()) {
+                            level().playSound(null, floor, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundSource.HOSTILE, 1.0F, 0.3F);
+                            p.setDeltaMovement(p.getDeltaMovement().x, -0.8, p.getDeltaMovement().z);
+                            p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 80, 0));
+                            p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 2));
+                            p.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 100, 1));
+                            teleportTo(p.getX(), p.getY(), p.getZ());
+                            cooldown = 150;
+                        }
+                    }
+        } catch (Exception e) {}
     }
 
     

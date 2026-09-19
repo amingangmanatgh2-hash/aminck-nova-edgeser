@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -46,35 +52,38 @@ public class AtticWatcherEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        
-        if (getTarget() instanceof Player p) {
-            boolean high = getY() > p.getY() + 4.5;
-            if (high) {
-                addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 80, 0, false, false));
-                if (phase % 75 == 0) {
-                    p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60, 0));
-                    p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 80, 0));
-                    p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 0));
-                    level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_ENDERMAN_STARE, SoundSource.HOSTILE, 0.9F, 0.5F);
-                    level().addParticle(net.minecraft.core.particles.ParticleTypes.ASH, p.getX(), p.getY()+1, p.getZ(), 0, 0.02, 0);
-                    if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level().getServer().createCommandSourceStack(), "scoreboard players add "+p.getName().getString()+" novahorror.fear 2");
-                }
-                if (phase % 150 == 0) {
-                    p.displayClientMessage(Component.literal("§7...از بالا نگاهت می‌کنه..."), false);
-                }
-            } else {
-                removeEffect(MobEffects.INVISIBILITY);
-                if (phase % 60 == 0) getNavigation().moveTo(p, 1.0);
-            }
-        }
-        if (phase % 100 == 0) {
-            level().addParticle(net.minecraft.core.particles.ParticleTypes.WHITE_ASH, getX(), getY()+2, getZ(), 0, 0.02, 0);
-        }
-        if (phase % 200 == 0) level().playSound(null, blockPosition(), SoundEvents.ENTITY_PHANTOM_AMBIENT, SoundSource.HOSTILE, 0.4F, 0.7F);
-
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    
+                    if (getTarget() instanceof Player p) {
+                        boolean high = getY() > p.getY() + 4.5;
+                        if (high) {
+                            addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 80, 0, false, false));
+                            if (phase % 75 == 0) {
+                                p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60, 0));
+                                p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 80, 0));
+                                p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 0));
+                                level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_ENDERMAN_STARE, SoundSource.HOSTILE, 0.9F, 0.5F);
+                                level().addParticle(net.minecraft.core.particles.ParticleTypes.ASH, p.getX(), p.getY()+1, p.getZ(), 0, 0.02, 0);
+                                if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level().getServer().createCommandSourceStack(), "scoreboard players add "+p.getName().getString()+" novahorror.fear 2");
+                            }
+                            if (phase % 150 == 0) {
+                                p.displayClientMessage(Component.literal("§7...از بالا نگاهت می‌کنه..."), false);
+                            }
+                        } else {
+                            removeEffect(MobEffects.INVISIBILITY);
+                            if (phase % 60 == 0) getNavigation().moveTo(p, 1.0);
+                        }
+                    }
+                    if (phase % 100 == 0) {
+                        level().addParticle(net.minecraft.core.particles.ParticleTypes.WHITE_ASH, getX(), getY()+2, getZ(), 0, 0.02, 0);
+                    }
+                    if (phase % 200 == 0) level().playSound(null, blockPosition(), SoundEvents.ENTITY_PHANTOM_AMBIENT, SoundSource.HOSTILE, 0.4F, 0.7F);
+        } catch (Exception e) {}
     }
 
     

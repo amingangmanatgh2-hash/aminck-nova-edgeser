@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -46,10 +52,14 @@ public class HorrorEntity05 extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        if (getTarget() instanceof Player p) { if (getY() > p.getY()+5) { addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 60, 0)); if (phase % 100 == 0) { p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 50, 0)); level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_ENDERMAN_STARE, SoundSource.HOSTILE, 0.8F, 0.6F); } } }
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    if (getTarget() instanceof Player p) { if (getY() > p.getY()+5) { addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 60, 0)); if (phase % 100 == 0) { p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 50, 0)); level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_ENDERMAN_STARE, SoundSource.HOSTILE, 0.8F, 0.6F); } } }
+        } catch (Exception e) {}
     }
 
     public void stareFromAbove(Player p) { p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 80, 0)); }

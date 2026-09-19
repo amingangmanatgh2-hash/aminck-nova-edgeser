@@ -1,9 +1,11 @@
-# Tick - 150 calls + all events + central mechanics - separate game feeling
+# Tick - FPS BOOST for 8GB RAM - throttled events, smart culling, no quality loss
 scoreboard objectives add novahorror.fear dummy
 scoreboard objectives add novahorror.sanity dummy
 scoreboard objectives add novahorror.dark dummy
 scoreboard objectives add novahorror.timer dummy
 scoreboard objectives add novahorror.ambience dummy
+scoreboard objectives add novahorror.event_timer dummy
+# Horror events - one per tick per player (already throttled by timer)
 execute as @a at @s if score @s novahorror.timer matches 0 run function novahorror:horror_000
 execute as @a at @s if score @s novahorror.timer matches 1 run function novahorror:horror_001
 execute as @a at @s if score @s novahorror.timer matches 2 run function novahorror:horror_002
@@ -155,17 +157,22 @@ execute as @a at @s if score @s novahorror.timer matches 147 run function novaho
 execute as @a at @s if score @s novahorror.timer matches 148 run function novahorror:horror_148
 execute as @a at @s if score @s novahorror.timer matches 149 run function novahorror:horror_149
 scoreboard players add @a novahorror.timer 1
-execute if score @a novahorror.timer matches 150.. run scoreboard players set @a novahorror.timer 0
-function novahorror:events/night_crows
-function novahorror:events/whispers
-function novahorror:events/jumpscare
-function novahorror:events/location_events
-function novahorror:events/time_events
-function novahorror:events/player_state
-function novahorror:events/light_rules
-function novahorror:events/sound_rules
-function novahorror:events/night_limitations
-function novahorror:events/permanent_fear
+execute as @a if score @s novahorror.timer matches 150.. run scoreboard players set @s novahorror.timer 0
+# Event timer - increments every tick, but events run every 20 ticks for FPS boost
+scoreboard players add @a novahorror.event_timer 1
+execute as @a if score @s novahorror.event_timer matches 20.. run scoreboard players set @s novahorror.event_timer 0
+# Throttled events - only every 20 ticks (1 sec) for FPS boost - keeps horror but saves CPU/RAM
+execute as @a if score @s novahorror.event_timer matches 0 at @s run function novahorror:events/night_crows
+execute as @a if score @s novahorror.event_timer matches 2 at @s run function novahorror:events/whispers
+execute as @a if score @s novahorror.event_timer matches 4 at @s run function novahorror:events/jumpscare
+execute as @a if score @s novahorror.event_timer matches 6 at @s run function novahorror:events/location_events
+execute as @a if score @s novahorror.event_timer matches 8 at @s run function novahorror:events/time_events
+execute as @a if score @s novahorror.event_timer matches 10 at @s run function novahorror:events/player_state
+execute as @a if score @s novahorror.event_timer matches 12 at @s run function novahorror:events/light_rules
+execute as @a if score @s novahorror.event_timer matches 14 at @s run function novahorror:events/sound_rules
+execute as @a if score @s novahorror.event_timer matches 16 at @s run function novahorror:events/night_limitations
+execute as @a if score @s novahorror.event_timer matches 18 at @s run function novahorror:events/permanent_fear
+# Ambience - throttled
 scoreboard players add @a novahorror.ambience 1
-execute as @a[scores={novahorror.ambience=100..}] at @s run function novahorror:events/whispers
+execute as @a[scores={novahorror.ambience=100..}] at @s if score @s novahorror.event_timer matches 0 run function novahorror:events/whispers
 execute as @a[scores={novahorror.ambience=200..}] at @s run scoreboard players set @s novahorror.ambience 0

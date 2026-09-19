@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -46,28 +52,31 @@ public class BloodPoolEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        
-        // Check if on redstone or blood-like block
-        BlockPos below = blockPosition().below();
-        boolean onBlood = level().getBlockState(below).getBlock().toString().contains("red") || level().getBlockState(below).is(net.minecraft.world.level.block.Blocks.REDSTONE_BLOCK);
-        if (onBlood) {
-            addEffect(new MobEffectInstance(MobEffects.REGENERATION, 40, 0));
-            addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 40, 0));
-            if (phase % 20 == 0) level().addParticle(net.minecraft.core.particles.ParticleTypes.DRIPPING_OBSIDIAN_TEAR, getX(), getY()+0.2, getZ(), 0, -0.05, 0);
-        }
-        if (phase % 30 == 0) {
-            level().addParticle(net.minecraft.core.particles.ParticleTypes.FALLING_LAVA, getX()+rand.nextDouble()-0.5, getY()+1, getZ()+rand.nextDouble()-0.5, 0, -0.1, 0);
-        }
-        if (getTarget() instanceof Player p && distanceTo(p) < 6 && cooldown==0) {
-            p.addEffect(new MobEffectInstance(MobEffects.WITHER, 60, 0));
-            p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 1));
-            level().playSound(null, blockPosition(), SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundSource.HOSTILE, 0.7F, 0.4F);
-            cooldown = 120;
-        }
-
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    
+                    // Check if on redstone or blood-like block
+                    BlockPos below = blockPosition().below();
+                    boolean onBlood = level().getBlockState(below).getBlock().toString().contains("red") || level().getBlockState(below).is(net.minecraft.world.level.block.Blocks.REDSTONE_BLOCK);
+                    if (onBlood) {
+                        addEffect(new MobEffectInstance(MobEffects.REGENERATION, 40, 0));
+                        addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 40, 0));
+                        if (phase % 20 == 0) level().addParticle(net.minecraft.core.particles.ParticleTypes.DRIPPING_OBSIDIAN_TEAR, getX(), getY()+0.2, getZ(), 0, -0.05, 0);
+                    }
+                    if (phase % 30 == 0) {
+                        level().addParticle(net.minecraft.core.particles.ParticleTypes.FALLING_LAVA, getX()+rand.nextDouble()-0.5, getY()+1, getZ()+rand.nextDouble()-0.5, 0, -0.1, 0);
+                    }
+                    if (getTarget() instanceof Player p && distanceTo(p) < 6 && cooldown==0) {
+                        p.addEffect(new MobEffectInstance(MobEffects.WITHER, 60, 0));
+                        p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 1));
+                        level().playSound(null, blockPosition(), SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundSource.HOSTILE, 0.7F, 0.4F);
+                        cooldown = 120;
+                    }
+        } catch (Exception e) {}
     }
 
     

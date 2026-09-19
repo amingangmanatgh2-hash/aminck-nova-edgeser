@@ -5,6 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.util.SafeScoreboardUtil;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -22,7 +23,8 @@ public class VoidShard extends Item {
     private static final Random RANDOM = new Random();
     public VoidShard() { super(new Properties().stacksTo(1).rarity(Rarity.RARE)); }
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+        try {
+ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             BlockPos center = player.blockPosition();
             for (var e : level.getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class, player.getBoundingBox().inflate(8))) {
@@ -31,7 +33,7 @@ public class VoidShard extends Item {
                 e.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 80, 0));
                 level.addParticle(net.minecraft.core.particles.ParticleTypes.SOUL, e.getX(), e.getY()+1, e.getZ(), 0, 0.05, 0);
             }
-            for (int i=0;i<20;i++) level.addParticle(net.minecraft.core.particles.ParticleTypes.PORTAL, center.getX()+level.random.nextDouble()*6-3, center.getY()+level.random.nextDouble()*2, center.getZ()+level.random.nextDouble()*6-3, 0, 0.1, 0);
+            for (int i=0;i<20;i++) level.addParticle(net.minecraft.core.particles.ParticleTypes.PORTAL, center.getX()+player.getRandom().nextDouble()*6-3, center.getY()+player.getRandom().nextDouble()*2, center.getZ()+player.getRandom().nextDouble()*6-3, 0, 0.1, 0);
             if (level.getServer()!=null) level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players set "+player.getName().getString()+" novahorror.fear 0");
             player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 0));
             level.playSound(null, center, SoundEvents.BLOCK_PORTAL_AMBIENT, SoundSource.HOSTILE, 1.0F, 0.3F);
@@ -39,5 +41,6 @@ public class VoidShard extends Item {
             if (!player.isCreative()) stack.shrink(1);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+        } catch (Exception e) { return InteractionResultHolder.fail(stack); }
     }
 }

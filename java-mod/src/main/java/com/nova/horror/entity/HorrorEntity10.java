@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -46,10 +52,14 @@ public class HorrorEntity10 extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        if (getTarget() instanceof Player p) { float healthRatio = p.getHealth()/p.getMaxHealth(); if (healthRatio < 0.5) { addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 40, 1)); } if (phase % 30 == 0) { level().addParticle(net.minecraft.core.particles.ParticleTypes.DRIPPING_OBSIDIAN_TEAR, getX(), getY()+0.5, getZ(), 0, -0.1, 0); } }
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    if (getTarget() instanceof Player p) { float healthRatio = p.getHealth()/p.getMaxHealth(); if (healthRatio < 0.5) { addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 40, 1)); } if (phase % 30 == 0) { level().addParticle(net.minecraft.core.particles.ParticleTypes.DRIPPING_OBSIDIAN_TEAR, getX(), getY()+0.5, getZ(), 0, -0.1, 0); } }
+        } catch (Exception e) {}
     }
 
     public void sniffBlood(Player p) { level().playSound(null, blockPosition(), SoundEvents.ENTITY_WOLF_GROWL, SoundSource.HOSTILE, 0.8F, 0.6F); }

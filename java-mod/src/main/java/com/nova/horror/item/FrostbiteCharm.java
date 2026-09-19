@@ -22,7 +22,8 @@ public class FrostbiteCharm extends Item {
     private static final Random RANDOM = new Random();
     public FrostbiteCharm() { super(new Properties().stacksTo(1).rarity(Rarity.RARE)); }
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+        try {
+ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             for (BlockPos p : BlockPos.betweenClosed(player.blockPosition().offset(-5,-2,-5), player.blockPosition().offset(5,2,5))) {
                 if (level.getBlockState(p).is(net.minecraft.world.level.block.Blocks.WATER)) {
@@ -42,5 +43,6 @@ public class FrostbiteCharm extends Item {
             if (!player.isCreative()) stack.shrink(1);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+        } catch (Exception e) { return InteractionResultHolder.fail(stack); }
     }
 }

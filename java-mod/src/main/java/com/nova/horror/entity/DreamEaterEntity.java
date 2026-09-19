@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -46,29 +52,32 @@ public class DreamEaterEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        
-        if (getTarget() instanceof Player p) {
-            if (p.isSleeping() && cooldown==0) {
-                p.stopSleeping();
-                p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 120, 0));
-                p.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 100, 0));
-                p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 200, 0));
-                if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players add "+p.getName().getString()+" novahorror.fear 12");
-                level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_WARDEN_ROAR, SoundSource.HOSTILE, 1.0F, 0.4F);
-                p.displayClientMessage(Component.literal("§4کابوس... نمی‌ذاره بخوابی..."), false);
-                teleportTo(p.getX()+rand.nextDouble()*4-2, p.getY(), p.getZ()+rand.nextDouble()*4-2);
-                cooldown = 300;
-            }
-            if (phase % 90 == 0 && distanceTo(p) < 12) {
-                p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 0));
-                level().addParticle(net.minecraft.core.particles.ParticleTypes.SCULK_SOUL, getX(), getY()+1, getZ(), 0, 0.02, 0);
-            }
-        }
-        if (phase % 120 == 0) level().playSound(null, blockPosition(), SoundEvents.ENTITY_PHANTOM_AMBIENT, SoundSource.HOSTILE, 0.5F, 0.6F);
-
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    
+                    if (getTarget() instanceof Player p) {
+                        if (p.isSleeping() && cooldown==0) {
+                            p.stopSleeping();
+                            p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 120, 0));
+                            p.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 100, 0));
+                            p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 200, 0));
+                            if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players add "+p.getName().getString()+" novahorror.fear 12");
+                            level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_WARDEN_ROAR, SoundSource.HOSTILE, 1.0F, 0.4F);
+                            p.displayClientMessage(Component.literal("§4کابوس... نمی‌ذاره بخوابی..."), false);
+                            teleportTo(p.getX()+rand.nextDouble()*4-2, p.getY(), p.getZ()+rand.nextDouble()*4-2);
+                            cooldown = 300;
+                        }
+                        if (phase % 90 == 0 && distanceTo(p) < 12) {
+                            p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 0));
+                            level().addParticle(net.minecraft.core.particles.ParticleTypes.SCULK_SOUL, getX(), getY()+1, getZ(), 0, 0.02, 0);
+                        }
+                    }
+                    if (phase % 120 == 0) level().playSound(null, blockPosition(), SoundEvents.ENTITY_PHANTOM_AMBIENT, SoundSource.HOSTILE, 0.5F, 0.6F);
+        } catch (Exception e) {}
     }
 
     

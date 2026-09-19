@@ -9,6 +9,13 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.util.EntitySpawnLimiter;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -46,30 +53,33 @@ public class StormCallerEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        
-        boolean storm = level().isThundering();
-        if (storm) {
-            addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 50, 1));
-            addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 50, 0));
-            if (phase % 80 == 0 && rand.nextInt(3)==0) {
-                BlockPos strike = blockPosition().offset(rand.nextInt(10)-5, 0, rand.nextInt(10)-5);
-                var lightning = new net.minecraft.world.entity.LightningBolt(net.minecraft.world.entity.EntityType.LIGHTNING_BOLT, level());
-                lightning.moveTo(strike.getX(), strike.getY(), strike.getZ());
-                level().addFreshEntity(lightning);
-            }
-        }
-        if (getTarget() instanceof Player p && cooldown==0) {
-            if (phase % 120 == 0) {
-                level().setWeatherParameters(0, 600, true, true);
-                p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 80, 0));
-                level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, SoundSource.WEATHER, 1.0F, 0.6F);
-                cooldown = 300;
-            }
-        }
-
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    
+                    boolean storm = level().isThundering();
+                    if (storm) {
+                        addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 50, 1));
+                        addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 50, 0));
+                        if (phase % 80 == 0 && rand.nextInt(3)==0) {
+                            BlockPos strike = blockPosition().offset(rand.nextInt(10)-5, 0, rand.nextInt(10)-5);
+                            var lightning = new net.minecraft.world.entity.LightningBolt(net.minecraft.world.entity.EntityType.LIGHTNING_BOLT, level());
+                            lightning.moveTo(strike.getX(), strike.getY(), strike.getZ());
+                            EntitySpawnLimiter.safeAddEntity(level(),(lightning);
+                        }
+                    }
+                    if (getTarget() instanceof Player p && cooldown==0) {
+                        if (phase % 120 == 0) {
+                            level().setWeatherParameters(0, 600, true, true);
+                            p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 80, 0));
+                            level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, SoundSource.WEATHER, 1.0F, 0.6F);
+                            cooldown = 300;
+                        }
+                    }
+        } catch (Exception e) {}
     }
 
     

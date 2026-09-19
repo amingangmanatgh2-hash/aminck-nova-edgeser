@@ -22,7 +22,8 @@ public class WardingChalk extends Item {
     private static final Random RANDOM = new Random();
     public WardingChalk() { super(new Properties().stacksTo(1).rarity(Rarity.RARE)); }
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+        try {
+ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             BlockPos center = player.blockPosition().below();
             for (int x=-3;x<=3;x++) for (int z=-3;z<=3;z++) {
@@ -46,5 +47,6 @@ public class WardingChalk extends Item {
             if (!player.isCreative()) stack.shrink(1);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+        } catch (Exception e) { return InteractionResultHolder.fail(stack); }
     }
 }

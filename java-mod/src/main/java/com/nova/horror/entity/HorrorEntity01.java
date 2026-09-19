@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -52,28 +58,31 @@ public class HorrorEntity01 extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        
-        if (getTarget() instanceof Player p) {
-            if (phase % 80 == 0) {
-                // Mimic random player hurt sound
-                SoundEvent[] mimics = {SoundEvents.ENTITY_PLAYER_HURT, SoundEvents.ENTITY_PLAYER_HURT, SoundEvents.PARROT_IMITATE_GHAST, SoundEvents.ENTITY_PARROT_IMITATE_GHAST};
-                level().playSound(null, p.blockPosition(), mimics[rand.nextInt(mimics.length)], SoundSource.AMBIENT, 0.7F, rand.nextFloat()*0.5F+0.7F);
-            }
-            if (phase % 200 == 0 && distanceTo(p) > 8) {
-                // Teleport behind and whisper
-                double yaw = Math.toRadians(p.getYRot());
-                double bx = p.getX() - Math.sin(yaw)*3;
-                double bz = p.getZ() + Math.cos(yaw)*3;
-                teleportTo(bx, p.getY(), bz);
-                p.displayClientMessage(Component.literal("§7...چرا تنها رفتی..."), false);
-                level().playSound(null, p.blockPosition(), SoundEvents.AMBIENT_CAVE, SoundSource.AMBIENT, 0.8F, 0.9F);
-                cooldown = 100;
-            }
-        }
-
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    
+                    if (getTarget() instanceof Player p) {
+                        if (phase % 80 == 0) {
+                            // Mimic random player hurt sound
+                            SoundEvent[] mimics = {SoundEvents.ENTITY_PLAYER_HURT, SoundEvents.ENTITY_PLAYER_HURT, SoundEvents.PARROT_IMITATE_GHAST, SoundEvents.ENTITY_PARROT_IMITATE_GHAST};
+                            level().playSound(null, p.blockPosition(), mimics[rand.nextInt(mimics.length)], SoundSource.AMBIENT, 0.7F, rand.nextFloat()*0.5F+0.7F);
+                        }
+                        if (phase % 200 == 0 && distanceTo(p) > 8) {
+                            // Teleport behind and whisper
+                            double yaw = Math.toRadians(p.getYRot());
+                            double bx = p.getX() - Math.sin(yaw)*3;
+                            double bz = p.getZ() + Math.cos(yaw)*3;
+                            teleportTo(bx, p.getY(), bz);
+                            p.displayClientMessage(Component.literal("§7...چرا تنها رفتی..."), false);
+                            level().playSound(null, p.blockPosition(), SoundEvents.AMBIENT_CAVE, SoundSource.AMBIENT, 0.8F, 0.9F);
+                            cooldown = 100;
+                        }
+                    }
+        } catch (Exception e) {}
     }
 
     

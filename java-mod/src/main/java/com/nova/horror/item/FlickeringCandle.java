@@ -22,15 +22,16 @@ public class FlickeringCandle extends Item {
     private static final Random RANDOM = new Random();
     public FlickeringCandle() { super(new Properties().stacksTo(1).rarity(Rarity.RARE)); }
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+        try {
+ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             var nearby = level.getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(15));
             float flickerIntensity = 0.2F + nearby.size()*0.15F;
             for (int i=0;i<10;i++) {
-                double x = player.getX()+level.random.nextDouble()*4-2;
-                double y = player.getY()+1+level.random.nextDouble();
-                double z = player.getZ()+level.random.nextDouble()*4-2;
-                level.addParticle(net.minecraft.core.particles.ParticleTypes.FLAME, x, y, z, (level.random.nextDouble()-0.5)*flickerIntensity, 0.02, (level.random.nextDouble()-0.5)*flickerIntensity);
+                double x = player.getX()+player.getRandom().nextDouble()*4-2;
+                double y = player.getY()+1+player.getRandom().nextDouble();
+                double z = player.getZ()+player.getRandom().nextDouble()*4-2;
+                level.addParticle(net.minecraft.core.particles.ParticleTypes.FLAME, x, y, z, (player.getRandom().nextDouble()-0.5)*flickerIntensity, 0.02, (player.getRandom().nextDouble()-0.5)*flickerIntensity);
             }
             if (nearby.isEmpty()) {
                 player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 200, 0));
@@ -43,5 +44,6 @@ public class FlickeringCandle extends Item {
             player.getCooldowns().addCooldown(this, 80);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+        } catch (Exception e) { return InteractionResultHolder.fail(stack); }
     }
 }

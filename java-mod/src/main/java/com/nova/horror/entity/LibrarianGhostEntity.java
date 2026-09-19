@@ -9,6 +9,13 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.util.EntitySpawnLimiter;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -51,36 +58,39 @@ public class LibrarianGhostEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        
-        // Check for bookshelves nearby
-        BlockPos pos = blockPosition();
-        boolean nearBookshelf = false;
-        for (BlockPos p : BlockPos.betweenClosed(pos.offset(-5,-2,-5), pos.offset(5,2,5))) {
-            if (level().getBlockState(p).getBlock().toString().contains("bookshelf")) { nearBookshelf = true; break; }
-        }
-        if (nearBookshelf) {
-            addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 40, 0, false, false));
-            if (phase % 60 == 0) {
-                level().addParticle(net.minecraft.core.particles.ParticleTypes.ENCHANT, getX(), getY()+1.5, getZ(), rand.nextDouble()-0.5, 0.2, rand.nextDouble()-0.5);
-            }
-            if (getTarget() instanceof Player p && rand.nextInt(80)==0 && cooldown==0) {
-                // Throw book
-                var book = new net.minecraft.world.entity.item.ItemEntity(level(), getX(), getY()+1, getZ(), new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.BOOK));
-                book.setDeltaMovement((p.getX()-getX())*0.1, 0.3, (p.getZ()-getZ())*0.1);
-                level().addFreshEntity(book);
-                p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 60, 0));
-                level().playSound(null, blockPosition(), SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundSource.HOSTILE, 0.8F, 0.5F);
-                cooldown = 100;
-            }
-        }
-        if (getTarget() instanceof Player p && phase % 150 == 0) {
-            String[] lore = {"§7...کتاب ممنوعه...","§7...الارا اینجا بود...","§7...صفحه 47 رو نخون..."};
-            p.displayClientMessage(Component.literal(lore[rand.nextInt(lore.length)]), false);
-        }
-
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    
+                    // Check for bookshelves nearby
+                    BlockPos pos = blockPosition();
+                    boolean nearBookshelf = false;
+                    for (BlockPos p : BlockPos.betweenClosed(pos.offset(-5,-2,-5), pos.offset(5,2,5))) {
+                        if (level().getBlockState(p).getBlock().toString().contains("bookshelf")) { nearBookshelf = true; break; }
+                    }
+                    if (nearBookshelf) {
+                        addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 40, 0, false, false));
+                        if (phase % 60 == 0) {
+                            level().addParticle(net.minecraft.core.particles.ParticleTypes.ENCHANT, getX(), getY()+1.5, getZ(), rand.nextDouble()-0.5, 0.2, rand.nextDouble()-0.5);
+                        }
+                        if (getTarget() instanceof Player p && rand.nextInt(80)==0 && cooldown==0) {
+                            // Throw book
+                            var book = new net.minecraft.world.entity.item.ItemEntity(level(), getX(), getY()+1, getZ(), new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.BOOK));
+                            book.setDeltaMovement((p.getX()-getX())*0.1, 0.3, (p.getZ()-getZ())*0.1);
+                            EntitySpawnLimiter.safeAddEntity(level(),(book);
+                            p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 60, 0));
+                            level().playSound(null, blockPosition(), SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundSource.HOSTILE, 0.8F, 0.5F);
+                            cooldown = 100;
+                        }
+                    }
+                    if (getTarget() instanceof Player p && phase % 150 == 0) {
+                        String[] lore = {"§7...کتاب ممنوعه...","§7...الارا اینجا بود...","§7...صفحه 47 رو نخون..."};
+                        p.displayClientMessage(Component.literal(lore[rand.nextInt(lore.length)]), false);
+                    }
+        } catch (Exception e) {}
     }
 
     
@@ -95,7 +105,7 @@ public class LibrarianGhostEntity extends Monster {
     public void throwBookAt(Player player) {
         var book = new net.minecraft.world.entity.item.ItemEntity(level(), getX(), getY()+1, getZ(), new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.BOOK));
         book.setDeltaMovement((player.getX()-getX())*0.15, 0.4, (player.getZ()-getZ())*0.15);
-        level().addFreshEntity(book);
+        EntitySpawnLimiter.safeAddEntity(level(),(book);
     }
 
 

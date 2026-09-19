@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -50,31 +56,34 @@ public class HorrorEntity02 extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        
-        if (getTarget() instanceof Player p) {
-            Vec3 look = p.getLookAngle();
-            Vec3 toEntity = new Vec3(getX()-p.getX(), getEyeY()-p.getEyeY(), getZ()-p.getZ()).normalize();
-            double dot = look.dot(toEntity);
-            boolean beingWatched = dot > 0.4 && distanceTo(p) < 18 && p.hasLineOfSight(this);
-            if (beingWatched) {
-                setDeltaMovement(0, getDeltaMovement().y, 0);
-                getNavigation().stop();
-                // Crack sound when watched
-                if (phase % 40 == 0) level().playSound(null, blockPosition(), SoundEvents.BLOCK_STONE_BREAK, SoundSource.HOSTILE, 0.3F, 1.5F);
-            } else {
-                if (cooldown==0) {
-                    getNavigation().moveTo(p, 1.4);
-                    if (distanceTo(p) < 2.5) {
-                        p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 30, 0));
-                        cooldown = 60;
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    
+                    if (getTarget() instanceof Player p) {
+                        Vec3 look = p.getLookAngle();
+                        Vec3 toEntity = new Vec3(getX()-p.getX(), getEyeY()-p.getEyeY(), getZ()-p.getZ()).normalize();
+                        double dot = look.dot(toEntity);
+                        boolean beingWatched = dot > 0.4 && distanceTo(p) < 18 && p.hasLineOfSight(this);
+                        if (beingWatched) {
+                            setDeltaMovement(0, getDeltaMovement().y, 0);
+                            getNavigation().stop();
+                            // Crack sound when watched
+                            if (phase % 40 == 0) level().playSound(null, blockPosition(), SoundEvents.BLOCK_STONE_BREAK, SoundSource.HOSTILE, 0.3F, 1.5F);
+                        } else {
+                            if (cooldown==0) {
+                                getNavigation().moveTo(p, 1.4);
+                                if (distanceTo(p) < 2.5) {
+                                    p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 30, 0));
+                                    cooldown = 60;
+                                }
+                            }
+                        }
                     }
-                }
-            }
-        }
-
+        } catch (Exception e) {}
     }
 
     

@@ -22,13 +22,14 @@ public class EctoplasmVial extends Item {
     private static final Random RANDOM = new Random();
     public EctoplasmVial() { super(new Properties().stacksTo(1).rarity(Rarity.RARE)); }
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+        try {
+ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             var pos = player.blockPosition();
             for (int i=0;i<30;i++) {
-                double x = pos.getX()+level.random.nextDouble()*10-5;
-                double y = pos.getY()+level.random.nextDouble()*3;
-                double z = pos.getZ()+level.random.nextDouble()*10-5;
+                double x = pos.getX()+player.getRandom().nextDouble()*10-5;
+                double y = pos.getY()+player.getRandom().nextDouble()*3;
+                double z = pos.getZ()+player.getRandom().nextDouble()*10-5;
                 level.addParticle(net.minecraft.core.particles.ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y, z, 0, 0.02, 0);
                 level.addParticle(net.minecraft.core.particles.ParticleTypes.SOUL, x, y, z, 0, 0.01, 0);
             }
@@ -43,5 +44,6 @@ public class EctoplasmVial extends Item {
             if (!player.isCreative()) stack.shrink(1);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+        } catch (Exception e) { return InteractionResultHolder.fail(stack); }
     }
 }

@@ -22,7 +22,8 @@ public class FogLantern extends Item {
     private static final Random RANDOM = new Random();
     public FogLantern() { super(new Properties().stacksTo(1).rarity(Rarity.RARE)); }
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+        try {
+ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             var pos = player.blockPosition();
             int cleared = 0;
@@ -42,8 +43,9 @@ public class FogLantern extends Item {
             player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 200, 0));
             player.displayClientMessage(Component.literal("§eفانوس مه "+cleared+" بلاک رو روشن کرد!"), true);
             player.getCooldowns().addCooldown(this, 200);
-            if (!player.isCreative() && level.random.nextFloat() < 0.15) stack.shrink(1);
+            if (!player.isCreative() && player.getRandom().nextFloat() < 0.15) stack.shrink(1);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+        } catch (Exception e) { return InteractionResultHolder.fail(stack); }
     }
 }

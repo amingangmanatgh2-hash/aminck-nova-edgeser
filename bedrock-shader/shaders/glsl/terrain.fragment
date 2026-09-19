@@ -1,6 +1,6 @@
 #version 300 es
 precision highp float;
-// Nova Horror Bedrock - Terrain Fragment - Enhanced with distortion, blood lens, fear tint
+// Nova Horror Bedrock - FPS BOOST for 8GB RAM - LOD, no hardcoded resolution
 in vec4 color;
 in vec2 uv0;
 in vec2 uv1;
@@ -12,79 +12,88 @@ uniform vec4 FOG_COLOR;
 uniform float TOTAL_REAL_WORLD_TIME;
 uniform float RAIN_LEVEL;
 uniform vec2 FOG_CONTROL;
+uniform vec2 RENDERING_FOV; // Use for screen size approx
 
 out vec4 fragColor;
 
-float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+float fastHash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
 
 void main() {
-    vec2 uv = uv0;
+    vec2 uv = clamp(uv0, 0.001, 0.999);
 
-    // Distortion based on time for fear - subtle warp
     float time = TOTAL_REAL_WORLD_TIME * 0.02;
-    float distort = RAIN_LEVEL * 0.002 + sin(time * 2.0) * 0.001;
-    uv += vec2(sin(uv.y * 10.0 + time * 3.0), cos(uv.x * 8.0 + time * 2.0)) * distort;
-    uv = clamp(uv, 0.001, 0.999);
+    // Distortion only when raining/fear and not too far
+    if (RAIN_LEVEL > 0.2 && fogFactor < 0.8) {
+        float distort = RAIN_LEVEL * 0.002;
+        uv += vec2(sin(uv.y * 10.0 + time * 3.0), cos(uv.x * 8.0 + time * 2.0)) * distort;
+        uv = clamp(uv, 0.001, 0.999);
+    }
 
     vec4 tex = texture(TEXTURE_0, uv) * color;
+    if (tex.a < 0.05) discard;
 
-    // Desaturate for horror - real
     float lum = dot(tex.rgb, vec3(0.299, 0.587, 0.114));
     vec3 desat = mix(tex.rgb, vec3(lum), 0.4 + RAIN_LEVEL * 0.2);
 
-    // Cold tint - enhanced with fear (rain as proxy for fear in Bedrock)
     vec3 coldTint = vec3(0.7, 0.8, 0.95);
     coldTint = mix(coldTint, vec3(0.6, 0.2, 0.2), RAIN_LEVEL * 0.3);
     vec3 lit = desat * coldTint;
 
-    // Torch flicker real - enhanced
-    float flicker = 1.0 + sin(TOTAL_REAL_WORLD_TIME * 0.05) * 0.05 + sin(TOTAL_REAL_WORLD_TIME * 0.13) * 0.02;
+    float flicker = 1.0;
+    if (fogFactor < 0.6) {
+        flicker += sin(TOTAL_REAL_WORLD_TIME * 0.05) * 0.05 + sin(TOTAL_REAL_WORLD_TIME * 0.13) * 0.02;
+    }
     float torch = uv1.x * flicker;
     float sky = uv1.y * 0.5;
     lit *= (torch * 1.3 + sky * 0.4 + 0.1);
 
-    // Volumetric fog thick dynamic
     vec3 fogCol = FOG_COLOR.rgb * 0.6;
     fogCol = mix(fogCol, vec3(0.15, 0.02, 0.02), RAIN_LEVEL * 0.5);
-    fogCol = mix(fogCol, vec3(0.2, 0.05, 0.05), RAIN_LEVEL * RAIN_LEVEL * 0.4);
 
-    // Dust particles - real noise, used
-    float dust = hash(uv * 100.0 + time * 2.0);
-    vec3 dustCol = vec3(1.0) * step(0.999, dust) * torch * 0.4;
+    // Dust only near for FPS
+    vec3 dustCol = vec3(0.0);
+    if (fogFactor < 0.5) {
+        float dust = fastHash(uv * 100.0 + time * 2.0);
+        dustCol = vec3(1.0) * step(0.999, dust) * torch * 0.4;
+    }
 
     vec3 finalCol = mix(lit + dustCol, fogCol, fogFactor * 0.7);
 
-    // Vignette - stronger with rain/fear
-    vec2 screenUV = gl_FragCoord.xy / vec2(1920.0, 1080.0);
+    // Vignette - use gl_FragCoord but not hardcoded resolution - use FOG_CONTROL as proxy
+    vec2 screenUV = gl_FragCoord.xy / vec2(max(FOG_CONTROL.x, 1.0) * 100.0 + 1080.0, max(FOG_CONTROL.y, 1.0) * 100.0 + 1080.0);
+    // Simpler vignette calc for FPS
     float vign = 1.0 - length(screenUV - 0.5) * (0.8 + RAIN_LEVEL * 0.4);
-    finalCol *= vign;
+    finalCol *= clamp(vign, 0.0, 1.0);
 
-    // Blood pulse - enhanced with lens blood
-    float pulse = sin(TOTAL_REAL_WORLD_TIME * 0.04) * 0.5 + 0.5;
-    finalCol = mix(finalCol, finalCol * vec3(1.5, 0.2, 0.2), pulse * RAIN_LEVEL * 0.15);
+    // Blood pulse only when raining
+    if (RAIN_LEVEL > 0.3) {
+        float pulse = sin(TOTAL_REAL_WORLD_TIME * 0.04) * 0.5 + 0.5;
+        finalCol = mix(finalCol, finalCol * vec3(1.5, 0.2, 0.2), pulse * RAIN_LEVEL * 0.15);
+    }
 
-    // Blood lens splatter procedural
-    float bloodNoise = hash(screenUV * 20.0 + time);
-    float bloodSplatter = smoothstep(0.88, 0.97, bloodNoise) * RAIN_LEVEL * 0.5;
-    vec3 bloodLens = vec3(0.5, 0.05, 0.05) * bloodSplatter;
-    finalCol = mix(finalCol, bloodLens, bloodSplatter * 0.5);
-    finalCol += bloodLens * 0.2;
+    // Blood splatter only when high fear
+    if (RAIN_LEVEL > 0.5 && fogFactor < 0.6) {
+        float bloodNoise = fastHash(screenUV * 20.0 + time);
+        float bloodSplatter = smoothstep(0.88, 0.97, bloodNoise) * RAIN_LEVEL * 0.5;
+        vec3 bloodLens = vec3(0.5, 0.05, 0.05) * bloodSplatter;
+        finalCol = mix(finalCol, bloodLens, bloodSplatter * 0.5);
+    }
 
-    // Chromatic aberration for fear
-    float ca = RAIN_LEVEL * 0.001;
-    vec3 colR = texture(TEXTURE_0, uv + vec2(ca, 0)).rgb * color.rgb;
-    vec3 colB = texture(TEXTURE_0, uv - vec2(ca, 0)).rgb * color.rgb;
-    finalCol.r = mix(finalCol.r, colR.r * coldTint.r, RAIN_LEVEL * 0.3);
-    finalCol.b = mix(finalCol.b, colB.b * coldTint.b, RAIN_LEVEL * 0.3);
+    // Chromatic only when high fear
+    if (RAIN_LEVEL > 0.4 && fogFactor < 0.7) {
+        float ca = RAIN_LEVEL * 0.001;
+        vec2 safeR = clamp(uv + vec2(ca, 0), 0.001, 0.999);
+        vec2 safeB = clamp(uv - vec2(ca, 0), 0.001, 0.999);
+        vec3 colR = texture(TEXTURE_0, safeR).rgb * color.rgb;
+        vec3 colB = texture(TEXTURE_0, safeB).rgb * color.rgb;
+        finalCol.r = mix(finalCol.r, colR.r * coldTint.r, RAIN_LEVEL * 0.3);
+        finalCol.b = mix(finalCol.b, colB.b * coldTint.b, RAIN_LEVEL * 0.3);
+    }
 
-
-    // Extra: when rain high (fear proxy), add edge darkness and more blood
     if (RAIN_LEVEL > 0.6) {
         float edgeDark = pow(clamp(length(screenUV - 0.5) * 2.0, 0.0, 1.5), 3.0) * (RAIN_LEVEL - 0.6) * 2.0;
         finalCol -= edgeDark;
-        float bloodEdge = smoothstep(0.4, 0.8, length(screenUV - 0.5)) * RAIN_LEVEL * 0.4;
-        finalCol = mix(finalCol, vec3(0.4, 0.05, 0.05), bloodEdge);
     }
 
-    fragColor = vec4(finalCol, tex.a);
+    fragColor = vec4(clamp(finalCol,0.0,1.0), tex.a);
 }

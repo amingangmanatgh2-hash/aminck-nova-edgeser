@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -46,10 +52,14 @@ public class HorrorEntity16 extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        int light = level().getBrightness(LightLayer.BLOCK, blockPosition()); if (light > 6) { if (phase % 40 == 0) { BlockPos torch = blockPosition().offset(rand.nextInt(6)-3, 0, rand.nextInt(6)-3); if (level().getBlockState(torch).getBlock().toString().contains("torch")) { level().setBlock(torch, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 3); level().playSound(null, torch, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.8F, 0.6F); } } } else { addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 60, 0)); }
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    int light = level().getBrightness(LightLayer.BLOCK, blockPosition()); if (light > 6) { if (phase % 40 == 0) { BlockPos torch = blockPosition().offset(rand.nextInt(6)-3, 0, rand.nextInt(6)-3); if (level().getBlockState(torch).getBlock().toString().contains("torch")) { level().setBlock(torch, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 3); level().playSound(null, torch, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.8F, 0.6F); } } } else { addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 60, 0)); }
+        } catch (Exception e) {}
     }
 
     public void eatLight(BlockPos pos) { level().setBlock(pos, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 3); }

@@ -21,7 +21,8 @@ public class WhisperingSkull extends Item {
     private static final Random RANDOM = new Random();
     public WhisperingSkull() { super(new Properties().stacksTo(1).rarity(Rarity.EPIC)); }
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+        try {
+ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             
         String[] trueHints = {"§aکلید سرداب زیر کتابخانه است", "§aالارا در Y=15 است", "§aفانوس ارواح مسیر را نشان می‌دهد"};
@@ -34,5 +35,6 @@ public class WhisperingSkull extends Item {
     
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+        } catch (Exception e) { return InteractionResultHolder.fail(stack); }
     }
 }

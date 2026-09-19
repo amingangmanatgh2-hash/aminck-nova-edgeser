@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -46,10 +52,14 @@ public class HorrorEntity12 extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 40, 0, false, false)); if (phase % 40 == 0) { level().addParticle(net.minecraft.core.particles.ParticleTypes.ASH, getX(), getY()+1, getZ(), rand.nextDouble()-0.5, 0.02, rand.nextDouble()-0.5); } if (getTarget() instanceof Player p && phase % 90 == 0) { level().playSound(null, p.blockPosition(), SoundEvents.AMBIENT_CAVE, SoundSource.AMBIENT, 0.7F, 0.8F); p.displayClientMessage(Component.literal("§7...باد نجوا می‌کند..."), false); }
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 40, 0, false, false)); if (phase % 40 == 0) { level().addParticle(net.minecraft.core.particles.ParticleTypes.ASH, getX(), getY()+1, getZ(), rand.nextDouble()-0.5, 0.02, rand.nextDouble()-0.5); } if (getTarget() instanceof Player p && phase % 90 == 0) { level().playSound(null, p.blockPosition(), SoundEvents.AMBIENT_CAVE, SoundSource.AMBIENT, 0.7F, 0.8F); p.displayClientMessage(Component.literal("§7...باد نجوا می‌کند..."), false); }
+        } catch (Exception e) {}
     }
 
     public void gust(Player p) { p.setDeltaMovement(p.getDeltaMovement().x+ (rand.nextDouble()-0.5)*0.5, 0.1, p.getDeltaMovement().z + (rand.nextDouble()-0.5)*0.5); }

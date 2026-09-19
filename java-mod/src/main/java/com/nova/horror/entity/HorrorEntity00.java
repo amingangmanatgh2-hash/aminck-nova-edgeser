@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -51,28 +57,31 @@ public class HorrorEntity00 extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        
-        // Check if ceiling above
-        BlockPos above = blockPosition().above(2);
-        boolean hasCeiling = !level().getBlockState(above).isAir();
-        if (hasCeiling && phase % 100 == 0 && getTarget() == null) {
-            setNoGravity(true);
-            setDeltaMovement(0, 0.02, 0);
-        } else {
-            setNoGravity(false);
-        }
-        if (getTarget() instanceof Player p && distanceTo(p) < 6 && hasCeiling && cooldown==0) {
-            // Drop attack
-            setDeltaMovement(0, -1.2, 0);
-            p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 60, 0));
-            p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 1));
-            level().playSound(null, blockPosition(), SoundEvents.SPIDER_AMBIENT, SoundSource.HOSTILE, 1.0F, 0.4F);
-            cooldown = 120;
-        }
-
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    
+                    // Check if ceiling above
+                    BlockPos above = blockPosition().above(2);
+                    boolean hasCeiling = !level().getBlockState(above).isAir();
+                    if (hasCeiling && phase % 100 == 0 && getTarget() == null) {
+                        setNoGravity(true);
+                        setDeltaMovement(0, 0.02, 0);
+                    } else {
+                        setNoGravity(false);
+                    }
+                    if (getTarget() instanceof Player p && distanceTo(p) < 6 && hasCeiling && cooldown==0) {
+                        // Drop attack
+                        setDeltaMovement(0, -1.2, 0);
+                        p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 60, 0));
+                        p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 1));
+                        level().playSound(null, blockPosition(), SoundEvents.SPIDER_AMBIENT, SoundSource.HOSTILE, 1.0F, 0.4F);
+                        cooldown = 120;
+                    }
+        } catch (Exception e) {}
     }
 
     

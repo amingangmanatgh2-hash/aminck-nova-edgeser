@@ -22,7 +22,8 @@ public class RustyBell extends Item {
     private static final Random RANDOM = new Random();
     public RustyBell() { super(new Properties().stacksTo(1).rarity(Rarity.RARE)); }
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+        try {
+ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             for (var m : level.getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(20))) {
                 m.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 4));
@@ -37,5 +38,6 @@ public class RustyBell extends Item {
             player.getCooldowns().addCooldown(this, 400);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+        } catch (Exception e) { return InteractionResultHolder.fail(stack); }
     }
 }

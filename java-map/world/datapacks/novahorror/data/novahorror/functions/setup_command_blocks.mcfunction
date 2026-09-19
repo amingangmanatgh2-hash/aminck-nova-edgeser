@@ -12,7 +12,8 @@ setblock -19 74 14 minecraft:command_block{Command:"scoreboard objectives add no
 setblock 36 79 8 minecraft:command_block{Command:"execute as @a at @s run function novahorror:events/night_crows",auto:1b} replace
 setblock -38 66 24 minecraft:command_block{Command:"playsound minecraft:ambient.cave ambient @a ~ ~ ~ 1 0.3",auto:1b} replace
 setblock -22 66 27 minecraft:command_block{Command:"summon minecraft:armor_stand ~ ~ ~ {Invisible:1b,CustomName:'\"§4The Shade\"'}",auto:1b} replace
-setblock -3 78 14 minecraft:command_block{Command:"gamerule doDaylightCycle false",auto:1b} replace
+setblock -3 78 14 minecraft:command_block{Command:"# FPS FIX: gamerule set once at load
+# gamerule doDaylightCycle false",auto:1b} replace
 setblock 13 71 -3 minecraft:command_block{Command:"time set midnight",auto:1b} replace
 setblock -12 72 13 minecraft:command_block{Command:"execute as @a at @s if score @s novahorror.fear matches 70.. run function novahorror:horror_001",auto:1b} replace
 setblock 20 74 13 minecraft:command_block{Command:"particle minecraft:ash ~ ~1 ~ 1 1 1 0.1 20",auto:1b} replace

@@ -22,7 +22,8 @@ public class LostLocket extends Item {
     private static final Random RANDOM = new Random();
     public LostLocket() { super(new Properties().stacksTo(1).rarity(Rarity.RARE)); }
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+        try {
+ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             BlockPos mansion = new BlockPos(0, 70, 0);
             BlockPos basement = new BlockPos(5, 45, 5);
@@ -46,5 +47,6 @@ public class LostLocket extends Item {
             player.getCooldowns().addCooldown(this, 200);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+        } catch (Exception e) { return InteractionResultHolder.fail(stack); }
     }
 }

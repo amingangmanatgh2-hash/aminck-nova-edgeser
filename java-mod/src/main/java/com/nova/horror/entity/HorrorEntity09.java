@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -46,10 +52,14 @@ public class HorrorEntity09 extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        if (getTarget() instanceof Player p) { double d = distanceTo(p); if (d < 4) { teleportTo(getX()+rand.nextDouble()*16-8, getY(), getZ()+rand.nextDouble()*16-8); level().playSound(null, blockPosition(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundSource.AMBIENT, 0.5F, 1.5F); p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 80, 0)); if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level().getServer().createCommandSourceStack(), "scoreboard players remove "+p.getName().getString()+" novahorror.sanity 2"); cooldown=60; } else if (d < 15 && phase % 50 == 0) { p.displayClientMessage(Component.literal("§8...توهم..."), true); } }
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    if (getTarget() instanceof Player p) { double d = distanceTo(p); if (d < 4) { teleportTo(getX()+rand.nextDouble()*16-8, getY(), getZ()+rand.nextDouble()*16-8); level().playSound(null, blockPosition(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundSource.AMBIENT, 0.5F, 1.5F); p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 80, 0)); if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level().getServer().createCommandSourceStack(), "scoreboard players remove "+p.getName().getString()+" novahorror.sanity 2"); cooldown=60; } else if (d < 15 && phase % 50 == 0) { p.displayClientMessage(Component.literal("§8...توهم..."), true); } }
+        } catch (Exception e) {}
     }
 
     public void flicker() { setInvisible(!isInvisible()); }

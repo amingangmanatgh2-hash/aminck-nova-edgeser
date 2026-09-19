@@ -1,7 +1,7 @@
 # Light rules - central mechanic - separate game feeling - light impacts fear and horror
 # Torches flicker and extinguish near horror
 execute as @e[type=monster,tag=novahorror_horror] at @s run particle minecraft:smoke ~ ~1 ~ 0.3 0.3 0.3 0.02 3
-execute as @e[type=monster,tag=novahorror_horror] at @s if block ~ ~-1 ~ minecraft:torch run setblock ~ ~-1 ~ minecraft:air replace
+execute as @e[type=monster,tag=novahorror_horror,scores={novahorror.timer=0}] at @s if block ~ ~-1 ~ minecraft:torch run setblock ~ ~-1 ~ minecraft:air replace
 execute as @e[type=monster,tag=novahorror_horror] at @s if block ~ ~-1 ~ minecraft:wall_torch run setblock ~ ~-1 ~ minecraft:air replace
 execute as @e[type=monster,tag=novahorror_horror] at @s if block ~ ~-1 ~ minecraft:lantern run setblock ~ ~-1 ~ minecraft:air replace
 # Light level impacts fear - dark increases fear

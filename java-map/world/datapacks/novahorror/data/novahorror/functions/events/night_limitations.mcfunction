@@ -1,5 +1,6 @@
 # Night limitations - central mechanic - night is dangerous, special rules
-execute if predicate novahorror:is_night run gamerule doDaylightCycle false
+# FPS FIX: gamerule only once at load, not every tick - removed for performance
+# execute if predicate novahorror:is_night run gamerule doDaylightCycle false
 execute if predicate novahorror:is_night run effect give @a[scores={novahorror.fear=40..}] minecraft:slowness 2 0 true
 execute if predicate novahorror:is_night as @a[scores={novahorror.fear=60..}] at @s run effect give @s minecraft:weakness 3 0 true
 execute if predicate novahorror:is_night as @a[scores={novahorror.fear=70..}] at @s run effect give @s minecraft:darkness 5 0 true

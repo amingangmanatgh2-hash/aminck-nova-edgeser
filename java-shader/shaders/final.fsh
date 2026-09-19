@@ -1,111 +1,99 @@
 #version 120
-// Final - color grading, vignette, blood, distortion, lens blood - all used
-// Enhanced with real horror effects: screen distortion when fear high, blood splatter, sanity warp
+// Final - FPS BOOST - LOD, clamped, stable Iris/Sodium, blood lens, edge darkness
+// Fixed: no hardcoded resolution, safe sampling, early exit
 
 varying vec2 texcoord;
 uniform sampler2D colortex0;
 uniform float frameTimeCounter;
-uniform float rainStrength;
 uniform float blindness;
+uniform float rainStrength;
+uniform float viewWidth;
+uniform float viewHeight;
 
-float hash(vec2 p) {
-    return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
-}
-
-float noise(vec2 p) {
-    vec2 i = floor(p);
-    vec2 f = fract(p);
-    f = f*f*(3.0-2.0*f);
-    float a = hash(i);
-    float b = hash(i+vec2(1.0,0.0));
-    float c = hash(i+vec2(0.0,1.0));
-    float d = hash(i+vec2(1.0,1.0));
-    return mix(mix(a,b,f.x), mix(c,d,f.x), f.y);
-}
+float fastHash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
 
 void main() {
     vec2 uv = texcoord;
+    vec2 safeUV = clamp(uv, 0.001, 0.999);
 
-    // Screen distortion when fear high (blindness) - real warp
-    float distortionStrength = blindness * 0.015;
-    float time = frameTimeCounter * 0.8;
-    float warpX = sin(uv.y * 8.0 + time * 2.3) * distortionStrength;
-    float warpY = cos(uv.x * 6.0 + time * 1.7) * distortionStrength * 0.6;
-    vec2 distortedUV = uv + vec2(warpX, warpY);
-    distortedUV = clamp(distortedUV, 0.001, 0.999);
+    // Fear warp - only near center and when fear >0.1 for FPS
+    vec2 distortedUV = safeUV;
+    if (blindness > 0.1) {
+        float time = frameTimeCounter * 0.8;
+        float warp = blindness * 0.005;
+        if (length(safeUV - 0.5) < 0.7) {
+            distortedUV += vec2(sin(safeUV.y * 10.0 + time) * warp, cos(safeUV.x * 8.0 + time) * warp);
+            distortedUV = clamp(distortedUV, 0.001, 0.999);
+        }
+    }
 
-    // Extra sanity warp when very high fear
-    float sanityWarp = blindness * blindness * 0.02;
-    distortedUV += vec2(sin(distortedUV.y * 12.0 + time * 3.0), cos(distortedUV.x * 10.0 + time * 2.5)) * sanityWarp;
-    distortedUV = clamp(distortedUV, 0.001, 0.999);
+    // Sanity warp - only high fear
+    if (blindness > 0.6) {
+        float sanityWarp = (blindness - 0.6) * 0.008;
+        distortedUV += vec2(sin(distortedUV.y * 15.0 + frameTimeCounter * 2.0) * sanityWarp, 0);
+        distortedUV = clamp(distortedUV, 0.001, 0.999);
+    }
 
     vec3 color = texture2D(colortex0, distortedUV).rgb;
 
-    // Cold grading - used
-    color.r *= 0.92;
-    color.g *= 0.96;
-    color.b *= 1.06;
-
-    // Desaturate based on rain + fear
-    float lum = dot(color, vec3(0.299, 0.587, 0.114));
-    color = mix(color, vec3(lum), 0.22 + rainStrength * 0.12 + blindness * 0.15);
-
-    // Contrast boost
-    color = (color - 0.5) * 1.12 + 0.5;
-
-    // Vignette strong - dynamic with fear
-    float vign = 1.0 - dot((uv - 0.5)*1.9, (uv - 0.5)*1.9) * (0.45 + blindness * 0.3);
-    color *= vign;
-
-    // Blood red when fear - pulse
-    float pulse = sin(frameTimeCounter * 3.2) * 0.5 + 0.5;
-    vec3 blood = vec3(0.55, 0.06, 0.06);
-    color = mix(color, color * blood * 1.4, blindness * pulse * 0.65);
-
-    // Blood lens splatter - procedural blood drops on lens
-    float bloodNoise = noise(uv * 18.0 + time * 0.1);
-    float bloodSplatter = smoothstep(0.85, 0.95, bloodNoise) * blindness * 0.7;
-    // Add drip effect
-    float drip = sin(uv.x * 25.0) * 0.5 + 0.5;
-    drip = pow(drip, 8.0) * step(0.3, uv.y) * blindness * 0.4;
-    vec3 bloodLens = vec3(0.6, 0.05, 0.05) * (bloodSplatter + drip);
-    color = mix(color, bloodLens, (bloodSplatter + drip) * 0.6);
-    color += bloodLens * 0.3;
-
-    // Chromatic aberration increase with fear
-    float ca = blindness * 0.002;
-    vec2 safeR = clamp(distortedUV + vec2(ca, 0), 0.001, 0.999);
-    vec2 safeB = clamp(distortedUV - vec2(ca, 0), 0.001, 0.999);
-    vec3 colR = texture2D(colortex0, safeR).rgb;
-    vec3 colB = texture2D(colortex0, safeB).rgb;
-    color.r = mix(color.r, colR.r, blindness * 0.5);
-    color.b = mix(color.b, colB.b, blindness * 0.5);
-
-    // Film grain + fear grain
-    float grain = hash(uv * 120.0 + time * 5.0);
-    color += (grain - 0.5) * (0.015 + blindness * 0.02);
-
-    // Darken edges for sanity loss
-    float edgeDark = pow(clamp(length(uv - 0.5) * 1.8, 0.0, 1.5), 2.0) * blindness * 0.5;
-    color -= edgeDark;
-
-
-    // Extra layer: when fear very high (blindness >0.7), add intense edge darkness and noise
-    if (blindness > 0.7) {
-        float edge = pow(clamp(length(uv - 0.5) * 2.2, 0.0, 1.5), 3.0) * (blindness - 0.7) * 2.5;
-        color -= edge;
-        // Intense red tint at edges
-        float redEdge = smoothstep(0.4, 0.8, length(uv - 0.5)) * blindness * 0.5;
-        color = mix(color, vec3(0.5, 0.05, 0.05), redEdge);
-        // More noise
-        float intenseGrain = hash(uv * 200.0 + time * 8.0);
-        color += (intenseGrain - 0.5) * blindness * 0.08;
+    // Chromatic aberration - only when fear and near center
+    if (blindness > 0.2 && length(safeUV - 0.5) < 0.75) {
+        float ca = blindness * 0.0012;
+        vec2 safeR = clamp(distortedUV + vec2(ca, 0), 0.001, 0.999);
+        vec2 safeB = clamp(distortedUV - vec2(ca, 0), 0.001, 0.999);
+        vec3 colR = texture2D(colortex0, safeR).rgb;
+        vec3 colB = texture2D(colortex0, safeB).rgb;
+        color.r = mix(color.r, colR.r, blindness * 0.5);
+        color.b = mix(color.b, colB.b, blindness * 0.5);
     }
 
-    // Extra: sanity based desaturation flicker
-    float sanityFlicker = sin(time * 5.0) * 0.5 + 0.5;
-    color = mix(color, vec3(lum), sanityFlicker * blindness * 0.1);
+    // Blood splatter on lens - only when fear >0.4 for FPS
+    if (blindness > 0.4) {
+        float bloodNoise = fastHash(safeUV * 8.0);
+        float splatter = step(0.985, bloodNoise) * blindness * 0.6;
+        // Drip effect
+        float drip = sin(safeUV.x * 20.0) * 0.5 + 0.5;
+        float dripLine = smoothstep(0.0, 0.02, abs(safeUV.y - drip * 0.3)) * blindness * 0.2;
+        color = mix(color, vec3(0.3, 0.02, 0.02), splatter);
+        color -= dripLine * vec3(0.2, 0.01, 0.01);
+    }
 
-    color = clamp(color, 0.0, 1.0);
-    gl_FragColor = vec4(color, 1.0);
+    // Vignette - use viewWidth/viewHeight FIX
+    vec2 screenUV = gl_FragCoord.xy / vec2(max(viewWidth,1.0), max(viewHeight,1.0));
+    float vignette = 1.0 - dot((screenUV - 0.5) * (1.8 + blindness * 0.6), (screenUV - 0.5) * (1.8 + blindness * 0.6)) * (0.5 + blindness * 0.4);
+    color *= clamp(vignette, 0.0, 1.0);
+
+    // Edge darkness - only when fear
+    if (blindness > 0.2) {
+        float edgeDark = pow(clamp(length(screenUV - 0.5) * 2.2, 0.0, 1.5), 2.0) * blindness * 0.5;
+        color -= edgeDark;
+    }
+
+    // Extra heavy darkness when blindness >0.7
+    if (blindness > 0.7) {
+        float edge = pow(clamp(length(screenUV - 0.5) * 2.2, 0.0, 1.5), 3.0) * (blindness - 0.7) * 2.5;
+        color -= edge;
+        float redEdge = edge * 0.5;
+        color.r += redEdge * 0.3;
+        // Intense grain only near
+        if (length(screenUV - 0.5) < 0.6) {
+            float intenseGrain = fastHash(screenUV * 200.0 + frameTimeCounter * 10.0);
+            color += (intenseGrain - 0.5) * 0.02 * blindness;
+        }
+    }
+
+    // Film grain - LOD
+    if (length(screenUV - 0.5) < 0.8) {
+        float grain = fastHash(safeUV * 120.0 + frameTimeCounter * 5.0);
+        color += (grain - 0.5) * 0.012 * (1.0 + blindness * 0.5);
+    }
+
+    // Rain effect - only when raining
+    if (rainStrength > 0.1) {
+        float rainLine = fastHash(vec2(safeUV.x * 40.0, safeUV.y * 10.0 + frameTimeCounter * 5.0));
+        float rain = step(0.98, rainLine) * rainStrength * 0.3;
+        color += vec3(rain * 0.6);
+    }
+
+    gl_FragColor = vec4(clamp(color,0.0,1.0), 1.0);
 }

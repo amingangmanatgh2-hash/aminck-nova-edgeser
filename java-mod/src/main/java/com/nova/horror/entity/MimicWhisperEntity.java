@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -46,38 +52,41 @@ public class MimicWhisperEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        
-        if (phase % 80 == 0) {
-            SoundEvent[] pool = {SoundEvents.ENTITY_PLAYER_HURT, SoundEvents.ENTITY_PLAYER_HURT, SoundEvents.PARROT_IMITATE_GHAST, SoundEvents.ENTITY_PARROT_IMITATE_GHAST, SoundEvents.ENTITY_ZOMBIE_AMBIENT, SoundEvents.ENTITY_SKELETON_AMBIENT};
-            SoundEvent chosen = pool[rand.nextInt(pool.length)];
-            BlockPos soundPos = blockPosition().offset(rand.nextInt(8)-4, 0, rand.nextInt(8)-4);
-            level().playSound(null, soundPos, chosen, SoundSource.AMBIENT, 0.7F, rand.nextFloat()*0.5F+0.7F);
-            level().addParticle(net.minecraft.core.particles.ParticleTypes.NOTE, soundPos.getX()+0.5, soundPos.getY()+1, soundPos.getZ()+0.5, rand.nextDouble(), rand.nextDouble(), rand.nextDouble());
-        }
-        if (getTarget() instanceof Player p) {
-            if (phase % 170 == 0 && distanceTo(p) > 8 && cooldown==0) {
-                double yaw = Math.toRadians(p.getYRot());
-                double bx = p.getX() - Math.sin(yaw)*3.2;
-                double bz = p.getZ() + Math.cos(yaw)*3.2;
-                BlockPos behind = new BlockPos((int)bx, (int)p.getY(), (int)bz);
-                if (level().getBlockState(behind).isAir() && level().getBlockState(behind.above()).isAir()) {
-                    teleportTo(bx, p.getY(), bz);
-                    String[] whispers = {"§7...چرا تنها رفتی...", "§7...صداتو شنیدم...", "§7...مثل تو حرف می‌زنم...", "§7...برگرد پیشم..."};
-                    p.displayClientMessage(Component.literal(whispers[rand.nextInt(whispers.length)]), false);
-                    level().playSound(null, p.blockPosition(), SoundEvents.AMBIENT_CAVE, SoundSource.HOSTILE, 0.7F, 0.9F);
-                    p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 50, 0));
-                    if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players add "+p.getName().getString()+" novahorror.fear 2");
-                    cooldown = 120;
-                }
-            }
-            if (phase % 60 == 0 && distanceTo(p) < 5) {
-                p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 0, false, false));
-            }
-        }
-
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    
+                    if (phase % 80 == 0) {
+                        SoundEvent[] pool = {SoundEvents.ENTITY_PLAYER_HURT, SoundEvents.ENTITY_PLAYER_HURT, SoundEvents.PARROT_IMITATE_GHAST, SoundEvents.ENTITY_PARROT_IMITATE_GHAST, SoundEvents.ENTITY_ZOMBIE_AMBIENT, SoundEvents.ENTITY_SKELETON_AMBIENT};
+                        SoundEvent chosen = pool[rand.nextInt(pool.length)];
+                        BlockPos soundPos = blockPosition().offset(rand.nextInt(8)-4, 0, rand.nextInt(8)-4);
+                        level().playSound(null, soundPos, chosen, SoundSource.AMBIENT, 0.7F, rand.nextFloat()*0.5F+0.7F);
+                        level().addParticle(net.minecraft.core.particles.ParticleTypes.NOTE, soundPos.getX()+0.5, soundPos.getY()+1, soundPos.getZ()+0.5, rand.nextDouble(), rand.nextDouble(), rand.nextDouble());
+                    }
+                    if (getTarget() instanceof Player p) {
+                        if (phase % 170 == 0 && distanceTo(p) > 8 && cooldown==0) {
+                            double yaw = Math.toRadians(p.getYRot());
+                            double bx = p.getX() - Math.sin(yaw)*3.2;
+                            double bz = p.getZ() + Math.cos(yaw)*3.2;
+                            BlockPos behind = new BlockPos((int)bx, (int)p.getY(), (int)bz);
+                            if (level().getBlockState(behind).isAir() && level().getBlockState(behind.above()).isAir()) {
+                                teleportTo(bx, p.getY(), bz);
+                                String[] whispers = {"§7...چرا تنها رفتی...", "§7...صداتو شنیدم...", "§7...مثل تو حرف می‌زنم...", "§7...برگرد پیشم..."};
+                                p.displayClientMessage(Component.literal(whispers[rand.nextInt(whispers.length)]), false);
+                                level().playSound(null, p.blockPosition(), SoundEvents.AMBIENT_CAVE, SoundSource.HOSTILE, 0.7F, 0.9F);
+                                p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 50, 0));
+                                if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players add "+p.getName().getString()+" novahorror.fear 2");
+                                cooldown = 120;
+                            }
+                        }
+                        if (phase % 60 == 0 && distanceTo(p) < 5) {
+                            p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 0, false, false));
+                        }
+                    }
+        } catch (Exception e) {}
     }
 
     

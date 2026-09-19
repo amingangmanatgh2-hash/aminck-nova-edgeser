@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -46,37 +52,40 @@ public class ChildLaughterEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        
-        if (phase % 60 == 0) {
-            level().playSound(null, blockPosition(), SoundEvents.ENTITY_VILLAGER_AMBIENT, SoundSource.HOSTILE, 0.9F, 1.9F);
-            level().addParticle(net.minecraft.core.particles.ParticleTypes.NOTE, getX(), getY()+1.5, getZ(), rand.nextDouble(), rand.nextDouble(), rand.nextDouble());
-        }
-        if (getTarget() instanceof Player p) {
-            if (distanceTo(p) > 12 && rand.nextInt(85)==0 && cooldown==0) {
-                double ang = rand.nextDouble()*Math.PI*2;
-                double tx = p.getX()+Math.cos(ang)*3.5;
-                double tz = p.getZ()+Math.sin(ang)*3.5;
-                BlockPos tpPos = new BlockPos((int)tx,(int)p.getY(),(int)tz);
-                if (level().getBlockState(tpPos).isAir()) {
-                    teleportTo(tx, p.getY(), tz);
-                    p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 45, 0));
-                    p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 50, 0));
-                    level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_VILLAGER_HURT, SoundSource.HOSTILE, 0.7F, 1.8F);
-                    if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players add "+p.getName().getString()+" novahorror.fear 2");
-                    cooldown = 100;
-                }
-            }
-            if (phase % 40 == 0 && distanceTo(p) < 6) {
-                p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 40, 0, false, false));
-            }
-        }
-        if (phase % 30 == 0) {
-            level().addParticle(net.minecraft.core.particles.ParticleTypes.HEART, getX()+rand.nextDouble()-0.5, getY()+1, getZ()+rand.nextDouble()-0.5, 0, 0.02, 0);
-        }
-
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    
+                    if (phase % 60 == 0) {
+                        level().playSound(null, blockPosition(), SoundEvents.ENTITY_VILLAGER_AMBIENT, SoundSource.HOSTILE, 0.9F, 1.9F);
+                        level().addParticle(net.minecraft.core.particles.ParticleTypes.NOTE, getX(), getY()+1.5, getZ(), rand.nextDouble(), rand.nextDouble(), rand.nextDouble());
+                    }
+                    if (getTarget() instanceof Player p) {
+                        if (distanceTo(p) > 12 && rand.nextInt(85)==0 && cooldown==0) {
+                            double ang = rand.nextDouble()*Math.PI*2;
+                            double tx = p.getX()+Math.cos(ang)*3.5;
+                            double tz = p.getZ()+Math.sin(ang)*3.5;
+                            BlockPos tpPos = new BlockPos((int)tx,(int)p.getY(),(int)tz);
+                            if (level().getBlockState(tpPos).isAir()) {
+                                teleportTo(tx, p.getY(), tz);
+                                p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 45, 0));
+                                p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 50, 0));
+                                level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_VILLAGER_HURT, SoundSource.HOSTILE, 0.7F, 1.8F);
+                                if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players add "+p.getName().getString()+" novahorror.fear 2");
+                                cooldown = 100;
+                            }
+                        }
+                        if (phase % 40 == 0 && distanceTo(p) < 6) {
+                            p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 40, 0, false, false));
+                        }
+                    }
+                    if (phase % 30 == 0) {
+                        level().addParticle(net.minecraft.core.particles.ParticleTypes.HEART, getX()+rand.nextDouble()-0.5, getY()+1, getZ()+rand.nextDouble()-0.5, 0, 0.02, 0);
+                    }
+        } catch (Exception e) {}
     }
 
     

@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -46,35 +52,38 @@ public class PuppetMasterEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        
-        if (phase % 100 == 0) {
-            var minions = level().getEntitiesOfClass(Monster.class, getBoundingBox().inflate(15), e -> e != this && e.getType() != net.minecraft.world.entity.EntityType.PLAYER);
-            for (Monster m : minions) {
-                m.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 120, 0));
-                m.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 120, 0));
-                m.getNavigation().moveTo(getTarget() != null ? getTarget().blockPosition().getCenter() : getX(), getY(), getZ(), 1.1);
-            }
-            if (!minions.isEmpty()) {
-                addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 80, 0));
-                level().playSound(null, blockPosition(), SoundEvents.BLOCK_BELL_RESONATE, SoundSource.HOSTILE, 0.7F, 0.6F);
-            }
-        }
-        if (getTarget() instanceof Player p && distanceTo(p) < 4 && cooldown==0) {
-            // Swap place with minion
-            var minions = level().getEntitiesOfClass(Monster.class, getBoundingBox().inflate(10), e -> e != this);
-            if (!minions.isEmpty()) {
-                Monster m = minions.get(rand.nextInt(minions.size()));
-                double mx = m.getX(), my = m.getY(), mz = m.getZ();
-                m.teleportTo(getX(), getY(), getZ());
-                teleportTo(mx, my, mz);
-                p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 60, 0));
-                cooldown = 150;
-            }
-        }
-
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    
+                    if (phase % 100 == 0) {
+                        var minions = level().getEntitiesOfClass(Monster.class, getBoundingBox().inflate(15), e -> e != this && e.getType() != net.minecraft.world.entity.EntityType.PLAYER);
+                        for (Monster m : minions) {
+                            m.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 120, 0));
+                            m.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 120, 0));
+                            m.getNavigation().moveTo(getTarget() != null ? getTarget().blockPosition().getCenter() : getX(), getY(), getZ(), 1.1);
+                        }
+                        if (!minions.isEmpty()) {
+                            addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 80, 0));
+                            level().playSound(null, blockPosition(), SoundEvents.BLOCK_BELL_RESONATE, SoundSource.HOSTILE, 0.7F, 0.6F);
+                        }
+                    }
+                    if (getTarget() instanceof Player p && distanceTo(p) < 4 && cooldown==0) {
+                        // Swap place with minion
+                        var minions = level().getEntitiesOfClass(Monster.class, getBoundingBox().inflate(10), e -> e != this);
+                        if (!minions.isEmpty()) {
+                            Monster m = minions.get(rand.nextInt(minions.size()));
+                            double mx = m.getX(), my = m.getY(), mz = m.getZ();
+                            m.teleportTo(getX(), getY(), getZ());
+                            teleportTo(mx, my, mz);
+                            p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 60, 0));
+                            cooldown = 150;
+                        }
+                    }
+        } catch (Exception e) {}
     }
 
     

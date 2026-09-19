@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -46,41 +52,44 @@ public class SilentStalkerEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        
-        if (getTarget() instanceof Player p) {
-            Vec3 look = p.getLookAngle();
-            Vec3 toMe = new Vec3(getX()-p.getX(), 0, getZ()-p.getZ()).normalize();
-            double dot = look.dot(toMe);
-            // Only visible in peripheral (dot between -0.2 and 0.3) - not directly looked at nor completely behind
-            boolean peripheral = dot > -0.2 && dot < 0.3;
-            if (peripheral) {
-                removeEffect(MobEffects.INVISIBILITY);
-                if (phase % 60 == 0) {
-                    p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 30, 0));
-                }
-            } else {
-                addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 40, 0, false, false));
-                if (dot > 0.5) {
-                    // Player looking directly, move to side
-                    if (cooldown==0) {
-                        double angle = Math.toRadians(p.getYRot() + 90);
-                        double tx = p.getX() + Math.sin(angle)*5;
-                        double tz = p.getZ() - Math.cos(angle)*5;
-                        teleportTo(tx, p.getY(), tz);
-                        cooldown = 80;
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    
+                    if (getTarget() instanceof Player p) {
+                        Vec3 look = p.getLookAngle();
+                        Vec3 toMe = new Vec3(getX()-p.getX(), 0, getZ()-p.getZ()).normalize();
+                        double dot = look.dot(toMe);
+                        // Only visible in peripheral (dot between -0.2 and 0.3) - not directly looked at nor completely behind
+                        boolean peripheral = dot > -0.2 && dot < 0.3;
+                        if (peripheral) {
+                            removeEffect(MobEffects.INVISIBILITY);
+                            if (phase % 60 == 0) {
+                                p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 30, 0));
+                            }
+                        } else {
+                            addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 40, 0, false, false));
+                            if (dot > 0.5) {
+                                // Player looking directly, move to side
+                                if (cooldown==0) {
+                                    double angle = Math.toRadians(p.getYRot() + 90);
+                                    double tx = p.getX() + Math.sin(angle)*5;
+                                    double tz = p.getZ() - Math.cos(angle)*5;
+                                    teleportTo(tx, p.getY(), tz);
+                                    cooldown = 80;
+                                }
+                            }
+                        }
+                        if (distanceTo(p) < 2.5 && cooldown==0) {
+                            p.hurt(level().damageSources().mobAttack(this), 7.5F);
+                            p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 40, 0));
+                            cooldown = 100;
+                        }
                     }
-                }
-            }
-            if (distanceTo(p) < 2.5 && cooldown==0) {
-                p.hurt(level().damageSources().mobAttack(this), 7.5F);
-                p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 40, 0));
-                cooldown = 100;
-            }
-        }
-
+        } catch (Exception e) {}
     }
 
     

@@ -22,9 +22,10 @@ public class WhisperingRadio extends Item {
     private static final Random RANDOM = new Random();
     public WhisperingRadio() { super(new Properties().stacksTo(1).rarity(Rarity.RARE)); }
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+        try {
+ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            BlockPos radioPos = player.blockPosition().offset(level.random.nextInt(10)-5, 0, level.random.nextInt(10)-5);
+            BlockPos radioPos = player.blockPosition().offset(player.getRandom().nextInt(10)-5, 0, player.getRandom().nextInt(10)-5);
             level.playSound(null, radioPos, SoundEvents.ENTITY_WARDEN_AMBIENT, SoundSource.HOSTILE, 1.2F, 0.5F);
             level.playSound(null, radioPos, SoundEvents.AMBIENT_CAVE, SoundSource.AMBIENT, 1.0F, 0.7F);
             level.addParticle(net.minecraft.core.particles.ParticleTypes.NOTE, radioPos.getX()+0.5, radioPos.getY()+1, radioPos.getZ()+0.5, 0.5, 0.5, 0.5);
@@ -33,8 +34,9 @@ public class WhisperingRadio extends Item {
             }
             player.displayClientMessage(Component.literal("§8رادیو نجواها پخش شد - موجودات به اون سمت رفتن!"), true);
             player.getCooldowns().addCooldown(this, 300);
-            if (!player.isCreative() && level.random.nextFloat()<0.2) stack.shrink(1);
+            if (!player.isCreative() && player.getRandom().nextFloat()<0.2) stack.shrink(1);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+        } catch (Exception e) { return InteractionResultHolder.fail(stack); }
     }
 }

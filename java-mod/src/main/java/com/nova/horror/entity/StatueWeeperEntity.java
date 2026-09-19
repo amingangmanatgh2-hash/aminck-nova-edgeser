@@ -9,6 +9,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.nova.horror.performance.EntityCullingSystem;
+import com.nova.horror.config.NovaHorrorConfig;
+import com.nova.horror.util.SafeScoreboardUtil;
+import com.nova.horror.performance.MemoryLeakFixer;
+import com.nova.horror.performance.ParticleOptimizer;
+import com.nova.horror.performance.SoundThrottler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.sounds.SoundEvents;
@@ -46,36 +52,39 @@ public class StatueWeeperEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
-        if (cooldown > 0) cooldown--;
-        phase++;
-        
-        if (phase % 25 == 0) {
-            level().addParticle(net.minecraft.core.particles.ParticleTypes.DRIPPING_OBSIDIAN_TEAR, getX()+rand.nextDouble()-0.5, getY()+1.5, getZ()+rand.nextDouble()-0.5, 0, -0.05, 0);
-            level().addParticle(net.minecraft.core.particles.ParticleTypes.FALLING_LAVA, getX(), getY()+1, getZ(), 0, -0.1, 0);
-        }
-        if (getTarget() instanceof Player p) {
-            Vec3 look = p.getLookAngle();
-            Vec3 toMe = new Vec3(getX()-p.getX(), 0, getZ()-p.getZ()).normalize();
-            double dot = look.dot(toMe);
-            boolean frontWatched = dot > 0.5 && distanceTo(p) < 12 && p.hasLineOfSight(this);
-            if (frontWatched) {
-                setDeltaMovement(0, getDeltaMovement().y, 0);
-                getNavigation().stop();
-                addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 30, 3));
-            } else {
-                if (cooldown==0) {
-                    getNavigation().moveTo(p, 1.1);
-                    if (distanceTo(p) < 3) {
-                        p.addEffect(new MobEffectInstance(MobEffects.WITHER, 80, 0));
-                        p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 60, 0));
-                        cooldown = 90;
+        try {
+            if (level().isClientSide) return;
+            if (EntityCullingSystem.shouldSkipTick(this)) return;
+            if (this.isDeadOrDying()) return;
+            if (cooldown > 0) cooldown--;
+                    phase++;
+                    
+                    if (phase % 25 == 0) {
+                        level().addParticle(net.minecraft.core.particles.ParticleTypes.DRIPPING_OBSIDIAN_TEAR, getX()+rand.nextDouble()-0.5, getY()+1.5, getZ()+rand.nextDouble()-0.5, 0, -0.05, 0);
+                        level().addParticle(net.minecraft.core.particles.ParticleTypes.FALLING_LAVA, getX(), getY()+1, getZ(), 0, -0.1, 0);
                     }
-                }
-            }
-            if (phase % 100 == 0) level().playSound(null, blockPosition(), SoundEvents.BLOCK_GRASS_BREAK, SoundSource.HOSTILE, 0.6F, 0.4F);
-        }
-
+                    if (getTarget() instanceof Player p) {
+                        Vec3 look = p.getLookAngle();
+                        Vec3 toMe = new Vec3(getX()-p.getX(), 0, getZ()-p.getZ()).normalize();
+                        double dot = look.dot(toMe);
+                        boolean frontWatched = dot > 0.5 && distanceTo(p) < 12 && p.hasLineOfSight(this);
+                        if (frontWatched) {
+                            setDeltaMovement(0, getDeltaMovement().y, 0);
+                            getNavigation().stop();
+                            addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 30, 3));
+                        } else {
+                            if (cooldown==0) {
+                                getNavigation().moveTo(p, 1.1);
+                                if (distanceTo(p) < 3) {
+                                    p.addEffect(new MobEffectInstance(MobEffects.WITHER, 80, 0));
+                                    p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 60, 0));
+                                    cooldown = 90;
+                                }
+                            }
+                        }
+                        if (phase % 100 == 0) level().playSound(null, blockPosition(), SoundEvents.BLOCK_GRASS_BREAK, SoundSource.HOSTILE, 0.6F, 0.4F);
+                    }
+        } catch (Exception e) {}
     }
 
     
