@@ -1,0 +1,30 @@
+{
+  "format_version": "1.20.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "novahorror:weeper",
+      "is_spawnable": true,
+      "is_summonable": true
+    },
+    "component_groups": {
+      "minecraft:weeper_adult": {
+        "minecraft:health": { "value": 25, "max": 25 },
+        "minecraft:movement": { "value": 0.28 },
+        "minecraft:attack": { "damage": 4 },
+        "minecraft:behavior.melee_attack": { "priority": 1 },
+        "minecraft:behavior.random_stroll": { "priority": 2, "speed_multiplier": 0.7 },
+        "minecraft:behavior.nearest_attackable_target": {
+          "within_radius": 20,
+          "entity_types": [{ "filters": { "test": "is_family", "subject": "other", "value": "player" }, "max_dist": 20 }]
+        }
+      }
+    },
+    "components": {
+      "minecraft:type_family": { "family": ["weeper", "monster"] },
+      "minecraft:collision_box": { "width": 0.6, "height": 1.9 }
+    },
+    "events": {
+      "minecraft:entity_spawned": { "add": { "component_groups": ["minecraft:weeper_adult"] } }
+    }
+  }
+}

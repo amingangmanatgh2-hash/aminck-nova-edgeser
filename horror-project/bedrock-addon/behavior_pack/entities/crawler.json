@@ -1,0 +1,31 @@
+{
+  "format_version": "1.20.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "novahorror:crawler",
+      "is_spawnable": true,
+      "is_summonable": true
+    },
+    "component_groups": {
+      "minecraft:crawler_adult": {
+        "minecraft:health": { "value": 30, "max": 30 },
+        "minecraft:movement": { "value": 0.45 },
+        "minecraft:attack": { "damage": 5 },
+        "minecraft:behavior.melee_attack": { "priority": 1 },
+        "minecraft:behavior.random_stroll": { "priority": 3, "speed_multiplier": 1.0 },
+        "minecraft:behavior.nearest_attackable_target": {
+          "within_radius": 25,
+          "entity_types": [{ "filters": { "test": "is_family", "subject": "other", "value": "player" }, "max_dist": 25 }]
+        }
+      }
+    },
+    "components": {
+      "minecraft:type_family": { "family": ["crawler", "monster"] },
+      "minecraft:collision_box": { "width": 0.8, "height": 0.6 },
+      "minecraft:loot": { "table": "loot_tables/entities/crawler.json" }
+    },
+    "events": {
+      "minecraft:entity_spawned": { "add": { "component_groups": ["minecraft:crawler_adult"] } }
+    }
+  }
+}

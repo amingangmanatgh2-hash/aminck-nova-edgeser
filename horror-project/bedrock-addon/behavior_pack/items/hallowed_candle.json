@@ -1,0 +1,21 @@
+{
+  "format_version": "1.20.0",
+  "minecraft:item": {
+    "description": {
+      "identifier": "novahorror:hallowed_candle",
+      "category": "Items"
+    },
+    "components": {
+      "minecraft:icon": {
+        "texture": "hallowed_candle"
+      },
+      "minecraft:display_name": {
+        "value": "Hallowed Candle"
+      },
+      "minecraft:max_stack_size": 64,
+      "minecraft:hand_equipped": false,
+      "minecraft:stacked_by_data": true,
+      "minecraft:foil": false
+    }
+  }
+}

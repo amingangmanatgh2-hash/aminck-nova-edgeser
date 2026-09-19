@@ -1,0 +1,18 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Nova Horror Bedrock Shader",
+    "description": "God-tier horror shader for Bedrock - volumetric fog, dramatic shadows, cold tint, blood moon. RenderDragon compatible (Windows/Mobile).",
+    "uuid": "e5f6a7b8-c9d0-1234-ef01-567890123456",
+    "version": [1, 0, 0],
+    "min_engine_version": [1, 20, 0]
+  },
+  "modules": [
+    {
+      "type": "resources",
+      "uuid": "f6a7b8c9-d0e1-2345-f012-678901234567",
+      "version": [1, 0, 0]
+    }
+  ],
+  "capabilities": ["raytraced"]
+}

@@ -1,0 +1,66 @@
+{
+  "resource_pack_name": "Nova Horror",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "rusted_mansion_key": {
+      "textures": "textures/items/rusted_mansion_key"
+    },
+    "silas_diary": {
+      "textures": "textures/items/silas_diary"
+    },
+    "heart_of_dread": {
+      "textures": "textures/items/heart_of_dread"
+    },
+    "wardens_amulet": {
+      "textures": "textures/items/wardens_amulet"
+    },
+    "spirit_lantern": {
+      "textures": "textures/items/spirit_lantern"
+    },
+    "torn_photo": {
+      "textures": "textures/items/torn_photo"
+    },
+    "ritual_dagger": {
+      "textures": "textures/items/ritual_dagger"
+    },
+    "hallowed_candle": {
+      "textures": "textures/items/hallowed_candle"
+    },
+    "crypt_key": {
+      "textures": "textures/items/crypt_key"
+    },
+    "whispering_skull": {
+      "textures": "textures/items/whispering_skull"
+    },
+    "blood_sigil": {
+      "textures": "textures/items/blood_sigil"
+    },
+    "rotted_rope": {
+      "textures": "textures/items/rotted_rope"
+    },
+    "broken_compass": {
+      "textures": "textures/items/broken_compass"
+    },
+    "scarecrow_mask": {
+      "textures": "textures/items/scarecrow_mask"
+    },
+    "elixir_forgetting": {
+      "textures": "textures/items/elixir_forgetting"
+    },
+    "black_mirror_shard": {
+      "textures": "textures/items/black_mirror_shard"
+    },
+    "plea_letter": {
+      "textures": "textures/items/plea_letter"
+    },
+    "mineshaft_key": {
+      "textures": "textures/items/mineshaft_key"
+    },
+    "cursed_bone": {
+      "textures": "textures/items/cursed_bone"
+    },
+    "crown_thorns": {
+      "textures": "textures/items/crown_thorns"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+issueTrackerURL="https://github.com/amingangmanatgh2-hash/aminck-nova-edgeser/issues"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+updateJSONURL="https://example.com/novahorror/update.json"
+displayURL="https://example.com/novahorror"
+logoFile="novahorror_logo.png"
+credits="AMINCK Nova Edge - Horror Project"
+authors="${mod_authors}"
+description='''${mod_description}
+God-tier horror mod with custom entities, fear/sanity system, jumpscares, and 20 lore items.
+'''
+
+[[dependencies.${mod_id}]]
+modId="forge"
+mandatory=true
+versionRange="${forge_version_range}"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="minecraft"
+mandatory=true
+versionRange="${minecraft_version_range}"
+ordering="NONE"
+side="BOTH"

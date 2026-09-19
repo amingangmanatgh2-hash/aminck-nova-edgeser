@@ -1,0 +1,35 @@
+{
+  "format_version": "1.20.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "novahorror:forgotten",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_boss": true
+    },
+    "component_groups": {
+      "minecraft:forgotten_adult": {
+        "minecraft:health": { "value": 300, "max": 300 },
+        "minecraft:movement": { "value": 0.32 },
+        "minecraft:attack": { "damage": 12 },
+        "minecraft:armor": { "value": 8 },
+        "minecraft:knockback_resistance": { "value": 1.0 },
+        "minecraft:behavior.melee_attack": { "priority": 1 },
+        "minecraft:behavior.nearest_attackable_target": {
+          "within_radius": 50,
+          "entity_types": [{ "filters": { "test": "is_family", "subject": "other", "value": "player" }, "max_dist": 50 }]
+        },
+        "minecraft:boss": { "name": "The Forgotten - Dr. Silas Vane", "should_darken_sky": true }
+      }
+    },
+    "components": {
+      "minecraft:type_family": { "family": ["forgotten", "monster", "boss"] },
+      "minecraft:collision_box": { "width": 1.2, "height": 2.4 },
+      "minecraft:physics": {},
+      "minecraft:loot": { "table": "loot_tables/entities/forgotten.json" }
+    },
+    "events": {
+      "minecraft:entity_spawned": { "add": { "component_groups": ["minecraft:forgotten_adult"] } }
+    }
+  }
+}

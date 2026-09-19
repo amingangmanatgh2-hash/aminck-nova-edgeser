@@ -1,0 +1,21 @@
+{
+  "format_version": "1.20.0",
+  "minecraft:item": {
+    "description": {
+      "identifier": "novahorror:rusted_mansion_key",
+      "category": "Items"
+    },
+    "components": {
+      "minecraft:icon": {
+        "texture": "rusted_mansion_key"
+      },
+      "minecraft:display_name": {
+        "value": "Rusted Mansion Key"
+      },
+      "minecraft:max_stack_size": 1,
+      "minecraft:hand_equipped": false,
+      "minecraft:stacked_by_data": true,
+      "minecraft:foil": false
+    }
+  }
+}

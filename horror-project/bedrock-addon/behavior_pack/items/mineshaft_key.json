@@ -1,0 +1,21 @@
+{
+  "format_version": "1.20.0",
+  "minecraft:item": {
+    "description": {
+      "identifier": "novahorror:mineshaft_key",
+      "category": "Items"
+    },
+    "components": {
+      "minecraft:icon": {
+        "texture": "mineshaft_key"
+      },
+      "minecraft:display_name": {
+        "value": "Mine Shaft Key"
+      },
+      "minecraft:max_stack_size": 1,
+      "minecraft:hand_equipped": false,
+      "minecraft:stacked_by_data": true,
+      "minecraft:foil": false
+    }
+  }
+}
