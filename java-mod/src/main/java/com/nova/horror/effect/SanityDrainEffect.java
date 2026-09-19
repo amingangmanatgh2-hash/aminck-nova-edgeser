@@ -34,7 +34,7 @@ public class SanityDrainEffect extends MobEffect {
                     if (sanity < 20 && player.tickCount % 100 == 0) {
                         player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 80, 0));
                         player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 40, 0));
-                        player.level().playSound(null, player.blockPosition(), SoundEvents.WHISPER_1, SoundSource.AMBIENT, 0.8F, 0.7F);
+                        player.level().playSound(null, player.blockPosition(), SoundEvents.AMBIENT_CAVE, SoundSource.AMBIENT, 0.8F, 0.7F);
                     }
                 }
             }

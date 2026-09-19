@@ -68,10 +68,10 @@ public class PhantomWardenEntity extends Monster {
             p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 100, 0));
             p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 2));
             if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players add "+p.getName().getString()+" novahorror.fear 8");
-            level().playSound(null, blockPosition(), SoundEvents.WARDEN_SONIC_BOOM, SoundSource.HOSTILE, 1.5F, 0.7F);
+            level().playSound(null, blockPosition(), SoundEvents.ENTITY_WARDEN_SONIC_BOOM, SoundSource.HOSTILE, 1.5F, 0.7F);
             cooldown = 200;
         }
-        if (phase % 70 == 0) level().playSound(null, blockPosition(), SoundEvents.WARDEN_AMBIENT, SoundSource.HOSTILE, 0.6F, 0.6F);
+        if (phase % 70 == 0) level().playSound(null, blockPosition(), SoundEvents.ENTITY_WARDEN_AMBIENT, SoundSource.HOSTILE, 0.6F, 0.6F);
 
     }
 
@@ -88,11 +88,11 @@ public class PhantomWardenEntity extends Monster {
     public void emerge() {
         removeEffect(MobEffects.INVISIBILITY);
         setNoGravity(false);
-        level().playSound(null, blockPosition(), SoundEvents.WARDEN_DIG, SoundSource.HOSTILE, 1.0F, 0.5F);
+        level().playSound(null, blockPosition(), SoundEvents.ENTITY_WARDEN_DIG, SoundSource.HOSTILE, 1.0F, 0.5F);
     }
 
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

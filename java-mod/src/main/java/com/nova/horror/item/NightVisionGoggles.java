@@ -37,7 +37,7 @@ public class NightVisionGoggles extends Item {
                 bat.setNoGravity(true);
                 level.addFreshEntity(bat);
             }
-            level.playSound(null, player.blockPosition(), SoundEvents.SPYGLASS_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
+            level.playSound(null, player.blockPosition(), SoundEvents.ENTITY_ITEM_FRAME_REMOVE_ITEM, SoundSource.PLAYERS, 1.0F, 1.0F);
             player.displayClientMessage(Component.literal("§aعینک دید در شب فعال شد... ولی توهم می‌بینی..."), true);
             player.getCooldowns().addCooldown(this, 650);
         }

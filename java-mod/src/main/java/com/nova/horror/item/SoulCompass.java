@@ -65,12 +65,12 @@ public class SoulCompass extends Item {
             }
             if (fear > 70) {
                 player.displayClientMessage(Component.literal("§cقطب‌نما دیوانه‌وار می‌چرخه! ترست خیلی بالاست!"+crowInfo+horrorInfo), true);
-                level.playSound(null, player.blockPosition(), SoundEvents.COMPASS_LOCK, SoundSource.PLAYERS, 1.0F, 0.3F);
+                level.playSound(null, player.blockPosition(), SoundEvents.BLOCK_BELL_USE, SoundSource.PLAYERS, 1.0F, 0.3F);
                 player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 60, 0));
                 for (int i=0;i<10;i++) level.addParticle(net.minecraft.core.particles.ParticleTypes.SMOKE, player.getX()+level.random.nextDouble()-0.5, player.getY()+1, player.getZ()+level.random.nextDouble()-0.5, 0, 0.05, 0);
             } else {
                 player.displayClientMessage(Component.literal("§aعمارت "+String.format("%.0f", dist)+" بلاک زاویه "+String.format("%.0f", ang)+crowInfo+horrorInfo), true);
-                level.playSound(null, player.blockPosition(), SoundEvents.COMPASS_LOCK, SoundSource.PLAYERS, 0.8F, 1.0F);
+                level.playSound(null, player.blockPosition(), SoundEvents.BLOCK_BELL_USE, SoundSource.PLAYERS, 0.8F, 1.0F);
                 // Trail to mansion
                 Vec3 start = player.position();
                 Vec3 end = new Vec3(mansion.getX()+0.5, mansion.getY(), mansion.getZ()+0.5);

@@ -15,7 +15,7 @@ public class HallucinationAI extends Goal {
     private final Monster mob;
     public HallucinationAI(Monster mob) { this.mob=mob; }
     @Override public boolean canUse() { return mob.getTarget() instanceof Player && mob.distanceTo(mob.getTarget()) < 4; }
-    @Override public void tick() { if (mob.getTarget() instanceof Player p) { mob.teleportTo(mob.getX()+mob.getRandom().nextDouble()*20-10, mob.getY(), mob.getZ()+mob.getRandom().nextDouble()*20-10); mob.level().playSound(null, mob.blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.AMBIENT, 0.5F, 1.6F); } }
+    @Override public void tick() { if (mob.getTarget() instanceof Player p) { mob.teleportTo(mob.getX()+mob.getRandom().nextDouble()*20-10, mob.getY(), mob.getZ()+mob.getRandom().nextDouble()*20-10); mob.level().playSound(null, mob.blockPosition(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundSource.AMBIENT, 0.5F, 1.6F); } }
 
     @Override public boolean canContinueToUse() { return true; }
     @Override public boolean isInterruptable() { return true; }

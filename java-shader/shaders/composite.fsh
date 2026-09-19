@@ -33,6 +33,7 @@ void main() {
     float fearDistort = blindness * 0.003;
     float time = frameTimeCounter * 0.6;
     uv += vec2(sin(uv.y * 7.0 + time * 1.5), cos(uv.x * 5.0 + time * 1.2)) * fearDistort;
+    uv = clamp(uv, 0.001, 0.999);
 
     vec3 color = texture2D(colortex0, uv).rgb;
     float depth = texture2D(depthtex0, uv).r;
@@ -64,8 +65,10 @@ void main() {
 
     // Chromatic aberration for fear - used
     float ca = blindness * 0.0015;
-    vec3 colR = texture2D(colortex0, uv + vec2(ca, 0)).rgb;
-    vec3 colB = texture2D(colortex0, uv - vec2(ca, 0)).rgb;
+    vec2 safeR = clamp(uv + vec2(ca, 0), 0.001, 0.999);
+    vec2 safeB = clamp(uv - vec2(ca, 0), 0.001, 0.999);
+    vec3 colR = texture2D(colortex0, safeR).rgb;
+    vec3 colB = texture2D(colortex0, safeB).rgb;
     color.r = mix(color.r, colR.r, blindness * 0.6);
     color.b = mix(color.b, colB.b, blindness * 0.6);
 

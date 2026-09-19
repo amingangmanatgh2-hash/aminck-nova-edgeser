@@ -63,7 +63,7 @@ public class HorrorEntity04 extends Monster {
             // Emerge from floor effect
             BlockPos floor = p.blockPosition().below();
             if (!level().getBlockState(floor).isAir()) {
-                level().playSound(null, floor, SoundEvents.ZOMBIE_BREAK_WOODEN_DOOR, SoundSource.HOSTILE, 1.0F, 0.3F);
+                level().playSound(null, floor, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundSource.HOSTILE, 1.0F, 0.3F);
                 p.setDeltaMovement(p.getDeltaMovement().x, -0.8, p.getDeltaMovement().z);
                 p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 80, 0));
                 p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 2));
@@ -82,7 +82,7 @@ public class HorrorEntity04 extends Monster {
     }
 
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

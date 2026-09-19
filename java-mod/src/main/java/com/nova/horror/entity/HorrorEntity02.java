@@ -63,7 +63,7 @@ public class HorrorEntity02 extends Monster {
                 setDeltaMovement(0, getDeltaMovement().y, 0);
                 getNavigation().stop();
                 // Crack sound when watched
-                if (phase % 40 == 0) level().playSound(null, blockPosition(), SoundEvents.STONE_BREAK, SoundSource.HOSTILE, 0.3F, 1.5F);
+                if (phase % 40 == 0) level().playSound(null, blockPosition(), SoundEvents.BLOCK_STONE_BREAK, SoundSource.HOSTILE, 0.3F, 1.5F);
             } else {
                 if (cooldown==0) {
                     getNavigation().moveTo(p, 1.4);
@@ -85,7 +85,7 @@ public class HorrorEntity02 extends Monster {
     }
 
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

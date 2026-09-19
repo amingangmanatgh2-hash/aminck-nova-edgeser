@@ -39,7 +39,7 @@ public class SoulLanternUpgraded extends Item {
                 }
             }
             player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 0));
-            level.playSound(null, player.blockPosition(), SoundEvents.SOUL_ESCAPE, SoundSource.AMBIENT, 0.8F, 0.8F);
+            level.playSound(null, player.blockPosition(), SoundEvents.PARTICLE_SOUL_ESCAPE, SoundSource.AMBIENT, 0.8F, 0.8F);
             player.displayClientMessage(Component.literal("§dفانوس روح ارتقا یافته "+found+" مخفی رو نشون داد!"), true);
             player.getCooldowns().addCooldown(this, 250);
         }

@@ -64,7 +64,7 @@ public class SpiritLantern extends Item {
             }
             player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 400, 0));
             player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 0));
-            level.playSound(null, pos, SoundEvents.SOUL_ESCAPE, SoundSource.AMBIENT, 0.9F, 0.8F);
+            level.playSound(null, pos, SoundEvents.PARTICLE_SOUL_ESCAPE, SoundSource.AMBIENT, 0.9F, 0.8F);
             player.displayClientMessage(Component.literal("§eفانوس روح "+found+" مخفی و "+cleared+" تار عنکبوت رو نشون داد و پاک کرد!"), true);
             player.getCooldowns().addCooldown(this, 180);
         }

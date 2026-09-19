@@ -32,7 +32,7 @@ public class HolyWater extends Item {
             }
             if (level.getServer()!=null) level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players remove "+player.getName().getString()+" novahorror.fear 10");
             player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 0));
-            level.playSound(null, player.blockPosition(), SoundEvents.BOTTLE_FILL, SoundSource.PLAYERS, 1.0F, 1.2F);
+            level.playSound(null, player.blockPosition(), SoundEvents.ITEM_BOTTLE_FILL, SoundSource.PLAYERS, 1.0F, 1.2F);
             player.displayClientMessage(Component.literal("§bآب مقدس ترس رو شست!"), true);
             if (!player.isCreative()) stack.shrink(1);
         }

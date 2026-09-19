@@ -63,7 +63,7 @@ public class WeepingAngelEntity extends Monster {
                 addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 40, 4, false, false));
                 addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 5, false, false));
                 if (phase % 25 == 0) {
-                    level().playSound(null, blockPosition(), SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 0.4F, 1.3F);
+                    level().playSound(null, blockPosition(), SoundEvents.BLOCK_STONE_BREAK, SoundSource.BLOCKS, 0.4F, 1.3F);
                     level().addParticle(net.minecraft.core.particles.ParticleTypes.CRIT, getX(), getY()+1, getZ(), 0, 0.1, 0);
                 }
                 if (phase % 100 == 0) {
@@ -80,7 +80,7 @@ public class WeepingAngelEntity extends Monster {
                         p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 80, 0));
                         p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 1));
                         if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players add "+p.getName().getString()+" novahorror.fear 6");
-                        level().playSound(null, blockPosition(), SoundEvents.STONE_BREAK, SoundSource.HOSTILE, 1.0F, 0.5F);
+                        level().playSound(null, blockPosition(), SoundEvents.BLOCK_STONE_BREAK, SoundSource.HOSTILE, 1.0F, 0.5F);
                         cooldown = 100;
                     }
                 }
@@ -120,7 +120,7 @@ public class WeepingAngelEntity extends Monster {
     }
 
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

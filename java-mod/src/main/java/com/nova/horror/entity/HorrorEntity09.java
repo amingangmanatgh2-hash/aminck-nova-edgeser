@@ -49,7 +49,7 @@ public class HorrorEntity09 extends Monster {
         if (level().isClientSide) return;
         if (cooldown > 0) cooldown--;
         phase++;
-        if (getTarget() instanceof Player p) { double d = distanceTo(p); if (d < 4) { teleportTo(getX()+rand.nextDouble()*16-8, getY(), getZ()+rand.nextDouble()*16-8); level().playSound(null, blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.AMBIENT, 0.5F, 1.5F); p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 80, 0)); if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level().getServer().createCommandSourceStack(), "scoreboard players remove "+p.getName().getString()+" novahorror.sanity 2"); cooldown=60; } else if (d < 15 && phase % 50 == 0) { p.displayClientMessage(Component.literal("§8...توهم..."), true); } }
+        if (getTarget() instanceof Player p) { double d = distanceTo(p); if (d < 4) { teleportTo(getX()+rand.nextDouble()*16-8, getY(), getZ()+rand.nextDouble()*16-8); level().playSound(null, blockPosition(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundSource.AMBIENT, 0.5F, 1.5F); p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 80, 0)); if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level().getServer().createCommandSourceStack(), "scoreboard players remove "+p.getName().getString()+" novahorror.sanity 2"); cooldown=60; } else if (d < 15 && phase % 50 == 0) { p.displayClientMessage(Component.literal("§8...توهم..."), true); } }
     }
 
     public void flicker() { setInvisible(!isInvisible()); }
@@ -90,7 +90,7 @@ public class HorrorEntity09 extends Monster {
         if (getTarget() instanceof Player p && distanceTo(p) < 7 && cooldown==0) {
             p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 0));
             p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 30, 0));
-            level().playSound(null, p.blockPosition(), SoundEvents.WARDEN_AMBIENT, SoundSource.HOSTILE, 0.7F, 0.6F);
+            level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_WARDEN_AMBIENT, SoundSource.HOSTILE, 0.7F, 0.6F);
             cooldown = 100;
         }
         // Search for dark spots
@@ -107,7 +107,7 @@ public class HorrorEntity09 extends Monster {
             if (darkSpot != null) getNavigation().moveTo(darkSpot.getX(), darkSpot.getY(), darkSpot.getZ(), 0.8);
             }
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

@@ -29,7 +29,7 @@ public class CursedMirror extends Item {
                 e.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100, 0));
             }
             player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 100, 0));
-            level.playSound(null, player.blockPosition(), SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 0.7F, 0.5F);
+            level.playSound(null, player.blockPosition(), SoundEvents.BLOCK_GLASS_BREAK, SoundSource.PLAYERS, 0.7F, 0.5F);
             player.displayClientMessage(Component.literal("§5آینه نفرین شده همه رو نشون داد... ولی چشات تار میشه..."), true);
             player.getCooldowns().addCooldown(this, 300);
             player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60, 0, false, false));

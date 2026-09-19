@@ -25,7 +25,7 @@ public class EchoShard extends Item {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             BlockPos echoPos = player.blockPosition().offset(level.random.nextInt(16)-8, 0, level.random.nextInt(16)-8);
-            net.minecraft.sounds.SoundEvent[] sounds = {SoundEvents.WARDEN_AMBIENT, SoundEvents.AMBIENT_CAVE, SoundEvents.GHAST_SCREAM, SoundEvents.ENDERMAN_SCREAM, SoundEvents.WOLF_HOWL};
+            net.minecraft.sounds.SoundEvent[] sounds = {SoundEvents.ENTITY_WARDEN_AMBIENT, SoundEvents.AMBIENT_CAVE, SoundEvents.ENTITY_GHAST_SCREAM, SoundEvents.ENDERMAN_SCREAM, SoundEvents.ENTITY_WOLF_HOWL};
             var chosen = sounds[level.random.nextInt(sounds.length)];
             level.playSound(null, echoPos, chosen, SoundSource.HOSTILE, 1.0F, level.random.nextFloat()*0.5F+0.7F);
             level.addParticle(net.minecraft.core.particles.ParticleTypes.NOTE, echoPos.getX()+0.5, echoPos.getY()+1, echoPos.getZ()+0.5, 0.5, 0.5, 0.5);

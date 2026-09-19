@@ -63,7 +63,7 @@ public class GraveKeeperEntity extends Monster {
                 level().addFreshEntity(bat);
                 level().addParticle(net.minecraft.core.particles.ParticleTypes.ASH, x, y, z, 0, -0.02, 0);
             }
-            level().playSound(null, blockPosition(), SoundEvents.SOUL_ESCAPE, SoundSource.HOSTILE, 0.9F, 0.4F);
+            level().playSound(null, blockPosition(), SoundEvents.PARTICLE_SOUL_ESCAPE, SoundSource.HOSTILE, 0.9F, 0.4F);
             level().addParticle(net.minecraft.core.particles.ParticleTypes.SOUL, getX(), getY()+1, getZ(), 0, 0.08, 0);
             level().addParticle(net.minecraft.core.particles.ParticleTypes.CAMPFIRE_COSY_SMOKE, getX(), getY()+0.5, getZ(), 0, 0.04, 0);
         }
@@ -76,7 +76,7 @@ public class GraveKeeperEntity extends Monster {
         }
         if (getTarget() instanceof Player p && distanceTo(p) < 5 && cooldown==0) {
             p.addEffect(new MobEffectInstance(MobEffects.WITHER, 60, 0));
-            level().playSound(null, p.blockPosition(), SoundEvents.SOUL_ESCAPE, SoundSource.HOSTILE, 1.0F, 0.3F);
+            level().playSound(null, p.blockPosition(), SoundEvents.PARTICLE_SOUL_ESCAPE, SoundSource.HOSTILE, 1.0F, 0.3F);
             cooldown = 120;
         }
 
@@ -101,7 +101,7 @@ public class GraveKeeperEntity extends Monster {
     }
 
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

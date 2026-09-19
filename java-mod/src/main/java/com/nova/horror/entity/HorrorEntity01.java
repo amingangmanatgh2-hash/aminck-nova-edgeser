@@ -59,7 +59,7 @@ public class HorrorEntity01 extends Monster {
         if (getTarget() instanceof Player p) {
             if (phase % 80 == 0) {
                 // Mimic random player hurt sound
-                SoundEvent[] mimics = {SoundEvents.PLAYER_HURT, SoundEvents.PLAYER_HURT_DROWN, SoundEvents.PARROT_IMITATE_GHAST, SoundEvents.PARROT_IMITATE_WARDEN};
+                SoundEvent[] mimics = {SoundEvents.ENTITY_PLAYER_HURT, SoundEvents.ENTITY_PLAYER_HURT, SoundEvents.PARROT_IMITATE_GHAST, SoundEvents.ENTITY_PARROT_IMITATE_GHAST};
                 level().playSound(null, p.blockPosition(), mimics[rand.nextInt(mimics.length)], SoundSource.AMBIENT, 0.7F, rand.nextFloat()*0.5F+0.7F);
             }
             if (phase % 200 == 0 && distanceTo(p) > 8) {
@@ -69,7 +69,7 @@ public class HorrorEntity01 extends Monster {
                 double bz = p.getZ() + Math.cos(yaw)*3;
                 teleportTo(bx, p.getY(), bz);
                 p.displayClientMessage(Component.literal("§7...چرا تنها رفتی..."), false);
-                level().playSound(null, p.blockPosition(), SoundEvents.WHISPER_1, SoundSource.AMBIENT, 0.8F, 0.9F);
+                level().playSound(null, p.blockPosition(), SoundEvents.AMBIENT_CAVE, SoundSource.AMBIENT, 0.8F, 0.9F);
                 cooldown = 100;
             }
         }
@@ -78,11 +78,11 @@ public class HorrorEntity01 extends Monster {
 
     
     public void mimicFootstep(Player player) {
-        level().playSound(null, player.blockPosition(), SoundEvents.ZOMBIE_STEP, SoundSource.HOSTILE, 0.5F, 0.6F);
+        level().playSound(null, player.blockPosition(), SoundEvents.ENTITY_ZOMBIE_AMBIENT, SoundSource.HOSTILE, 0.5F, 0.6F);
     }
 
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

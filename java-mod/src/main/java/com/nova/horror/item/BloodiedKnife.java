@@ -28,7 +28,7 @@ public class BloodiedKnife extends Item {
             player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 0));
             if (level.getServer()!=null) level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players add "+player.getName().getString()+" novahorror.fear 5");
             player.hurt(level.damageSources().magic(), 2.0F);
-            level.playSound(null, player.blockPosition(), SoundEvents.PLAYER_HURT, SoundSource.PLAYERS, 0.8F, 0.6F);
+            level.playSound(null, player.blockPosition(), SoundEvents.ENTITY_PLAYER_HURT, SoundSource.PLAYERS, 0.8F, 0.6F);
             player.displayClientMessage(Component.literal("§4چاقوی خونین قدرت میده ولی ترس میاره..."), true);
             player.getCooldowns().addCooldown(this, 200);
         }

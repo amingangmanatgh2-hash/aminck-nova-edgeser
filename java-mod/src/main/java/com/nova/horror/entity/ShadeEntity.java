@@ -66,7 +66,7 @@ public class ShadeEntity extends Monster {
                 getNavigation().moveTo(tx, getTarget().getY(), tz, 0.9);
                 isStalking = true;
                 if (circleTicks % 100 == 0) {
-                    level().playSound(null, blockPosition(), SoundEvents.WARDEN_AMBIENT, SoundSource.HOSTILE, 0.6F, 0.7F);
+                    level().playSound(null, blockPosition(), SoundEvents.ENTITY_WARDEN_AMBIENT, SoundSource.HOSTILE, 0.6F, 0.7F);
                 }
             }
         });
@@ -99,7 +99,7 @@ public class ShadeEntity extends Monster {
                 BlockPos behind = new BlockPos((int)behindX, (int)player.getY(), (int)behindZ);
                 if (level().getBlockState(behind).isAir() && level().getBlockState(behind.above()).isAir()) {
                     this.teleportTo(behindX, player.getY(), behindZ);
-                    level().playSound(null, behind, SoundEvents.ENDERMAN_TELEPORT, SoundSource.HOSTILE, 0.7F, 0.4F);
+                    level().playSound(null, behind, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundSource.HOSTILE, 0.7F, 0.4F);
                     player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 40, 0));
                     teleportCooldown = 200;
                 }
@@ -117,7 +117,7 @@ public class ShadeEntity extends Monster {
         double frontX = player.getX() + Math.sin(yaw) * 3;
         double frontZ = player.getZ() - Math.cos(yaw) * 3;
         this.teleportTo(frontX, player.getY(), frontZ);
-        level().playSound(null, blockPosition(), SoundEvents.WARDEN_ROAR, SoundSource.HOSTILE, 1.0F, 0.5F);
+        level().playSound(null, blockPosition(), SoundEvents.ENTITY_WARDEN_ROAR, SoundSource.HOSTILE, 1.0F, 0.5F);
         player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 30, 0));
         player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 60, 0));
         this.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 100, 0));
@@ -125,9 +125,9 @@ public class ShadeEntity extends Monster {
     }
 
     @Override
-    protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
+    protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
     @Override
-    protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
+    protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
     @Override
-    protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

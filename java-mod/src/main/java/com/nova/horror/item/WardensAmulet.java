@@ -45,8 +45,8 @@ public class WardensAmulet extends Item {
                 level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players remove "+player.getName().getString()+" novahorror.fear 3");
             }
             for (int i=0;i<15;i++) level.addParticle(net.minecraft.core.particles.ParticleTypes.SCULK_SOUL, pos.getX()+level.random.nextDouble()*4-2, pos.getY()+level.random.nextDouble()*2, pos.getZ()+level.random.nextDouble()*4-2, 0, 0.02, 0);
-            level.playSound(null, pos, SoundEvents.WARDEN_HEARTBEAT, SoundSource.PLAYERS, 0.8F, 1.2F);
-            level.playSound(null, pos, SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS, 0.7F, 1.0F);
+            level.playSound(null, pos, SoundEvents.ENTITY_WARDEN_HEARTBEAT, SoundSource.PLAYERS, 0.8F, 1.2F);
+            level.playSound(null, pos, SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS, 0.7F, 1.0F);
             player.displayClientMessage(Component.literal("§bطلسم واردن "+repelled+" Shade رو دفع کرد! ترس -3"), true);
             player.getCooldowns().addCooldown(this, 300);
         }

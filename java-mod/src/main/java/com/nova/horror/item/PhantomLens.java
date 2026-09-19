@@ -32,7 +32,7 @@ public class PhantomLens extends Item {
             }
             player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 200, 0));
             if (level.getServer()!=null) level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players remove "+player.getName().getString()+" novahorror.sanity 5");
-            level.playSound(null, player.blockPosition(), SoundEvents.SPYGLASS_USE, SoundSource.PLAYERS, 1.0F, 0.8F);
+            level.playSound(null, player.blockPosition(), SoundEvents.ENTITY_ITEM_FRAME_REMOVE_ITEM, SoundSource.PLAYERS, 1.0F, 0.8F);
             player.displayClientMessage(Component.literal("§5لنز شبح همه نامرئی‌ها رو نشون داد! عقل -5"), true);
             player.getCooldowns().addCooldown(this, 300);
         }

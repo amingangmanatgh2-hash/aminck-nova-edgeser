@@ -38,7 +38,7 @@ public class EctoplasmVial extends Item {
                     e.addEffect(new MobEffectInstance(MobEffects.GLOWING, 120, 0));
                 }
             }
-            level.playSound(null, pos, SoundEvents.BOTTLE_BREAK, SoundSource.PLAYERS, 1.0F, 0.8F);
+            level.playSound(null, pos, SoundEvents.ENTITY_BOTTLE_BREAK, SoundSource.PLAYERS, 1.0F, 0.8F);
             player.displayClientMessage(Component.literal("§aمه اکتوپلاسمی پخش شد - موجودات نامرئی نمایان شدند!"), true);
             if (!player.isCreative()) stack.shrink(1);
         }

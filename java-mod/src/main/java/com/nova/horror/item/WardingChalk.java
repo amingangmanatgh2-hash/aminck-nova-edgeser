@@ -41,7 +41,7 @@ public class WardingChalk extends Item {
                 m.setDeltaMovement(dx*0.6, 0.4, dz*0.6);
                 m.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100, 1));
             }
-            level.playSound(null, center, SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS, 1.0F, 0.8F);
+            level.playSound(null, center, SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS, 1.0F, 0.8F);
             player.displayClientMessage(Component.literal("§dدایره محافظ کشیده شد! 15 ثانیه موجودات نمی‌تونن نزدیک شن"), true);
             if (!player.isCreative()) stack.shrink(1);
         }

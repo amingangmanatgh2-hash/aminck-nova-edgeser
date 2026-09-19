@@ -26,7 +26,7 @@ public class HeartOfDread extends Item {
             
         player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 100, 0));
         player.displayClientMessage(Component.literal("§4§lقلب می‌تپد... §7" + level.getGameTime()), true);
-        level.playSound(null, player.blockPosition(), SoundEvents.WARDEN_HEARTBEAT, SoundSource.HOSTILE, 1.0F, 0.5F);
+        level.playSound(null, player.blockPosition(), SoundEvents.ENTITY_WARDEN_HEARTBEAT, SoundSource.HOSTILE, 1.0F, 0.5F);
         for (var mob : level.getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(15))) {
             double dx = mob.getX() - player.getX();
             double dz = mob.getZ() - player.getZ();

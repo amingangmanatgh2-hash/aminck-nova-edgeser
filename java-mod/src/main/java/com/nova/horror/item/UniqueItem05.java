@@ -23,7 +23,7 @@ public class UniqueItem05 extends Item {
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            player.getCooldowns().addCooldown(this, 600); player.heal(4.0F); level.playSound(null, player.blockPosition(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 1.0F, 1.0F);
+            player.getCooldowns().addCooldown(this, 600); player.heal(4.0F); level.playSound(null, player.blockPosition(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 1.0F, 1.0F);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

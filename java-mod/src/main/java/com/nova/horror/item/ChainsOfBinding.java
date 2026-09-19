@@ -31,7 +31,7 @@ public class ChainsOfBinding extends Item {
                 target.setDeltaMovement(0,0,0);
                 target.getNavigation().stop();
                 for (int i=0;i<10;i++) level.addParticle(net.minecraft.core.particles.ParticleTypes.CRIT, target.getX(), target.getY()+1, target.getZ(), level.random.nextDouble()-0.5, 0.1, level.random.nextDouble()-0.5);
-                level.playSound(null, target.blockPosition(), SoundEvents.CHAIN_BREAK, SoundSource.HOSTILE, 1.0F, 0.5F);
+                level.playSound(null, target.blockPosition(), SoundEvents.BLOCK_CHAIN_BREAK, SoundSource.HOSTILE, 1.0F, 0.5F);
                 player.displayClientMessage(Component.literal("§6زنجیرها "+target.getName().getString()+" رو 3 ثانیه بست!"), true);
                 if (!player.isCreative()) stack.shrink(1);
             } else {

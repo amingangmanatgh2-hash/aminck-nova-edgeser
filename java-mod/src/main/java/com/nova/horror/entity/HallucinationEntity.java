@@ -56,7 +56,7 @@ public class HallucinationEntity extends Monster {
                 double nx = getX()+rand.nextDouble()*20-10;
                 double nz = getZ()+rand.nextDouble()*20-10;
                 teleportTo(nx, getY(), nz);
-                level().playSound(null, blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.AMBIENT, 0.5F, 1.6F);
+                level().playSound(null, blockPosition(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundSource.AMBIENT, 0.5F, 1.6F);
                 level().addParticle(net.minecraft.core.particles.ParticleTypes.POOF, getX(), getY()+1, getZ(), 0, 0.1, 0);
                 p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 90, 0));
                 p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 40, 0));
@@ -72,7 +72,7 @@ public class HallucinationEntity extends Monster {
                     level().addParticle(net.minecraft.core.particles.ParticleTypes.WITCH, getX(), getY()+1, getZ(), 0, 0.02, 0);
                 }
                 if (phase % 90 == 0) {
-                    level().playSound(null, p.blockPosition(), SoundEvents.WHISPER_1, SoundSource.AMBIENT, 0.6F, 0.8F);
+                    level().playSound(null, p.blockPosition(), SoundEvents.AMBIENT_CAVE, SoundSource.AMBIENT, 0.6F, 0.8F);
                 }
             }
         }
@@ -95,7 +95,7 @@ public class HallucinationEntity extends Monster {
     }
 
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

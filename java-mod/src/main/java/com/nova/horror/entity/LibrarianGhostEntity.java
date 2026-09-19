@@ -72,7 +72,7 @@ public class LibrarianGhostEntity extends Monster {
                 book.setDeltaMovement((p.getX()-getX())*0.1, 0.3, (p.getZ()-getZ())*0.1);
                 level().addFreshEntity(book);
                 p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 60, 0));
-                level().playSound(null, blockPosition(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.HOSTILE, 0.8F, 0.5F);
+                level().playSound(null, blockPosition(), SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundSource.HOSTILE, 0.8F, 0.5F);
                 cooldown = 100;
             }
         }
@@ -99,7 +99,7 @@ public class LibrarianGhostEntity extends Monster {
     }
 
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

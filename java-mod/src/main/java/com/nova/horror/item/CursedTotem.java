@@ -33,7 +33,7 @@ public class CursedTotem extends Item {
             horror.moveTo(player.getX()+level.random.nextDouble()*6-3, player.getY(), player.getZ()+level.random.nextDouble()*6-3);
             horror.setCustomName(Component.literal("§4Totem Price"));
             level.addFreshEntity(horror);
-            level.playSound(null, player.blockPosition(), SoundEvents.TOTEM_USE, SoundSource.PLAYERS, 1.0F, 0.6F);
+            level.playSound(null, player.blockPosition(), SoundEvents.ITEM_TOTEM_USE, SoundSource.PLAYERS, 1.0F, 0.6F);
             player.displayClientMessage(Component.literal("§6توتم نجاتت داد ولی بهایی داشت... ترس +10 و یه موجود احضار شد!"), true);
             if (!player.isCreative()) stack.shrink(1);
         }

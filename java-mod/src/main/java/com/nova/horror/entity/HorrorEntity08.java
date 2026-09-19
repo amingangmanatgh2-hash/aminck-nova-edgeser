@@ -49,7 +49,7 @@ public class HorrorEntity08 extends Monster {
         if (level().isClientSide) return;
         if (cooldown > 0) cooldown--;
         phase++;
-        if (phase % 120 == 0) { for (int i=0;i<2;i++) { double x = getX()+rand.nextDouble()*10-5; double y = getY()+8+rand.nextDouble()*4; double z = getZ()+rand.nextDouble()*10-5; var bat = new net.minecraft.world.entity.ambient.Bat(EntityType.BAT, level()); bat.moveTo(x,y,z); bat.setCustomName(Component.literal("§8Grave Crow")); bat.setNoGravity(true); level().addFreshEntity(bat); } level().playSound(null, blockPosition(), SoundEvents.SOUL_ESCAPE, SoundSource.HOSTILE, 0.8F, 0.5F); }
+        if (phase % 120 == 0) { for (int i=0;i<2;i++) { double x = getX()+rand.nextDouble()*10-5; double y = getY()+8+rand.nextDouble()*4; double z = getZ()+rand.nextDouble()*10-5; var bat = new net.minecraft.world.entity.ambient.Bat(EntityType.BAT, level()); bat.moveTo(x,y,z); bat.setCustomName(Component.literal("§8Grave Crow")); bat.setNoGravity(true); level().addFreshEntity(bat); } level().playSound(null, blockPosition(), SoundEvents.PARTICLE_SOUL_ESCAPE, SoundSource.HOSTILE, 0.8F, 0.5F); }
     }
 
     public void raiseFog() { level().addParticle(net.minecraft.core.particles.ParticleTypes.CAMPFIRE_COSY_SMOKE, getX(), getY(), getZ(), 0, 0.05, 0); }
@@ -90,7 +90,7 @@ public class HorrorEntity08 extends Monster {
         if (getTarget() instanceof Player p && distanceTo(p) < 7 && cooldown==0) {
             p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 0));
             p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 30, 0));
-            level().playSound(null, p.blockPosition(), SoundEvents.WARDEN_AMBIENT, SoundSource.HOSTILE, 0.7F, 0.6F);
+            level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_WARDEN_AMBIENT, SoundSource.HOSTILE, 0.7F, 0.6F);
             cooldown = 100;
         }
         // Search for dark spots
@@ -107,7 +107,7 @@ public class HorrorEntity08 extends Monster {
             if (darkSpot != null) getNavigation().moveTo(darkSpot.getX(), darkSpot.getY(), darkSpot.getZ(), 0.8);
             }
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

@@ -32,7 +32,7 @@ public class BloodPactScroll extends Item {
                 level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players set "+player.getName().getString()+" novahorror.fear 0");
                 level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players set "+player.getName().getString()+" novahorror.sanity 100");
             }
-            level.playSound(null, player.blockPosition(), SoundEvents.WITHER_SPAWN, SoundSource.HOSTILE, 0.7F, 0.5F);
+            level.playSound(null, player.blockPosition(), SoundEvents.ENTITY_WITHER_SPAWN, SoundSource.HOSTILE, 0.7F, 0.5F);
             player.displayClientMessage(Component.literal("§4پیمان خون بسته شد! 5 قلب دادی ولی 30 ثانیه قوی و بی‌ترس شدی!"), true);
             player.getCooldowns().addCooldown(this, 800);
             if (!player.isCreative()) stack.shrink(1);

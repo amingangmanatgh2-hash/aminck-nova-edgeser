@@ -38,7 +38,7 @@ public class FogLantern extends Item {
                     e.addEffect(new MobEffectInstance(MobEffects.GLOWING, 80, 0));
                 }
             }
-            level.playSound(null, pos, SoundEvents.LANTERN_PLACE, SoundSource.BLOCKS, 1.0F, 1.2F);
+            level.playSound(null, pos, SoundEvents.BLOCK_LANTERN_PLACE, SoundSource.BLOCKS, 1.0F, 1.2F);
             player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 200, 0));
             player.displayClientMessage(Component.literal("§eفانوس مه "+cleared+" بلاک رو روشن کرد!"), true);
             player.getCooldowns().addCooldown(this, 200);

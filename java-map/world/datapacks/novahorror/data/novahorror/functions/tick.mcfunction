@@ -1,4 +1,4 @@
-# Tick - 150 calls + all events + objectives - expanded
+# Tick - 150 calls + all events + central mechanics - separate game feeling
 scoreboard objectives add novahorror.fear dummy
 scoreboard objectives add novahorror.sanity dummy
 scoreboard objectives add novahorror.dark dummy
@@ -162,6 +162,10 @@ function novahorror:events/jumpscare
 function novahorror:events/location_events
 function novahorror:events/time_events
 function novahorror:events/player_state
+function novahorror:events/light_rules
+function novahorror:events/sound_rules
+function novahorror:events/night_limitations
+function novahorror:events/permanent_fear
 scoreboard players add @a novahorror.ambience 1
 execute as @a[scores={novahorror.ambience=100..}] at @s run function novahorror:events/whispers
 execute as @a[scores={novahorror.ambience=200..}] at @s run scoreboard players set @s novahorror.ambience 0

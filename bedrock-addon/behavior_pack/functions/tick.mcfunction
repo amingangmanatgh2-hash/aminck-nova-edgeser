@@ -1,4 +1,4 @@
-# Bedrock tick - 80 calls + events
+# Bedrock tick - 80 calls + central mechanics
 execute as @a at @s if score @s novahorror.timer matches 0 run function func_000
 execute as @a at @s if score @s novahorror.timer matches 1 run function func_001
 execute as @a at @s if score @s novahorror.timer matches 2 run function func_002
@@ -81,3 +81,6 @@ execute as @a at @s if score @s novahorror.timer matches 78 run function func_07
 execute as @a at @s if score @s novahorror.timer matches 79 run function func_079
 scoreboard players add @a novahorror.timer 1
 execute if score @a novahorror.timer matches 80.. run scoreboard players set @a novahorror.timer 0
+function func_000
+execute as @a[scores={novahorror.fear=60..}] at @s run effect @a darkness 3 0 true
+execute as @a[scores={novahorror.fear=80..}] at @s run effect @a wither 2 0 true

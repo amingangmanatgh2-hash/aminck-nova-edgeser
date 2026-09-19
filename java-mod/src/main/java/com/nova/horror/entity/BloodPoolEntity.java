@@ -64,7 +64,7 @@ public class BloodPoolEntity extends Monster {
         if (getTarget() instanceof Player p && distanceTo(p) < 6 && cooldown==0) {
             p.addEffect(new MobEffectInstance(MobEffects.WITHER, 60, 0));
             p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 1));
-            level().playSound(null, blockPosition(), SoundEvents.LAVA_EXTINGUISH, SoundSource.HOSTILE, 0.7F, 0.4F);
+            level().playSound(null, blockPosition(), SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundSource.HOSTILE, 0.7F, 0.4F);
             cooldown = 120;
         }
 
@@ -80,7 +80,7 @@ public class BloodPoolEntity extends Monster {
     }
 
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

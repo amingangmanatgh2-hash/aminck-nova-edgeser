@@ -64,8 +64,8 @@ public class AbyssalCrawlerEntity extends Monster {
             p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 90, 1));
             p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100, 0));
             p.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 80, 0));
-            level().playSound(null, p.blockPosition(), SoundEvents.PORTAL_AMBIENT, SoundSource.HOSTILE, 0.9F, 0.3F);
-            level().playSound(null, p.blockPosition(), SoundEvents.SOUL_ESCAPE, SoundSource.HOSTILE, 0.7F, 0.4F);
+            level().playSound(null, p.blockPosition(), SoundEvents.BLOCK_PORTAL_AMBIENT, SoundSource.HOSTILE, 0.9F, 0.3F);
+            level().playSound(null, p.blockPosition(), SoundEvents.PARTICLE_SOUL_ESCAPE, SoundSource.HOSTILE, 0.7F, 0.4F);
             if (p.getY() < 12) {
                 p.hurt(level().damageSources().outOfWorld(), 2.5F);
                 p.displayClientMessage(Component.literal("§5...ورطه تو رو می‌کشه پایین..."), true);
@@ -109,7 +109,7 @@ public class AbyssalCrawlerEntity extends Monster {
     }
     public boolean isInAbyss() { return getY() < 15; }
     public void voidRift() {
-        level().playSound(null, blockPosition(), SoundEvents.PORTAL_TRIGGER, SoundSource.HOSTILE, 1.0F, 0.3F);
+        level().playSound(null, blockPosition(), SoundEvents.BLOCK_PORTAL_TRIGGER, SoundSource.HOSTILE, 1.0F, 0.3F);
         for (Player p : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(12))) {
             p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 40, 0));
             p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 80, 0));
@@ -117,7 +117,7 @@ public class AbyssalCrawlerEntity extends Monster {
     }
 
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

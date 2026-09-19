@@ -60,7 +60,7 @@ public class RustedMansionKey extends Item {
                     level.addParticle(net.minecraft.core.particles.ParticleTypes.WITCH, start.x+dir.x*t, start.y+dir.y*t+Math.sin(t*0.4)*0.3, start.z+dir.z*t, 0, 0.01, 0);
                 }
                 player.displayClientMessage(Component.literal("§7باید نزدیک در باشی... نزدیک‌ترین در "+String.format("%.0f", Math.sqrt(minDist))+" بلاک فاصله داره"), true);
-                level.playSound(null, player.blockPosition(), SoundEvents.CHAIN_BREAK, SoundSource.BLOCKS, 0.6F, 0.5F);
+                level.playSound(null, player.blockPosition(), SoundEvents.BLOCK_CHAIN_BREAK, SoundSource.BLOCKS, 0.6F, 0.5F);
             } else {
                 if (!player.isCreative()) stack.shrink(1);
                 player.getCooldowns().addCooldown(this, 200);

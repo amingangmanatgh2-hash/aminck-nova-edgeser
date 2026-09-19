@@ -57,7 +57,7 @@ public class DreamEaterEntity extends Monster {
                 p.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 100, 0));
                 p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 200, 0));
                 if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players add "+p.getName().getString()+" novahorror.fear 12");
-                level().playSound(null, p.blockPosition(), SoundEvents.WARDEN_ROAR, SoundSource.HOSTILE, 1.0F, 0.4F);
+                level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_WARDEN_ROAR, SoundSource.HOSTILE, 1.0F, 0.4F);
                 p.displayClientMessage(Component.literal("§4کابوس... نمی‌ذاره بخوابی..."), false);
                 teleportTo(p.getX()+rand.nextDouble()*4-2, p.getY(), p.getZ()+rand.nextDouble()*4-2);
                 cooldown = 300;
@@ -67,7 +67,7 @@ public class DreamEaterEntity extends Monster {
                 level().addParticle(net.minecraft.core.particles.ParticleTypes.SCULK_SOUL, getX(), getY()+1, getZ(), 0, 0.02, 0);
             }
         }
-        if (phase % 120 == 0) level().playSound(null, blockPosition(), SoundEvents.PHANTOM_AMBIENT, SoundSource.HOSTILE, 0.5F, 0.6F);
+        if (phase % 120 == 0) level().playSound(null, blockPosition(), SoundEvents.ENTITY_PHANTOM_AMBIENT, SoundSource.HOSTILE, 0.5F, 0.6F);
 
     }
 
@@ -84,7 +84,7 @@ public class DreamEaterEntity extends Monster {
     }
 
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

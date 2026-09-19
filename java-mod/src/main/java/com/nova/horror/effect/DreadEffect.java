@@ -24,7 +24,7 @@ public class DreadEffect extends MobEffect {
             if (player.tickCount % 120 == 0) {
                 String[] msgs = {"§7...صدای پا...", "§7...کسی دنبالم میاد...", "§8...سایه..."};
                 player.displayClientMessage(Component.literal(msgs[player.getRandom().nextInt(msgs.length)]), false);
-                player.level().playSound(null, player.blockPosition(), SoundEvents.WARDEN_AMBIENT, SoundSource.AMBIENT, 0.6F, 0.7F);
+                player.level().playSound(null, player.blockPosition(), SoundEvents.ENTITY_WARDEN_AMBIENT, SoundSource.AMBIENT, 0.6F, 0.7F);
             }
             if (player.tickCount % 60 == 0) {
                 player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 0, false, false));

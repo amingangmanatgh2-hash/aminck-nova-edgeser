@@ -29,7 +29,7 @@ public class WhisperingSkull extends Item {
         boolean isTrue = RANDOM.nextBoolean();
         String msg = isTrue ? trueHints[RANDOM.nextInt(trueHints.length)] : falseHints[RANDOM.nextInt(falseHints.length)];
         player.displayClientMessage(Component.literal((isTrue ? "§a[حقیقت] " : "§c[دروغ] ") + msg), false);
-        level.playSound(null, player.blockPosition(), SoundEvents.WHISPER_1, SoundSource.PLAYERS, 1.0F, 0.7F);
+        level.playSound(null, player.blockPosition(), SoundEvents.AMBIENT_CAVE, SoundSource.PLAYERS, 1.0F, 0.7F);
         player.getCooldowns().addCooldown(this, 400);
     
         }

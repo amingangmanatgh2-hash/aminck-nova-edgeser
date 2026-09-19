@@ -67,7 +67,7 @@ public class HorrorEntity03 extends Monster {
                 double tx = getTarget().getX() + rand.nextDouble()*12-6;
                 double tz = getTarget().getZ() + rand.nextDouble()*12-6;
                 teleportTo(tx, getTarget().getY(), tz);
-                level().playSound(null, blockPosition(), SoundEvents.FOX_SNIFF, SoundSource.HOSTILE, 0.8F, 0.5F);
+                level().playSound(null, blockPosition(), SoundEvents.ENTITY_FOX_SNIFF, SoundSource.HOSTILE, 0.8F, 0.5F);
                 cooldown = 80;
             }
         }
@@ -85,7 +85,7 @@ public class HorrorEntity03 extends Monster {
     }
 
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

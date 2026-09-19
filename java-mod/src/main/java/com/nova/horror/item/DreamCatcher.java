@@ -36,7 +36,7 @@ public class DreamCatcher extends Item {
                 }
             }
             if (level.getServer()!=null) level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players add "+player.getName().getString()+" novahorror.sanity 10");
-            level.playSound(null, player.blockPosition(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.AMBIENT, 1.0F, 1.2F);
+            level.playSound(null, player.blockPosition(), SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, SoundSource.AMBIENT, 1.0F, 1.2F);
             player.displayClientMessage(Component.literal("§dدریم‌کچر کابوس‌ها رو گرفت! عقل +10، "+killed+" DreamEater کشته شد"), true);
             player.getCooldowns().addCooldown(this, 500);
         }

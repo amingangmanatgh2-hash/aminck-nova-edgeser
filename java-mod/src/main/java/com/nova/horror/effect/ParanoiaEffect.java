@@ -22,7 +22,7 @@ public class ParanoiaEffect extends MobEffect {
     @Override public void applyEffectTick(LivingEntity entity, int amplifier) {
         if (entity instanceof Player player && !entity.level().isClientSide) {
             if (player.tickCount % 100 == 0) {
-                player.level().playSound(null, player.blockPosition().offset(player.getRandom().nextInt(6)-3,0,player.getRandom().nextInt(6)-3), SoundEvents.ZOMBIE_STEP, SoundSource.HOSTILE, 0.5F, 0.8F);
+                player.level().playSound(null, player.blockPosition().offset(player.getRandom().nextInt(6)-3,0,player.getRandom().nextInt(6)-3), SoundEvents.ENTITY_ZOMBIE_AMBIENT, SoundSource.HOSTILE, 0.5F, 0.8F);
                 player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 20, 0));
             }
             if (player.tickCount % 200 == 0) {

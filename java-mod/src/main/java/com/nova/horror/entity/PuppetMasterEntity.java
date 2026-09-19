@@ -59,7 +59,7 @@ public class PuppetMasterEntity extends Monster {
             }
             if (!minions.isEmpty()) {
                 addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 80, 0));
-                level().playSound(null, blockPosition(), SoundEvents.PUPPET_SHOW, SoundSource.HOSTILE, 0.7F, 0.6F);
+                level().playSound(null, blockPosition(), SoundEvents.BLOCK_BELL_RESONATE, SoundSource.HOSTILE, 0.7F, 0.6F);
             }
         }
         if (getTarget() instanceof Player p && distanceTo(p) < 4 && cooldown==0) {
@@ -88,7 +88,7 @@ public class PuppetMasterEntity extends Monster {
     }
 
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

@@ -25,7 +25,7 @@ public class WhisperingRadio extends Item {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             BlockPos radioPos = player.blockPosition().offset(level.random.nextInt(10)-5, 0, level.random.nextInt(10)-5);
-            level.playSound(null, radioPos, SoundEvents.WARDEN_AMBIENT, SoundSource.HOSTILE, 1.2F, 0.5F);
+            level.playSound(null, radioPos, SoundEvents.ENTITY_WARDEN_AMBIENT, SoundSource.HOSTILE, 1.2F, 0.5F);
             level.playSound(null, radioPos, SoundEvents.AMBIENT_CAVE, SoundSource.AMBIENT, 1.0F, 0.7F);
             level.addParticle(net.minecraft.core.particles.ParticleTypes.NOTE, radioPos.getX()+0.5, radioPos.getY()+1, radioPos.getZ()+0.5, 0.5, 0.5, 0.5);
             for (var m : level.getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(20))) {

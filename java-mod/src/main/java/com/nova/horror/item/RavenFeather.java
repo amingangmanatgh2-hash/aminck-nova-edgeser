@@ -32,7 +32,7 @@ public class RavenFeather extends Item {
             bat.setCustomName(Component.literal("§8Raven Guide"));
             bat.setNoGravity(true);
             level.addFreshEntity(bat);
-            level.playSound(null, player.blockPosition(), SoundEvents.PARROT_FLY, SoundSource.AMBIENT, 0.8F, 1.2F);
+            level.playSound(null, player.blockPosition(), SoundEvents.ENTITY_PARROT_IMITATE_GHAST, SoundSource.AMBIENT, 0.8F, 1.2F);
             player.displayClientMessage(Component.literal("§8پر کلاغ تو رو سبک کرد و راه رو نشون میده..."), true);
             if (!player.isCreative()) stack.shrink(1);
         }

@@ -37,7 +37,7 @@ public class EmberHeart extends Item {
                 m.setSecondsOnFire(5);
                 m.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100, 0));
             }
-            level.playSound(null, player.blockPosition(), SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
+            level.playSound(null, player.blockPosition(), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundSource.PLAYERS, 1.0F, 1.0F);
             player.displayClientMessage(Component.literal("§6قلب اخگر گرمات کرد و موجودات رو سوزوند!"), true);
             player.getCooldowns().addCooldown(this, 300);
             if (!player.isCreative() && level.random.nextFloat()<0.15) stack.shrink(1);

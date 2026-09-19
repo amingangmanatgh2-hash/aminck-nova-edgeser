@@ -58,7 +58,7 @@ public class AtticWatcherEntity extends Monster {
                     p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60, 0));
                     p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 80, 0));
                     p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 0));
-                    level().playSound(null, p.blockPosition(), SoundEvents.ENDERMAN_STARE, SoundSource.HOSTILE, 0.9F, 0.5F);
+                    level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_ENDERMAN_STARE, SoundSource.HOSTILE, 0.9F, 0.5F);
                     level().addParticle(net.minecraft.core.particles.ParticleTypes.ASH, p.getX(), p.getY()+1, p.getZ(), 0, 0.02, 0);
                     if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level().getServer().createCommandSourceStack(), "scoreboard players add "+p.getName().getString()+" novahorror.fear 2");
                 }
@@ -73,7 +73,7 @@ public class AtticWatcherEntity extends Monster {
         if (phase % 100 == 0) {
             level().addParticle(net.minecraft.core.particles.ParticleTypes.WHITE_ASH, getX(), getY()+2, getZ(), 0, 0.02, 0);
         }
-        if (phase % 200 == 0) level().playSound(null, blockPosition(), SoundEvents.PHANTOM_AMBIENT, SoundSource.HOSTILE, 0.4F, 0.7F);
+        if (phase % 200 == 0) level().playSound(null, blockPosition(), SoundEvents.ENTITY_PHANTOM_AMBIENT, SoundSource.HOSTILE, 0.4F, 0.7F);
 
     }
 
@@ -82,7 +82,7 @@ public class AtticWatcherEntity extends Monster {
         if (getY() > player.getY() + 4) {
             player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 50, 0));
             player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 30, 0));
-            level().playSound(null, player.blockPosition(), SoundEvents.ENDERMAN_STARE, SoundSource.HOSTILE, 0.8F, 0.6F);
+            level().playSound(null, player.blockPosition(), SoundEvents.ENTITY_ENDERMAN_STARE, SoundSource.HOSTILE, 0.8F, 0.6F);
         }
     }
     public void dropFeather() {
@@ -90,7 +90,7 @@ public class AtticWatcherEntity extends Monster {
     }
 
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

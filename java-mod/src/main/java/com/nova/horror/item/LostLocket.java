@@ -39,7 +39,7 @@ public class LostLocket extends Item {
                     level.addParticle(net.minecraft.core.particles.ParticleTypes.SOUL_FIRE_FLAME, x, y, z, 0, 0.01, 0);
                 }
                 player.displayClientMessage(Component.literal("§dگردنبند گمشده راه زیرزمین رو نشون میده..."), true);
-                level.playSound(null, player.blockPosition(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.AMBIENT, 0.8F, 1.1F);
+                level.playSound(null, player.blockPosition(), SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, SoundSource.AMBIENT, 0.8F, 1.1F);
             } else {
                 player.displayClientMessage(Component.literal("§7گردنبند سرده... باید نزدیک عمارت باشی"), true);
             }

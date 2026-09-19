@@ -37,7 +37,7 @@ public class SoulHarvester extends Item {
                 player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 0));
                 if (level.getServer()!=null) level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players remove "+player.getName().getString()+" novahorror.fear "+(harvested*2));
                 player.displayClientMessage(Component.literal("§5"+harvested+" روح درو شد! ترس -"+(harvested*2)), true);
-                level.playSound(null, player.blockPosition(), SoundEvents.SOUL_ESCAPE, SoundSource.PLAYERS, 0.9F, 0.8F);
+                level.playSound(null, player.blockPosition(), SoundEvents.PARTICLE_SOUL_ESCAPE, SoundSource.PLAYERS, 0.9F, 0.8F);
             } else {
                 player.displayClientMessage(Component.literal("§7روحی برای درو نیست..."), true);
             }

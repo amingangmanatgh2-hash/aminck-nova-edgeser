@@ -36,7 +36,7 @@ public class FrostbiteCharm extends Item {
                 m.setTicksFrozen(100);
             }
             player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 0));
-            level.playSound(null, player.blockPosition(), SoundEvents.GLASS_BREAK, SoundSource.BLOCKS, 0.8F, 1.5F);
+            level.playSound(null, player.blockPosition(), SoundEvents.BLOCK_GLASS_BREAK, SoundSource.BLOCKS, 0.8F, 1.5F);
             player.displayClientMessage(Component.literal("§bطلسم یخ همه رو منجمد کرد!"), true);
             player.getCooldowns().addCooldown(this, 350);
             if (!player.isCreative()) stack.shrink(1);

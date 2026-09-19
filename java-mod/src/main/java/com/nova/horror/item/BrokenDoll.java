@@ -38,7 +38,7 @@ public class BrokenDoll extends Item {
                 float health = nearest.getHealth();
                 float maxHealth = nearest.getMaxHealth();
                 player.displayClientMessage(Component.literal("§cعروسک به "+nearest.getName().getString()+" §c"+String.format("%.0f", minDist)+" بلاک اونورتر (HP "+String.format("%.0f", health)+"/"+String.format("%.0f", maxHealth)+") زاویه "+String.format("%.0f", angle)+" اشاره می‌کنه..."), true);
-                level.playSound(null, player.blockPosition(), SoundEvents.VILLAGER_AMBIENT, SoundSource.HOSTILE, 0.7F, 1.7F);
+                level.playSound(null, player.blockPosition(), SoundEvents.ENTITY_VILLAGER_AMBIENT, SoundSource.HOSTILE, 0.7F, 1.7F);
                 level.addParticle(net.minecraft.core.particles.ParticleTypes.WITCH, nearest.getX(), nearest.getY()+1, nearest.getZ(), 0, 0.05, 0);
                 nearest.addEffect(new MobEffectInstance(MobEffects.GLOWING, 60, 0));
                 // Increase fear if held too long (simulate via random)
@@ -51,7 +51,7 @@ public class BrokenDoll extends Item {
                 if (level.random.nextFloat() < 0.4) player.displayClientMessage(Component.literal(whispers[level.random.nextInt(whispers.length)]), false);
             } else {
                 player.displayClientMessage(Component.literal("§7عروسک ساکته... چیزی نزدیک نیست"), true);
-                level.playSound(null, player.blockPosition(), SoundEvents.VILLAGER_DEATH, SoundSource.HOSTILE, 0.5F, 1.5F);
+                level.playSound(null, player.blockPosition(), SoundEvents.ENTITY_VILLAGER_DEATH, SoundSource.HOSTILE, 0.5F, 1.5F);
             }
             player.getCooldowns().addCooldown(this, 100);
             player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 20, 0));

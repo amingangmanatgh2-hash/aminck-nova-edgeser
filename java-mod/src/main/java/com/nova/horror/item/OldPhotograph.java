@@ -36,7 +36,7 @@ public class OldPhotograph extends Item {
             }
             if (found>0) {
                 player.displayClientMessage(Component.literal("§aعکس قدیمی "+found+" دیوار مخفی رو نشون داد!"), true);
-                level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.PLAYERS, 1.0F, 0.6F);
+                level.playSound(null, pos, SoundEvents.ENTITY_ITEM_FRAME_REMOVE_ITEM, SoundSource.PLAYERS, 1.0F, 0.6F);
             } else {
                 player.displayClientMessage(Component.literal("§7عکس چیزی نشون نمیده... شاید جای دیگه..."), true);
             }

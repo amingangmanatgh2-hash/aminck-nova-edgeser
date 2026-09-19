@@ -49,7 +49,7 @@ public class HorrorEntity17 extends Monster {
         if (level().isClientSide) return;
         if (cooldown > 0) cooldown--;
         phase++;
-        if (getTarget() instanceof Player p) { if (lastPos == null) lastPos = p.blockPosition(); if (phase % 150 == 0) lastPos = p.blockPosition(); if (cooldown==0 && distanceTo(p) < 6) { p.teleportTo(lastPos.getX()+0.5, lastPos.getY(), lastPos.getZ()+0.5); level().playSound(null, lastPos, SoundEvents.PORTAL_AMBIENT, SoundSource.HOSTILE, 0.8F, 0.4F); p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 100, 0)); p.displayClientMessage(Component.literal("§5...زمان برگشت..."), false); cooldown=250; } }
+        if (getTarget() instanceof Player p) { if (lastPos == null) lastPos = p.blockPosition(); if (phase % 150 == 0) lastPos = p.blockPosition(); if (cooldown==0 && distanceTo(p) < 6) { p.teleportTo(lastPos.getX()+0.5, lastPos.getY(), lastPos.getZ()+0.5); level().playSound(null, lastPos, SoundEvents.BLOCK_PORTAL_AMBIENT, SoundSource.HOSTILE, 0.8F, 0.4F); p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 100, 0)); p.displayClientMessage(Component.literal("§5...زمان برگشت..."), false); cooldown=250; } }
     }
 
     public void saveLoopPos(BlockPos pos) { lastPos = pos; }
@@ -90,7 +90,7 @@ public class HorrorEntity17 extends Monster {
         if (getTarget() instanceof Player p && distanceTo(p) < 7 && cooldown==0) {
             p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 0));
             p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 30, 0));
-            level().playSound(null, p.blockPosition(), SoundEvents.WARDEN_AMBIENT, SoundSource.HOSTILE, 0.7F, 0.6F);
+            level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_WARDEN_AMBIENT, SoundSource.HOSTILE, 0.7F, 0.6F);
             cooldown = 100;
         }
         // Search for dark spots
@@ -107,7 +107,7 @@ public class HorrorEntity17 extends Monster {
             if (darkSpot != null) getNavigation().moveTo(darkSpot.getX(), darkSpot.getY(), darkSpot.getZ(), 0.8);
             }
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

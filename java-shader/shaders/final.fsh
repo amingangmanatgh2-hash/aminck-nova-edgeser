@@ -32,10 +32,12 @@ void main() {
     float warpX = sin(uv.y * 8.0 + time * 2.3) * distortionStrength;
     float warpY = cos(uv.x * 6.0 + time * 1.7) * distortionStrength * 0.6;
     vec2 distortedUV = uv + vec2(warpX, warpY);
+    distortedUV = clamp(distortedUV, 0.001, 0.999);
 
     // Extra sanity warp when very high fear
     float sanityWarp = blindness * blindness * 0.02;
     distortedUV += vec2(sin(distortedUV.y * 12.0 + time * 3.0), cos(distortedUV.x * 10.0 + time * 2.5)) * sanityWarp;
+    distortedUV = clamp(distortedUV, 0.001, 0.999);
 
     vec3 color = texture2D(colortex0, distortedUV).rgb;
 
@@ -72,8 +74,10 @@ void main() {
 
     // Chromatic aberration increase with fear
     float ca = blindness * 0.002;
-    vec3 colR = texture2D(colortex0, distortedUV + vec2(ca, 0)).rgb;
-    vec3 colB = texture2D(colortex0, distortedUV - vec2(ca, 0)).rgb;
+    vec2 safeR = clamp(distortedUV + vec2(ca, 0), 0.001, 0.999);
+    vec2 safeB = clamp(distortedUV - vec2(ca, 0), 0.001, 0.999);
+    vec3 colR = texture2D(colortex0, safeR).rgb;
+    vec3 colB = texture2D(colortex0, safeB).rgb;
     color.r = mix(color.r, colR.r, blindness * 0.5);
     color.b = mix(color.b, colB.b, blindness * 0.5);
 
@@ -82,13 +86,13 @@ void main() {
     color += (grain - 0.5) * (0.015 + blindness * 0.02);
 
     // Darken edges for sanity loss
-    float edgeDark = pow(length(uv - 0.5) * 1.8, 2.0) * blindness * 0.5;
+    float edgeDark = pow(clamp(length(uv - 0.5) * 1.8, 0.0, 1.5), 2.0) * blindness * 0.5;
     color -= edgeDark;
 
 
     // Extra layer: when fear very high (blindness >0.7), add intense edge darkness and noise
     if (blindness > 0.7) {
-        float edge = pow(length(uv - 0.5) * 2.2, 3.0) * (blindness - 0.7) * 2.5;
+        float edge = pow(clamp(length(uv - 0.5) * 2.2, 0.0, 1.5), 3.0) * (blindness - 0.7) * 2.5;
         color -= edge;
         // Intense red tint at edges
         float redEdge = smoothstep(0.4, 0.8, length(uv - 0.5)) * blindness * 0.5;

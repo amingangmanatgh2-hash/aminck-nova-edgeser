@@ -33,7 +33,7 @@ public class InkOfShadows extends Item {
             }
             player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 40, 0));
             player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 200, 0));
-            level.playSound(null, player.blockPosition(), SoundEvents.INK_SAC_USE, SoundSource.PLAYERS, 1.0F, 0.7F);
+            level.playSound(null, player.blockPosition(), SoundEvents.ITEM_BOTTLE_FILL, SoundSource.PLAYERS, 1.0F, 0.7F);
             player.displayClientMessage(Component.literal("§8جوهر سایه همه رو کور کرد!"), true);
             if (!player.isCreative()) stack.shrink(1);
         }

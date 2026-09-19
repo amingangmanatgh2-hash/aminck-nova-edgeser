@@ -38,7 +38,7 @@ public class FlickeringCandle extends Item {
             } else {
                 player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 30, 0));
                 player.displayClientMessage(Component.literal("§cشمع دیوانه‌وار می‌لرزه! "+nearby.size()+" موجود نزدیکته!"), true);
-                level.playSound(null, player.blockPosition(), SoundEvents.CANDLE_EXTINGUISH, SoundSource.AMBIENT, 0.6F, 0.7F);
+                level.playSound(null, player.blockPosition(), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundSource.AMBIENT, 0.6F, 0.7F);
             }
             player.getCooldowns().addCooldown(this, 80);
         }

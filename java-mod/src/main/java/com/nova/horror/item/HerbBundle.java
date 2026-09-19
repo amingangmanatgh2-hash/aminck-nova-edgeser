@@ -36,7 +36,7 @@ public class HerbBundle extends Item {
                 bat.discard();
             }
             if (level.getServer()!=null) level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players remove "+player.getName().getString()+" novahorror.fear 8");
-            level.playSound(null, player.blockPosition(), SoundEvents.GRASS_BREAK, SoundSource.PLAYERS, 0.8F, 1.2F);
+            level.playSound(null, player.blockPosition(), SoundEvents.BLOCK_GRASS_BREAK, SoundSource.PLAYERS, 0.8F, 1.2F);
             player.displayClientMessage(Component.literal("§aگیاهان مقدس اثر منفی رو پاک کردن! ترس -8"), true);
             if (!player.isCreative()) stack.shrink(1);
         }

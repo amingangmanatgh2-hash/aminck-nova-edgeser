@@ -65,7 +65,7 @@ public class StormCallerEntity extends Monster {
             if (phase % 120 == 0) {
                 level().setWeatherParameters(0, 600, true, true);
                 p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 80, 0));
-                level().playSound(null, p.blockPosition(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.WEATHER, 1.0F, 0.6F);
+                level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, SoundSource.WEATHER, 1.0F, 0.6F);
                 cooldown = 300;
             }
         }
@@ -75,11 +75,11 @@ public class StormCallerEntity extends Monster {
     
     public void callStorm() {
         level().setWeatherParameters(0, 1200, true, true);
-        level().playSound(null, blockPosition(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.WEATHER, 1.0F, 0.5F);
+        level().playSound(null, blockPosition(), SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, SoundSource.WEATHER, 1.0F, 0.5F);
     }
 
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

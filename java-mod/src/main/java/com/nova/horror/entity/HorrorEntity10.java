@@ -52,7 +52,7 @@ public class HorrorEntity10 extends Monster {
         if (getTarget() instanceof Player p) { float healthRatio = p.getHealth()/p.getMaxHealth(); if (healthRatio < 0.5) { addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 40, 1)); } if (phase % 30 == 0) { level().addParticle(net.minecraft.core.particles.ParticleTypes.DRIPPING_OBSIDIAN_TEAR, getX(), getY()+0.5, getZ(), 0, -0.1, 0); } }
     }
 
-    public void sniffBlood(Player p) { level().playSound(null, blockPosition(), SoundEvents.WOLF_GROWL, SoundSource.HOSTILE, 0.8F, 0.6F); }
+    public void sniffBlood(Player p) { level().playSound(null, blockPosition(), SoundEvents.ENTITY_WOLF_GROWL, SoundSource.HOSTILE, 0.8F, 0.6F); }
 
     
     public void enrichedBehavior_HorrorEntity10() {
@@ -90,7 +90,7 @@ public class HorrorEntity10 extends Monster {
         if (getTarget() instanceof Player p && distanceTo(p) < 7 && cooldown==0) {
             p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 0));
             p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 30, 0));
-            level().playSound(null, p.blockPosition(), SoundEvents.WARDEN_AMBIENT, SoundSource.HOSTILE, 0.7F, 0.6F);
+            level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_WARDEN_AMBIENT, SoundSource.HOSTILE, 0.7F, 0.6F);
             cooldown = 100;
         }
         // Search for dark spots
@@ -107,7 +107,7 @@ public class HorrorEntity10 extends Monster {
             if (darkSpot != null) getNavigation().moveTo(darkSpot.getX(), darkSpot.getY(), darkSpot.getZ(), 0.8);
             }
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

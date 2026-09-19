@@ -64,8 +64,8 @@ public class BasementDwellerEntity extends Monster {
                 p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 110, 2));
                 p.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 100, 1));
                 p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 80, 0));
-                level().playSound(null, p.blockPosition(), SoundEvents.ANVIL_LAND, SoundSource.HOSTILE, 0.7F, 0.2F);
-                level().playSound(null, p.blockPosition(), SoundEvents.ZOMBIE_BREAK_WOODEN_DOOR, SoundSource.HOSTILE, 0.8F, 0.3F);
+                level().playSound(null, p.blockPosition(), SoundEvents.BLOCK_ANVIL_LAND, SoundSource.HOSTILE, 0.7F, 0.2F);
+                level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundSource.HOSTILE, 0.8F, 0.3F);
                 teleportTo(p.getX(), p.getY(), p.getZ());
                 if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players add "+p.getName().getString()+" novahorror.fear 4");
                 cooldown = 160;
@@ -86,14 +86,14 @@ public class BasementDwellerEntity extends Monster {
         player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 2));
     }
     public void basementRoar() {
-        level().playSound(null, blockPosition(), SoundEvents.WARDEN_ROAR, SoundSource.HOSTILE, 1.0F, 0.3F);
+        level().playSound(null, blockPosition(), SoundEvents.ENTITY_WARDEN_ROAR, SoundSource.HOSTILE, 1.0F, 0.3F);
         for (Player p : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(12))) {
             p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 80, 0));
         }
     }
 
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

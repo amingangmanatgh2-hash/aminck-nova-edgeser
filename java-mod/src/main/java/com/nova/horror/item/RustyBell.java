@@ -31,8 +31,8 @@ public class RustyBell extends Item {
                 m.addEffect(new MobEffectInstance(MobEffects.GLOWING, 80, 0));
                 level.addParticle(net.minecraft.core.particles.ParticleTypes.NOTE, m.getX(), m.getY()+2, m.getZ(), 0, 0.1, 0);
             }
-            level.playSound(null, player.blockPosition(), SoundEvents.BELL_BLOCK, SoundSource.BLOCKS, 1.5F, 0.5F);
-            level.playSound(null, player.blockPosition(), SoundEvents.BELL_RESONATE, SoundSource.BLOCKS, 1.0F, 0.6F);
+            level.playSound(null, player.blockPosition(), SoundEvents.BLOCK_BELL_USE, SoundSource.BLOCKS, 1.5F, 0.5F);
+            level.playSound(null, player.blockPosition(), SoundEvents.BLOCK_BELL_RESONATE, SoundSource.BLOCKS, 1.0F, 0.6F);
             player.displayClientMessage(Component.literal("§6زنگ زنگ زد! همه موجودات 4 ثانیه گیج شدن!"), true);
             player.getCooldowns().addCooldown(this, 400);
         }

@@ -29,7 +29,7 @@ public class NightmareFuel extends Item {
             player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 0));
             if (level.getServer()!=null) level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players add "+player.getName().getString()+" novahorror.fear 15");
             player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 40, 0));
-            level.playSound(null, player.blockPosition(), SoundEvents.WARDEN_HEARTBEAT, SoundSource.HOSTILE, 1.0F, 0.6F);
+            level.playSound(null, player.blockPosition(), SoundEvents.ENTITY_WARDEN_HEARTBEAT, SoundSource.HOSTILE, 1.0F, 0.6F);
             player.displayClientMessage(Component.literal("§4سوخت کابوس قدرت داد ولی ترس 15 تا رفت بالا!"), true);
             player.getCooldowns().addCooldown(this, 400);
             if (!player.isCreative()) stack.shrink(1);

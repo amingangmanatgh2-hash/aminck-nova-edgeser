@@ -51,7 +51,7 @@ public class ChildLaughterEntity extends Monster {
         phase++;
         
         if (phase % 60 == 0) {
-            level().playSound(null, blockPosition(), SoundEvents.VILLAGER_AMBIENT, SoundSource.HOSTILE, 0.9F, 1.9F);
+            level().playSound(null, blockPosition(), SoundEvents.ENTITY_VILLAGER_AMBIENT, SoundSource.HOSTILE, 0.9F, 1.9F);
             level().addParticle(net.minecraft.core.particles.ParticleTypes.NOTE, getX(), getY()+1.5, getZ(), rand.nextDouble(), rand.nextDouble(), rand.nextDouble());
         }
         if (getTarget() instanceof Player p) {
@@ -64,7 +64,7 @@ public class ChildLaughterEntity extends Monster {
                     teleportTo(tx, p.getY(), tz);
                     p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 45, 0));
                     p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 50, 0));
-                    level().playSound(null, p.blockPosition(), SoundEvents.VILLAGER_HURT, SoundSource.HOSTILE, 0.7F, 1.8F);
+                    level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_VILLAGER_HURT, SoundSource.HOSTILE, 0.7F, 1.8F);
                     if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players add "+p.getName().getString()+" novahorror.fear 2");
                     cooldown = 100;
                 }
@@ -81,7 +81,7 @@ public class ChildLaughterEntity extends Monster {
 
     
     public void giggle() {
-        level().playSound(null, blockPosition(), SoundEvents.VILLAGER_AMBIENT, SoundSource.HOSTILE, 1.0F, 1.9F);
+        level().playSound(null, blockPosition(), SoundEvents.ENTITY_VILLAGER_AMBIENT, SoundSource.HOSTILE, 1.0F, 1.9F);
         level().addParticle(net.minecraft.core.particles.ParticleTypes.NOTE, getX(), getY()+1.5, getZ(), 0, 0.1, 0);
     }
     public void childAmbush(Player player) {
@@ -93,7 +93,7 @@ public class ChildLaughterEntity extends Monster {
     }
 
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

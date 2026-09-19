@@ -70,8 +70,8 @@ public class CeilingCrawlerEntity extends Monster {
                     p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 70, 0));
                     p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 90, 1));
                     p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 40, 0));
-                    level().playSound(null, blockPosition(), SoundEvents.SPIDER_PRIM, SoundSource.HOSTILE, 1.0F, 0.3F);
-                    level().playSound(null, p.blockPosition(), SoundEvents.PLAYER_HURT, SoundSource.PLAYERS, 0.6F, 0.8F);
+                    level().playSound(null, blockPosition(), SoundEvents.ENTITY_SPIDER_AMBIENT, SoundSource.HOSTILE, 1.0F, 0.3F);
+                    level().playSound(null, p.blockPosition(), SoundEvents.ENTITY_PLAYER_HURT, SoundSource.PLAYERS, 0.6F, 0.8F);
                     if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level().getServer().createCommandSourceStack(), "scoreboard players add "+p.getName().getString()+" novahorror.fear 3");
                     cooldown = 140;
                 }
@@ -117,7 +117,7 @@ public class CeilingCrawlerEntity extends Monster {
     }
 
 
-    @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }
+    @Override protected SoundEvent getAmbientSound() { return SoundEvents.ENTITY_WARDEN_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.ENTITY_WARDEN_HURT; }
+    @Override protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_WARDEN_DEATH; }
 }

@@ -34,7 +34,7 @@ public class VoidShard extends Item {
             for (int i=0;i<20;i++) level.addParticle(net.minecraft.core.particles.ParticleTypes.PORTAL, center.getX()+level.random.nextDouble()*6-3, center.getY()+level.random.nextDouble()*2, center.getZ()+level.random.nextDouble()*6-3, 0, 0.1, 0);
             if (level.getServer()!=null) level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players set "+player.getName().getString()+" novahorror.fear 0");
             player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 0));
-            level.playSound(null, center, SoundEvents.PORTAL_AMBIENT, SoundSource.HOSTILE, 1.0F, 0.3F);
+            level.playSound(null, center, SoundEvents.BLOCK_PORTAL_AMBIENT, SoundSource.HOSTILE, 1.0F, 0.3F);
             player.displayClientMessage(Component.literal("§5شکاف خلاء همه ترس رو پاک کرد! ولی به همه آسیب زد!"), true);
             if (!player.isCreative()) stack.shrink(1);
         }
