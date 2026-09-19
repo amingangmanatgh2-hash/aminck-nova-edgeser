@@ -1,8 +1,9 @@
-# Tick - 100 calls + night_crows + objectives
+# Tick - 150 calls + all events + objectives - expanded
 scoreboard objectives add novahorror.fear dummy
 scoreboard objectives add novahorror.sanity dummy
 scoreboard objectives add novahorror.dark dummy
 scoreboard objectives add novahorror.timer dummy
+scoreboard objectives add novahorror.ambience dummy
 execute as @a at @s if score @s novahorror.timer matches 0 run function novahorror:horror_000
 execute as @a at @s if score @s novahorror.timer matches 1 run function novahorror:horror_001
 execute as @a at @s if score @s novahorror.timer matches 2 run function novahorror:horror_002
@@ -103,6 +104,64 @@ execute as @a at @s if score @s novahorror.timer matches 96 run function novahor
 execute as @a at @s if score @s novahorror.timer matches 97 run function novahorror:horror_097
 execute as @a at @s if score @s novahorror.timer matches 98 run function novahorror:horror_098
 execute as @a at @s if score @s novahorror.timer matches 99 run function novahorror:horror_099
+execute as @a at @s if score @s novahorror.timer matches 100 run function novahorror:horror_100
+execute as @a at @s if score @s novahorror.timer matches 101 run function novahorror:horror_101
+execute as @a at @s if score @s novahorror.timer matches 102 run function novahorror:horror_102
+execute as @a at @s if score @s novahorror.timer matches 103 run function novahorror:horror_103
+execute as @a at @s if score @s novahorror.timer matches 104 run function novahorror:horror_104
+execute as @a at @s if score @s novahorror.timer matches 105 run function novahorror:horror_105
+execute as @a at @s if score @s novahorror.timer matches 106 run function novahorror:horror_106
+execute as @a at @s if score @s novahorror.timer matches 107 run function novahorror:horror_107
+execute as @a at @s if score @s novahorror.timer matches 108 run function novahorror:horror_108
+execute as @a at @s if score @s novahorror.timer matches 109 run function novahorror:horror_109
+execute as @a at @s if score @s novahorror.timer matches 110 run function novahorror:horror_110
+execute as @a at @s if score @s novahorror.timer matches 111 run function novahorror:horror_111
+execute as @a at @s if score @s novahorror.timer matches 112 run function novahorror:horror_112
+execute as @a at @s if score @s novahorror.timer matches 113 run function novahorror:horror_113
+execute as @a at @s if score @s novahorror.timer matches 114 run function novahorror:horror_114
+execute as @a at @s if score @s novahorror.timer matches 115 run function novahorror:horror_115
+execute as @a at @s if score @s novahorror.timer matches 116 run function novahorror:horror_116
+execute as @a at @s if score @s novahorror.timer matches 117 run function novahorror:horror_117
+execute as @a at @s if score @s novahorror.timer matches 118 run function novahorror:horror_118
+execute as @a at @s if score @s novahorror.timer matches 119 run function novahorror:horror_119
+execute as @a at @s if score @s novahorror.timer matches 120 run function novahorror:horror_120
+execute as @a at @s if score @s novahorror.timer matches 121 run function novahorror:horror_121
+execute as @a at @s if score @s novahorror.timer matches 122 run function novahorror:horror_122
+execute as @a at @s if score @s novahorror.timer matches 123 run function novahorror:horror_123
+execute as @a at @s if score @s novahorror.timer matches 124 run function novahorror:horror_124
+execute as @a at @s if score @s novahorror.timer matches 125 run function novahorror:horror_125
+execute as @a at @s if score @s novahorror.timer matches 126 run function novahorror:horror_126
+execute as @a at @s if score @s novahorror.timer matches 127 run function novahorror:horror_127
+execute as @a at @s if score @s novahorror.timer matches 128 run function novahorror:horror_128
+execute as @a at @s if score @s novahorror.timer matches 129 run function novahorror:horror_129
+execute as @a at @s if score @s novahorror.timer matches 130 run function novahorror:horror_130
+execute as @a at @s if score @s novahorror.timer matches 131 run function novahorror:horror_131
+execute as @a at @s if score @s novahorror.timer matches 132 run function novahorror:horror_132
+execute as @a at @s if score @s novahorror.timer matches 133 run function novahorror:horror_133
+execute as @a at @s if score @s novahorror.timer matches 134 run function novahorror:horror_134
+execute as @a at @s if score @s novahorror.timer matches 135 run function novahorror:horror_135
+execute as @a at @s if score @s novahorror.timer matches 136 run function novahorror:horror_136
+execute as @a at @s if score @s novahorror.timer matches 137 run function novahorror:horror_137
+execute as @a at @s if score @s novahorror.timer matches 138 run function novahorror:horror_138
+execute as @a at @s if score @s novahorror.timer matches 139 run function novahorror:horror_139
+execute as @a at @s if score @s novahorror.timer matches 140 run function novahorror:horror_140
+execute as @a at @s if score @s novahorror.timer matches 141 run function novahorror:horror_141
+execute as @a at @s if score @s novahorror.timer matches 142 run function novahorror:horror_142
+execute as @a at @s if score @s novahorror.timer matches 143 run function novahorror:horror_143
+execute as @a at @s if score @s novahorror.timer matches 144 run function novahorror:horror_144
+execute as @a at @s if score @s novahorror.timer matches 145 run function novahorror:horror_145
+execute as @a at @s if score @s novahorror.timer matches 146 run function novahorror:horror_146
+execute as @a at @s if score @s novahorror.timer matches 147 run function novahorror:horror_147
+execute as @a at @s if score @s novahorror.timer matches 148 run function novahorror:horror_148
+execute as @a at @s if score @s novahorror.timer matches 149 run function novahorror:horror_149
 scoreboard players add @a novahorror.timer 1
-execute if score @a novahorror.timer matches 100.. run scoreboard players set @a novahorror.timer 0
+execute if score @a novahorror.timer matches 150.. run scoreboard players set @a novahorror.timer 0
 function novahorror:events/night_crows
+function novahorror:events/whispers
+function novahorror:events/jumpscare
+function novahorror:events/location_events
+function novahorror:events/time_events
+function novahorror:events/player_state
+scoreboard players add @a novahorror.ambience 1
+execute as @a[scores={novahorror.ambience=100..}] at @s run function novahorror:events/whispers
+execute as @a[scores={novahorror.ambience=200..}] at @s run scoreboard players set @s novahorror.ambience 0
