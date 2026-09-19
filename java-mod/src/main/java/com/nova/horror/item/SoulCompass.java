@@ -17,7 +17,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.phys.Vec3;
 import java.util.Random;
 
-/** SoulCompass - Points to mansion door 0,70,0, spins when fear high - Real unique logic */
+/** SoulCompass - Points to mansion and nearest crow and nearest horror, spins when fear high, particle trail - Enriched deep logic */
 public class SoulCompass extends Item {
     private static final Random RANDOM = new Random();
     public SoulCompass() { super(new Properties().stacksTo(1).rarity(Rarity.RARE)); }
@@ -34,13 +34,48 @@ public class SoulCompass extends Item {
                 var obj = level.getServer().getScoreboard().getObjective("novahorror.fear");
                 if (obj!=null) fear = level.getServer().getScoreboard().getOrCreatePlayerScore(player.getName().getString(), obj).getScore();
             }
+            // Find nearest crow (bat)
+            var crows = level.getEntitiesOfClass(net.minecraft.world.entity.ambient.Bat.class, player.getBoundingBox().inflate(30));
+            String crowInfo = "";
+            if (!crows.isEmpty()) {
+                var nearestCrow = crows.get(0);
+                double minD = Double.MAX_VALUE;
+                for (var b : crows) {
+                    double d = b.distanceTo(player);
+                    if (d < minD) { minD = d; nearestCrow = b; }
+                }
+                crowInfo = " | کلاغ "+String.format("%.0f", minD)+" بلاک";
+                // Trail to crow
+                Vec3 s = player.position();
+                Vec3 e = nearestCrow.position();
+                Vec3 dir = e.subtract(s).normalize();
+                for (int i=0;i<8;i++) level.addParticle(net.minecraft.core.particles.ParticleTypes.ASH, s.x+dir.x*i, s.y+dir.y*i, s.z+dir.z*i, 0, 0.01, 0);
+            }
+            // Find nearest horror
+            var horrors = level.getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(25));
+            String horrorInfo = "";
+            if (!horrors.isEmpty()) {
+                var nearestH = horrors.get(0);
+                double minD = Double.MAX_VALUE;
+                for (var h : horrors) {
+                    double d = h.distanceTo(player);
+                    if (d < minD) { minD = d; nearestH = h; }
+                }
+                horrorInfo = " | هیولا "+String.format("%.0f", minD)+" بلاک";
+            }
             if (fear > 70) {
-                player.displayClientMessage(Component.literal("§cقطب‌نما دیوانه‌وار می‌چرخه! ترست خیلی بالاست!"), true);
+                player.displayClientMessage(Component.literal("§cقطب‌نما دیوانه‌وار می‌چرخه! ترست خیلی بالاست!"+crowInfo+horrorInfo), true);
                 level.playSound(null, player.blockPosition(), SoundEvents.COMPASS_LOCK, SoundSource.PLAYERS, 1.0F, 0.3F);
                 player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 60, 0));
+                for (int i=0;i<10;i++) level.addParticle(net.minecraft.core.particles.ParticleTypes.SMOKE, player.getX()+level.random.nextDouble()-0.5, player.getY()+1, player.getZ()+level.random.nextDouble()-0.5, 0, 0.05, 0);
             } else {
-                player.displayClientMessage(Component.literal("§aعمارت §7"+String.format("%.0f", dist)+"§a بلاک اونورتره - زاویه "+String.format("%.0f", ang)), true);
+                player.displayClientMessage(Component.literal("§aعمارت "+String.format("%.0f", dist)+" بلاک زاویه "+String.format("%.0f", ang)+crowInfo+horrorInfo), true);
                 level.playSound(null, player.blockPosition(), SoundEvents.COMPASS_LOCK, SoundSource.PLAYERS, 0.8F, 1.0F);
+                // Trail to mansion
+                Vec3 start = player.position();
+                Vec3 end = new Vec3(mansion.getX()+0.5, mansion.getY(), mansion.getZ()+0.5);
+                Vec3 dir = end.subtract(start).normalize();
+                for (int i=0;i<10;i++) level.addParticle(net.minecraft.core.particles.ParticleTypes.ENCHANT, start.x+dir.x*i*1.5, start.y+dir.y*i*1.5, start.z+dir.z*i*1.5, 0, 0.02, 0);
             }
             player.getCooldowns().addCooldown(this, 60);
         }

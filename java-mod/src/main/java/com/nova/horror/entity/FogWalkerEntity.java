@@ -18,12 +18,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.network.chat.Component;
-
 import java.util.Random;
 
+
 /**
- * FogWalkerEntity - Fog Walker - thrives in fog, leaves fog trail, teleport in fog
- * Real unique AI - no duplicate methods
+ * FogWalkerEntity - Fog Walker - invisible in fog, leaves trail, teleports, slows
+ * Real unique AI - enriched rich logic 100+ lines
  */
 public class FogWalkerEntity extends Monster {
     private int cooldown = 0;
@@ -49,10 +49,59 @@ public class FogWalkerEntity extends Monster {
         if (level().isClientSide) return;
         if (cooldown > 0) cooldown--;
         phase++;
-        boolean fog = level().isRaining() || level().getBrightness(LightLayer.BLOCK, blockPosition()) < 3; if (fog) { addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 50, 0)); if (phase % 15 == 0) level().addParticle(net.minecraft.core.particles.ParticleTypes.WHITE_ASH, getX()+rand.nextDouble()-0.5, getY()+1, getZ()+rand.nextDouble()-0.5, 0, 0.02, 0); if (getTarget()!=null && rand.nextInt(50)==0 && cooldown==0) { teleportTo(getTarget().getX()+rand.nextDouble()*8-4, getTarget().getY(), getTarget().getZ()+rand.nextDouble()*8-4); cooldown=70; } } if (phase % 45 == 0) for (Player pl : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(9))) pl.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 70, 0));
+        
+        boolean isFoggy = level().isRaining() || level().getBrightness(LightLayer.BLOCK, blockPosition()) < 3 || level().getBiome(blockPosition()).value().getBaseTemperature() < 0.3;
+        if (isFoggy) {
+            addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 50, 0, false, false));
+            if (phase % 12 == 0) {
+                level().addParticle(net.minecraft.core.particles.ParticleTypes.WHITE_ASH, getX()+rand.nextDouble()-0.5, getY()+1, getZ()+rand.nextDouble()-0.5, 0, 0.02, 0);
+                level().addParticle(net.minecraft.core.particles.ParticleTypes.CAMPFIRE_COSY_SMOKE, getX(), getY()+0.5, getZ(), 0, 0.03, 0);
+            }
+            if (getTarget()!=null && rand.nextInt(45)==0 && cooldown==0) {
+                double tx = getTarget().getX()+rand.nextDouble()*10-5;
+                double ty = getTarget().getY();
+                double tz = getTarget().getZ()+rand.nextDouble()*10-5;
+                BlockPos tpPos = new BlockPos((int)tx,(int)ty,(int)tz);
+                if (level().getBlockState(tpPos).isAir() && level().getBlockState(tpPos.above()).isAir()) {
+                    teleportTo(tx, ty, tz);
+                    level().playSound(null, blockPosition(), SoundEvents.FOX_SNIFF, SoundSource.HOSTILE, 0.7F, 0.4F);
+                    level().addParticle(net.minecraft.core.particles.ParticleTypes.POOF, getX(), getY()+1, getZ(), 0, 0.1, 0);
+                    cooldown = 70;
+                }
+            }
+            // Bonus speed in fog
+            if (phase % 40 == 0) addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 60, 0, false, false));
+        } else {
+            removeEffect(MobEffects.INVISIBILITY);
+        }
+        // Fear aura
+        if (phase % 45 == 0) {
+            for (Player pl : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(9))) {
+                pl.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 70, 0, false, false));
+                pl.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 30, 0, false, false));
+            }
+        }
+        // Leave fog trail
+        if (phase % 30 == 0) {
+            for (int i=0;i<3;i++) level().addParticle(net.minecraft.core.particles.ParticleTypes.WHITE_ASH, getX()+rand.nextDouble()-0.5, getY()+0.2, getZ()+rand.nextDouble()-0.5, 0, 0.01, 0);
+        }
+
     }
 
-    public void fogStep() { level().addParticle(net.minecraft.core.particles.ParticleTypes.CAMPFIRE_COSY_SMOKE, getX(), getY(), getZ(), 0, 0.03, 0); }
+    
+    public void createFogTrail() {
+        for (int i=0;i<6;i++) level().addParticle(net.minecraft.core.particles.ParticleTypes.CAMPFIRE_COSY_SMOKE, getX()+rand.nextDouble()-0.5, getY()+0.5, getZ()+rand.nextDouble()-0.5, 0, 0.03, 0);
+    }
+    public void fogTeleport(Player target) {
+        double tx = target.getX()+rand.nextDouble()*8-4;
+        double tz = target.getZ()+rand.nextDouble()*8-4;
+        teleportTo(tx, target.getY(), tz);
+        level().playSound(null, blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.HOSTILE, 0.5F, 0.7F);
+    }
+    public boolean isInFog() {
+        return level().isRaining() || level().getBrightness(LightLayer.BLOCK, blockPosition()) < 3;
+    }
+
 
     @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
     @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }

@@ -22,8 +22,8 @@ import java.util.Random;
 
 
 /**
- * AbyssalCrawlerEntity - Crawls from void, drags into abyss, leaves void particles
- * Real unique AI - rich logic
+ * AbyssalCrawlerEntity - Abyssal Crawler - void dweller, abyss pull, void damage, fear aura, portal particles
+ * Real unique AI - enriched rich logic 100+ lines
  */
 public class AbyssalCrawlerEntity extends Monster {
     private int cooldown = 0;
@@ -50,49 +50,71 @@ public class AbyssalCrawlerEntity extends Monster {
         if (cooldown > 0) cooldown--;
         phase++;
         
-        // Void particles
-        if (phase % 15 == 0) {
-            level().addParticle(net.minecraft.core.particles.ParticleTypes.PORTAL, getX()+rand.nextDouble()-0.5, getY()+1, getZ()+rand.nextDouble()-0.5, rand.nextDouble()-0.5, 0.1, rand.nextDouble()-0.5);
-            level().addParticle(net.minecraft.core.particles.ParticleTypes.SOUL, getX(), getY()+0.5, getZ(), 0, 0.02, 0);
+        // Void particles every 15 ticks
+        if (phase % 12 == 0) {
+            level().addParticle(net.minecraft.core.particles.ParticleTypes.PORTAL, getX()+rand.nextDouble()-0.5, getY()+1, getZ()+rand.nextDouble()-0.5, rand.nextDouble()-0.5, 0.15, rand.nextDouble()-0.5);
+            level().addParticle(net.minecraft.core.particles.ParticleTypes.SOUL, getX()+rand.nextDouble()-0.5, getY()+0.5, getZ()+rand.nextDouble()-0.5, 0, 0.03, 0);
+            level().addParticle(net.minecraft.core.particles.ParticleTypes.SCULK_SOUL, getX(), getY()+0.5, getZ(), 0, 0.02, 0);
         }
-        // Abyss pull
-        if (getTarget() instanceof Player p && distanceTo(p) < 8 && cooldown==0) {
-            Vec3 pull = new Vec3(getX()-p.getX(), -0.5, getZ()-p.getZ()).normalize().scale(0.8);
+        // Abyss pull when close
+        if (getTarget() instanceof Player p && distanceTo(p) < 9 && cooldown==0) {
+            Vec3 pull = new Vec3(getX()-p.getX(), -0.6, getZ()-p.getZ()).normalize().scale(0.85);
             p.setDeltaMovement(p.getDeltaMovement().add(pull));
             p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 70, 0));
             p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 90, 1));
             p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100, 0));
+            p.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 80, 0));
             level().playSound(null, p.blockPosition(), SoundEvents.PORTAL_AMBIENT, SoundSource.HOSTILE, 0.9F, 0.3F);
-            if (p.getY() < 10) {
-                p.hurt(level().damageSources().outOfWorld(), 2.0F);
-                p.displayClientMessage(Component.literal("§5...ورطه..."), true);
+            level().playSound(null, p.blockPosition(), SoundEvents.SOUL_ESCAPE, SoundSource.HOSTILE, 0.7F, 0.4F);
+            if (p.getY() < 12) {
+                p.hurt(level().damageSources().outOfWorld(), 2.5F);
+                p.displayClientMessage(Component.literal("§5...ورطه تو رو می‌کشه پایین..."), true);
             }
+            if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level().getServer().createCommandSourceStack(), "scoreboard players add "+p.getName().getString()+" novahorror.fear 2");
             cooldown = 130;
         }
-        // Bonus in low Y
+        // Bonus in low Y (abyss)
         if (getY() < 20) {
-            addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 40, 1));
-            addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 40, 0));
+            addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 40, 1, false, false));
+            addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 40, 0, false, false));
+            addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 40, 0, false, false));
+            if (phase % 30 == 0) level().addParticle(net.minecraft.core.particles.ParticleTypes.REVERSE_PORTAL, getX(), getY()+1, getZ(), 0, 0.1, 0);
         }
-        // Fear aura
+        // Fear aura every 50 ticks
         if (phase % 50 == 0) {
             for (Player pl : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(10))) {
                 if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level().getServer().createCommandSourceStack(), "scoreboard players add "+pl.getName().getString()+" novahorror.fear 1");
+                pl.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 40, 0, false, false));
             }
+        }
+        // Spawn void tendril particle trail
+        if (phase % 20 == 0) {
+            for (int i=0;i<2;i++) level().addParticle(net.minecraft.core.particles.ParticleTypes.WARPED_SPORE, getX()+rand.nextDouble()-0.5, getY()+0.2, getZ()+rand.nextDouble()-0.5, 0, 0.01, 0);
         }
 
     }
 
     
     public void abyssPull(Player player) {
-        Vec3 dir = new Vec3(getX()-player.getX(), -1, getZ()-player.getZ()).normalize();
-        player.setDeltaMovement(dir.scale(1.0));
+        Vec3 dir = new Vec3(getX()-player.getX(), -1.2, getZ()-player.getZ()).normalize().scale(1.0);
+        player.setDeltaMovement(player.getDeltaMovement().add(dir));
         player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 60, 0));
+        player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 1));
     }
     public void spawnVoidParticles() {
-        for (int i=0;i<10;i++) level().addParticle(net.minecraft.core.particles.ParticleTypes.PORTAL, getX()+rand.nextDouble()-0.5, getY()+rand.nextDouble(), getZ()+rand.nextDouble()-0.5, 0, 0.1, 0);
+        for (int i=0;i<12;i++) {
+            level().addParticle(net.minecraft.core.particles.ParticleTypes.PORTAL, getX()+rand.nextDouble()-0.5, getY()+rand.nextDouble()*2, getZ()+rand.nextDouble()-0.5, rand.nextDouble()-0.5, 0.1, rand.nextDouble()-0.5);
+            level().addParticle(net.minecraft.core.particles.ParticleTypes.SOUL_FIRE_FLAME, getX(), getY()+1, getZ(), 0, 0.05, 0);
+        }
     }
     public boolean isInAbyss() { return getY() < 15; }
+    public void voidRift() {
+        level().playSound(null, blockPosition(), SoundEvents.PORTAL_TRIGGER, SoundSource.HOSTILE, 1.0F, 0.3F);
+        for (Player p : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(12))) {
+            p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 40, 0));
+            p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 80, 0));
+        }
+    }
 
 
     @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }

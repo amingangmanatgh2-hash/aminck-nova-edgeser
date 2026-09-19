@@ -85,6 +85,23 @@ void main() {
     float edgeDark = pow(length(uv - 0.5) * 1.8, 2.0) * blindness * 0.5;
     color -= edgeDark;
 
+
+    // Extra layer: when fear very high (blindness >0.7), add intense edge darkness and noise
+    if (blindness > 0.7) {
+        float edge = pow(length(uv - 0.5) * 2.2, 3.0) * (blindness - 0.7) * 2.5;
+        color -= edge;
+        // Intense red tint at edges
+        float redEdge = smoothstep(0.4, 0.8, length(uv - 0.5)) * blindness * 0.5;
+        color = mix(color, vec3(0.5, 0.05, 0.05), redEdge);
+        // More noise
+        float intenseGrain = hash(uv * 200.0 + time * 8.0);
+        color += (intenseGrain - 0.5) * blindness * 0.08;
+    }
+
+    // Extra: sanity based desaturation flicker
+    float sanityFlicker = sin(time * 5.0) * 0.5 + 0.5;
+    color = mix(color, vec3(lum), sanityFlicker * blindness * 0.1);
+
     color = clamp(color, 0.0, 1.0);
     gl_FragColor = vec4(color, 1.0);
 }

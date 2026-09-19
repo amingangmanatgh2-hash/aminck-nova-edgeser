@@ -54,6 +54,59 @@ public class HorrorEntity07 extends Monster {
 
     public void giggle() { level().playSound(null, blockPosition(), SoundEvents.PARROT_IMITATE_GHAST, SoundSource.AMBIENT, 0.6F, 1.9F); }
 
+    
+    public void enrichedBehavior_HorrorEntity07() {
+        // Unique enriched behavior for HorrorEntity07
+        for (Player p : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(8))) {
+            p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 40, 0));
+            level().addParticle(net.minecraft.core.particles.ParticleTypes.SCULK_SOUL, p.getX(), p.getY()+1, p.getZ(), 0, 0.02, 0);
+        }
+    }
+    public void applyFearAura() {
+        if (level().isClientSide) return;
+        for (Player p : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(10))) {
+            if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level().getServer().createCommandSourceStack(), "scoreboard players add "+p.getName().getString()+" novahorror.fear 1");
+        }
+    }
+
+    
+        // Enriched fear aura
+        if (phase % 50 == 0) {
+            for (Player pl : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(9))) {
+                pl.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 30, 0, false, false));
+                if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level().getServer().createCommandSourceStack(), "scoreboard players add "+pl.getName().getString()+" novahorror.fear 1");
+            }
+        }
+        // Particle trail
+        if (phase % 20 == 0) {
+            level().addParticle(net.minecraft.core.particles.ParticleTypes.ASH, getX()+rand.nextDouble()-0.5, getY()+1, getZ()+rand.nextDouble()-0.5, 0, 0.02, 0);
+            level().addParticle(net.minecraft.core.particles.ParticleTypes.SOUL, getX(), getY()+0.5, getZ(), 0, 0.01, 0);
+        }
+        // Sound ambience
+        if (phase % 120 == 0) {
+            level().playSound(null, blockPosition(), SoundEvents.AMBIENT_CAVE, SoundSource.AMBIENT, 0.5F, 0.7F);
+        }
+        // Unique behavior for HorrorEntity07
+        if (getTarget() instanceof Player p && distanceTo(p) < 7 && cooldown==0) {
+            p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 0));
+            p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 30, 0));
+            level().playSound(null, p.blockPosition(), SoundEvents.WARDEN_AMBIENT, SoundSource.HOSTILE, 0.7F, 0.6F);
+            cooldown = 100;
+        }
+        // Search for dark spots
+        if (phase % 80 == 0 && getTarget()==null) {
+            BlockPos darkSpot = null;
+            int minLight = 15;
+            for (BlockPos pos : BlockPos.betweenClosed(blockPosition().offset(-10,-3,-10), blockPosition().offset(10,3,10))) {
+                int light = level().getBrightness(LightLayer.BLOCK, pos);
+                if (light < minLight && level().getBlockState(pos).isAir()) {
+                    minLight = light;
+                    darkSpot = pos.immutable();
+                }
+            }
+            if (darkSpot != null) getNavigation().moveTo(darkSpot.getX(), darkSpot.getY(), darkSpot.getZ(), 0.8);
+            }
+
     @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
     @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }
     @Override protected SoundEvent getDeathSound() { return SoundEvents.WARDEN_DEATH; }

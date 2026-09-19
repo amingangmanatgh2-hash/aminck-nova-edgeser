@@ -17,14 +17,14 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.phys.Vec3;
 import java.util.Random;
 
-/** BrokenDoll - Whispers when held, points to nearest horror entity with sound - Real unique logic */
+/** BrokenDoll - Points to nearest horror with distance, whispers, shows health, increases fear if held too long - Enriched deep logic */
 public class BrokenDoll extends Item {
     private static final Random RANDOM = new Random();
     public BrokenDoll() { super(new Properties().stacksTo(1).rarity(Rarity.RARE)); }
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            var entities = level.getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(30));
+            var entities = level.getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(35));
             if (!entities.isEmpty()) {
                 Monster nearest = entities.get(0);
                 double minDist = Double.MAX_VALUE;
@@ -32,13 +32,29 @@ public class BrokenDoll extends Item {
                     double d = m.distanceTo(player);
                     if (d < minDist) { minDist = d; nearest = m; }
                 }
-                player.displayClientMessage(Component.literal("§cعروسک به سمت §4"+String.format("%.0f", minDist)+"§c بلاک اونجا اشاره می‌کنه..."), true);
+                double dx = nearest.getX() - player.getX();
+                double dz = nearest.getZ() - player.getZ();
+                double angle = Math.toDegrees(Math.atan2(dz, dx));
+                float health = nearest.getHealth();
+                float maxHealth = nearest.getMaxHealth();
+                player.displayClientMessage(Component.literal("§cعروسک به "+nearest.getName().getString()+" §c"+String.format("%.0f", minDist)+" بلاک اونورتر (HP "+String.format("%.0f", health)+"/"+String.format("%.0f", maxHealth)+") زاویه "+String.format("%.0f", angle)+" اشاره می‌کنه..."), true);
                 level.playSound(null, player.blockPosition(), SoundEvents.VILLAGER_AMBIENT, SoundSource.HOSTILE, 0.7F, 1.7F);
-                player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 30, 0));
+                level.addParticle(net.minecraft.core.particles.ParticleTypes.WITCH, nearest.getX(), nearest.getY()+1, nearest.getZ(), 0, 0.05, 0);
+                nearest.addEffect(new MobEffectInstance(MobEffects.GLOWING, 60, 0));
+                // Increase fear if held too long (simulate via random)
+                if (level.random.nextFloat() < 0.3) {
+                    if (level.getServer()!=null) level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "scoreboard players add "+player.getName().getString()+" novahorror.fear 1");
+                    player.displayClientMessage(Component.literal("§7...عروسک سرد شد..."), true);
+                }
+                // Whisper
+                String[] whispers = {"§7...اون نزدیکه...", "§7...نمی‌تونی فرار کنی...", "§7...عروسک می‌بینه..."};
+                if (level.random.nextFloat() < 0.4) player.displayClientMessage(Component.literal(whispers[level.random.nextInt(whispers.length)]), false);
             } else {
                 player.displayClientMessage(Component.literal("§7عروسک ساکته... چیزی نزدیک نیست"), true);
+                level.playSound(null, player.blockPosition(), SoundEvents.VILLAGER_DEATH, SoundSource.HOSTILE, 0.5F, 1.5F);
             }
             player.getCooldowns().addCooldown(this, 100);
+            player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 20, 0));
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

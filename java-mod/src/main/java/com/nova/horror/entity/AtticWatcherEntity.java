@@ -18,12 +18,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.network.chat.Component;
-
 import java.util.Random;
 
+
 /**
- * AtticWatcherEntity - Attic Watcher - watches from high, stare causes blindness
- * Real unique AI - no duplicate methods
+ * AtticWatcherEntity - Attic Watcher - watches from high, stare causes blindness, whispers, drops feathers
+ * Real unique AI - enriched rich logic 100+ lines
  */
 public class AtticWatcherEntity extends Monster {
     private int cooldown = 0;
@@ -40,7 +40,7 @@ public class AtticWatcherEntity extends Monster {
 
     @Override
     protected void registerGoals() {
-        goalSelector.addGoal(0, new FloatGoal(this)); goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.05, false)); goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 20.0F)); targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        goalSelector.addGoal(0, new FloatGoal(this)); goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.05, false)); goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 20.0F)); goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 0.6)); targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
     @Override
@@ -49,10 +49,46 @@ public class AtticWatcherEntity extends Monster {
         if (level().isClientSide) return;
         if (cooldown > 0) cooldown--;
         phase++;
-        if (getTarget() instanceof Player p && getY() > p.getY()+4) { if (phase % 80 == 0) { p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60, 0)); p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 80, 0)); level().playSound(null, p.blockPosition(), SoundEvents.ENDERMAN_STARE, SoundSource.HOSTILE, 0.9F, 0.5F); } addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 80, 0)); }
+        
+        if (getTarget() instanceof Player p) {
+            boolean high = getY() > p.getY() + 4.5;
+            if (high) {
+                addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 80, 0, false, false));
+                if (phase % 75 == 0) {
+                    p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60, 0));
+                    p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 80, 0));
+                    p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 0));
+                    level().playSound(null, p.blockPosition(), SoundEvents.ENDERMAN_STARE, SoundSource.HOSTILE, 0.9F, 0.5F);
+                    level().addParticle(net.minecraft.core.particles.ParticleTypes.ASH, p.getX(), p.getY()+1, p.getZ(), 0, 0.02, 0);
+                    if (level().getServer()!=null) level().getServer().getCommands().performPrefixedCommand(level().getServer().createCommandSourceStack(), "scoreboard players add "+p.getName().getString()+" novahorror.fear 2");
+                }
+                if (phase % 150 == 0) {
+                    p.displayClientMessage(Component.literal("§7...از بالا نگاهت می‌کنه..."), false);
+                }
+            } else {
+                removeEffect(MobEffects.INVISIBILITY);
+                if (phase % 60 == 0) getNavigation().moveTo(p, 1.0);
+            }
+        }
+        if (phase % 100 == 0) {
+            level().addParticle(net.minecraft.core.particles.ParticleTypes.WHITE_ASH, getX(), getY()+2, getZ(), 0, 0.02, 0);
+        }
+        if (phase % 200 == 0) level().playSound(null, blockPosition(), SoundEvents.PHANTOM_AMBIENT, SoundSource.HOSTILE, 0.4F, 0.7F);
+
     }
 
-    public void watch(Player p) { p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 50, 0)); }
+    
+    public void watchFromAbove(Player player) {
+        if (getY() > player.getY() + 4) {
+            player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 50, 0));
+            player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 30, 0));
+            level().playSound(null, player.blockPosition(), SoundEvents.ENDERMAN_STARE, SoundSource.HOSTILE, 0.8F, 0.6F);
+        }
+    }
+    public void dropFeather() {
+        level().addParticle(net.minecraft.core.particles.ParticleTypes.WHITE_ASH, getX(), getY(), getZ(), 0, -0.05, 0);
+    }
+
 
     @Override protected SoundEvent getAmbientSound() { return SoundEvents.WARDEN_AMBIENT; }
     @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundEvents.WARDEN_HURT; }

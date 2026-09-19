@@ -81,5 +81,18 @@ void main() {
     float vign = 1.0 - dot((uv - 0.5)*1.5, (uv - 0.5)*1.5) * 0.2;
     color *= vign;
 
+
+    // Extra: when fear high, add dark fog at bottom of screen
+    if (blindness > 0.6) {
+        float bottomFog = smoothstep(0.0, 0.5, 1.0 - uv.y) * blindness * 0.4;
+        vec3 darkFog = vec3(0.08, 0.02, 0.02);
+        color = mix(color, darkFog, bottomFog);
+    }
+    // Extra: god rays intensity based on blindness (fear makes rays bloodier)
+    if (blindness > 0.5) {
+        float bloodyRay = godray * blindness * 0.5;
+        color += bloodyRay * vec3(0.8, 0.1, 0.1) * 0.4;
+    }
+
     gl_FragData[0] = vec4(color, 1.0);
 }
