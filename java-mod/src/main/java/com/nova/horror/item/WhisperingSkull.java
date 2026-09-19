@@ -16,31 +16,22 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.monster.Monster;
 import java.util.Random;
 
-/**
- * WhisperingSkull - Whispering Skull - random true/false hints
- * Real unique logic, not copy-paste
- */
+/** WhisperingSkull - Random true/false hints, whisper sound - Real unique */
 public class WhisperingSkull extends Item {
     private static final Random RANDOM = new Random();
     public WhisperingSkull() { super(new Properties().stacksTo(1).rarity(Rarity.EPIC)); }
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             
-        String[] whispers = {
-            "§7...کلید سرداب زیر کتابخانه است...",
-            "§7...به آینه اعتماد نکن...",
-            "§7...الارا هنوز زنده است...",
-            "§7...او دروغ می‌گوید! فرار کن!",
-            "§7...قلب را نابود کن... قبل از اینکه تو را ببلعد..."
-        };
-        String msg = whispers[RANDOM.nextInt(whispers.length)];
-        player.displayClientMessage(Component.literal(msg), false);
-        level.playSound(null, player.blockPosition(), SoundEvents.WHISPER_1, SoundSource.PLAYERS, 1.0F, 0.8F);
+        String[] trueHints = {"§aکلید سرداب زیر کتابخانه است", "§aالارا در Y=15 است", "§aفانوس ارواح مسیر را نشان می‌دهد"};
+        String[] falseHints = {"§cبه آینه اعتماد کن", "§cفرار کن از تونل", "§cقلب را بخور"};
+        boolean isTrue = RANDOM.nextBoolean();
+        String msg = isTrue ? trueHints[RANDOM.nextInt(trueHints.length)] : falseHints[RANDOM.nextInt(falseHints.length)];
+        player.displayClientMessage(Component.literal((isTrue ? "§a[حقیقت] " : "§c[دروغ] ") + msg), false);
+        level.playSound(null, player.blockPosition(), SoundEvents.WHISPER_1, SoundSource.PLAYERS, 1.0F, 0.7F);
         player.getCooldowns().addCooldown(this, 400);
     
-            player.displayClientMessage(Component.literal("§8Lore: Whispering Skull - random true/false hints"), false);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

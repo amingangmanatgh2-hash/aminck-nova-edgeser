@@ -1,203 +1,108 @@
-# Tick - 200 functions + night crows
-function novahorror:horror_000
-function novahorror:horror_001
-function novahorror:horror_002
-function novahorror:horror_003
-function novahorror:horror_004
-function novahorror:horror_005
-function novahorror:horror_006
-function novahorror:horror_007
-function novahorror:horror_008
-function novahorror:horror_009
-function novahorror:horror_010
-function novahorror:horror_011
-function novahorror:horror_012
-function novahorror:horror_013
-function novahorror:horror_014
-function novahorror:horror_015
-function novahorror:horror_016
-function novahorror:horror_017
-function novahorror:horror_018
-function novahorror:horror_019
-function novahorror:horror_020
-function novahorror:horror_021
-function novahorror:horror_022
-function novahorror:horror_023
-function novahorror:horror_024
-function novahorror:horror_025
-function novahorror:horror_026
-function novahorror:horror_027
-function novahorror:horror_028
-function novahorror:horror_029
-function novahorror:horror_030
-function novahorror:horror_031
-function novahorror:horror_032
-function novahorror:horror_033
-function novahorror:horror_034
-function novahorror:horror_035
-function novahorror:horror_036
-function novahorror:horror_037
-function novahorror:horror_038
-function novahorror:horror_039
-function novahorror:horror_040
-function novahorror:horror_041
-function novahorror:horror_042
-function novahorror:horror_043
-function novahorror:horror_044
-function novahorror:horror_045
-function novahorror:horror_046
-function novahorror:horror_047
-function novahorror:horror_048
-function novahorror:horror_049
-function novahorror:horror_050
-function novahorror:horror_051
-function novahorror:horror_052
-function novahorror:horror_053
-function novahorror:horror_054
-function novahorror:horror_055
-function novahorror:horror_056
-function novahorror:horror_057
-function novahorror:horror_058
-function novahorror:horror_059
-function novahorror:horror_060
-function novahorror:horror_061
-function novahorror:horror_062
-function novahorror:horror_063
-function novahorror:horror_064
-function novahorror:horror_065
-function novahorror:horror_066
-function novahorror:horror_067
-function novahorror:horror_068
-function novahorror:horror_069
-function novahorror:horror_070
-function novahorror:horror_071
-function novahorror:horror_072
-function novahorror:horror_073
-function novahorror:horror_074
-function novahorror:horror_075
-function novahorror:horror_076
-function novahorror:horror_077
-function novahorror:horror_078
-function novahorror:horror_079
-function novahorror:horror_080
-function novahorror:horror_081
-function novahorror:horror_082
-function novahorror:horror_083
-function novahorror:horror_084
-function novahorror:horror_085
-function novahorror:horror_086
-function novahorror:horror_087
-function novahorror:horror_088
-function novahorror:horror_089
-function novahorror:horror_090
-function novahorror:horror_091
-function novahorror:horror_092
-function novahorror:horror_093
-function novahorror:horror_094
-function novahorror:horror_095
-function novahorror:horror_096
-function novahorror:horror_097
-function novahorror:horror_098
-function novahorror:horror_099
-function novahorror:horror_100
-function novahorror:horror_101
-function novahorror:horror_102
-function novahorror:horror_103
-function novahorror:horror_104
-function novahorror:horror_105
-function novahorror:horror_106
-function novahorror:horror_107
-function novahorror:horror_108
-function novahorror:horror_109
-function novahorror:horror_110
-function novahorror:horror_111
-function novahorror:horror_112
-function novahorror:horror_113
-function novahorror:horror_114
-function novahorror:horror_115
-function novahorror:horror_116
-function novahorror:horror_117
-function novahorror:horror_118
-function novahorror:horror_119
-function novahorror:horror_120
-function novahorror:horror_121
-function novahorror:horror_122
-function novahorror:horror_123
-function novahorror:horror_124
-function novahorror:horror_125
-function novahorror:horror_126
-function novahorror:horror_127
-function novahorror:horror_128
-function novahorror:horror_129
-function novahorror:horror_130
-function novahorror:horror_131
-function novahorror:horror_132
-function novahorror:horror_133
-function novahorror:horror_134
-function novahorror:horror_135
-function novahorror:horror_136
-function novahorror:horror_137
-function novahorror:horror_138
-function novahorror:horror_139
-function novahorror:horror_140
-function novahorror:horror_141
-function novahorror:horror_142
-function novahorror:horror_143
-function novahorror:horror_144
-function novahorror:horror_145
-function novahorror:horror_146
-function novahorror:horror_147
-function novahorror:horror_148
-function novahorror:horror_149
-function novahorror:horror_150
-function novahorror:horror_151
-function novahorror:horror_152
-function novahorror:horror_153
-function novahorror:horror_154
-function novahorror:horror_155
-function novahorror:horror_156
-function novahorror:horror_157
-function novahorror:horror_158
-function novahorror:horror_159
-function novahorror:horror_160
-function novahorror:horror_161
-function novahorror:horror_162
-function novahorror:horror_163
-function novahorror:horror_164
-function novahorror:horror_165
-function novahorror:horror_166
-function novahorror:horror_167
-function novahorror:horror_168
-function novahorror:horror_169
-function novahorror:horror_170
-function novahorror:horror_171
-function novahorror:horror_172
-function novahorror:horror_173
-function novahorror:horror_174
-function novahorror:horror_175
-function novahorror:horror_176
-function novahorror:horror_177
-function novahorror:horror_178
-function novahorror:horror_179
-function novahorror:horror_180
-function novahorror:horror_181
-function novahorror:horror_182
-function novahorror:horror_183
-function novahorror:horror_184
-function novahorror:horror_185
-function novahorror:horror_186
-function novahorror:horror_187
-function novahorror:horror_188
-function novahorror:horror_189
-function novahorror:horror_190
-function novahorror:horror_191
-function novahorror:horror_192
-function novahorror:horror_193
-function novahorror:horror_194
-function novahorror:horror_195
-function novahorror:horror_196
-function novahorror:horror_197
-function novahorror:horror_198
-function novahorror:horror_199
+# Tick - 100 calls + night_crows + objectives
+scoreboard objectives add novahorror.fear dummy
+scoreboard objectives add novahorror.sanity dummy
+scoreboard objectives add novahorror.dark dummy
+scoreboard objectives add novahorror.timer dummy
+execute as @a at @s if score @s novahorror.timer matches 0 run function novahorror:horror_000
+execute as @a at @s if score @s novahorror.timer matches 1 run function novahorror:horror_001
+execute as @a at @s if score @s novahorror.timer matches 2 run function novahorror:horror_002
+execute as @a at @s if score @s novahorror.timer matches 3 run function novahorror:horror_003
+execute as @a at @s if score @s novahorror.timer matches 4 run function novahorror:horror_004
+execute as @a at @s if score @s novahorror.timer matches 5 run function novahorror:horror_005
+execute as @a at @s if score @s novahorror.timer matches 6 run function novahorror:horror_006
+execute as @a at @s if score @s novahorror.timer matches 7 run function novahorror:horror_007
+execute as @a at @s if score @s novahorror.timer matches 8 run function novahorror:horror_008
+execute as @a at @s if score @s novahorror.timer matches 9 run function novahorror:horror_009
+execute as @a at @s if score @s novahorror.timer matches 10 run function novahorror:horror_010
+execute as @a at @s if score @s novahorror.timer matches 11 run function novahorror:horror_011
+execute as @a at @s if score @s novahorror.timer matches 12 run function novahorror:horror_012
+execute as @a at @s if score @s novahorror.timer matches 13 run function novahorror:horror_013
+execute as @a at @s if score @s novahorror.timer matches 14 run function novahorror:horror_014
+execute as @a at @s if score @s novahorror.timer matches 15 run function novahorror:horror_015
+execute as @a at @s if score @s novahorror.timer matches 16 run function novahorror:horror_016
+execute as @a at @s if score @s novahorror.timer matches 17 run function novahorror:horror_017
+execute as @a at @s if score @s novahorror.timer matches 18 run function novahorror:horror_018
+execute as @a at @s if score @s novahorror.timer matches 19 run function novahorror:horror_019
+execute as @a at @s if score @s novahorror.timer matches 20 run function novahorror:horror_020
+execute as @a at @s if score @s novahorror.timer matches 21 run function novahorror:horror_021
+execute as @a at @s if score @s novahorror.timer matches 22 run function novahorror:horror_022
+execute as @a at @s if score @s novahorror.timer matches 23 run function novahorror:horror_023
+execute as @a at @s if score @s novahorror.timer matches 24 run function novahorror:horror_024
+execute as @a at @s if score @s novahorror.timer matches 25 run function novahorror:horror_025
+execute as @a at @s if score @s novahorror.timer matches 26 run function novahorror:horror_026
+execute as @a at @s if score @s novahorror.timer matches 27 run function novahorror:horror_027
+execute as @a at @s if score @s novahorror.timer matches 28 run function novahorror:horror_028
+execute as @a at @s if score @s novahorror.timer matches 29 run function novahorror:horror_029
+execute as @a at @s if score @s novahorror.timer matches 30 run function novahorror:horror_030
+execute as @a at @s if score @s novahorror.timer matches 31 run function novahorror:horror_031
+execute as @a at @s if score @s novahorror.timer matches 32 run function novahorror:horror_032
+execute as @a at @s if score @s novahorror.timer matches 33 run function novahorror:horror_033
+execute as @a at @s if score @s novahorror.timer matches 34 run function novahorror:horror_034
+execute as @a at @s if score @s novahorror.timer matches 35 run function novahorror:horror_035
+execute as @a at @s if score @s novahorror.timer matches 36 run function novahorror:horror_036
+execute as @a at @s if score @s novahorror.timer matches 37 run function novahorror:horror_037
+execute as @a at @s if score @s novahorror.timer matches 38 run function novahorror:horror_038
+execute as @a at @s if score @s novahorror.timer matches 39 run function novahorror:horror_039
+execute as @a at @s if score @s novahorror.timer matches 40 run function novahorror:horror_040
+execute as @a at @s if score @s novahorror.timer matches 41 run function novahorror:horror_041
+execute as @a at @s if score @s novahorror.timer matches 42 run function novahorror:horror_042
+execute as @a at @s if score @s novahorror.timer matches 43 run function novahorror:horror_043
+execute as @a at @s if score @s novahorror.timer matches 44 run function novahorror:horror_044
+execute as @a at @s if score @s novahorror.timer matches 45 run function novahorror:horror_045
+execute as @a at @s if score @s novahorror.timer matches 46 run function novahorror:horror_046
+execute as @a at @s if score @s novahorror.timer matches 47 run function novahorror:horror_047
+execute as @a at @s if score @s novahorror.timer matches 48 run function novahorror:horror_048
+execute as @a at @s if score @s novahorror.timer matches 49 run function novahorror:horror_049
+execute as @a at @s if score @s novahorror.timer matches 50 run function novahorror:horror_050
+execute as @a at @s if score @s novahorror.timer matches 51 run function novahorror:horror_051
+execute as @a at @s if score @s novahorror.timer matches 52 run function novahorror:horror_052
+execute as @a at @s if score @s novahorror.timer matches 53 run function novahorror:horror_053
+execute as @a at @s if score @s novahorror.timer matches 54 run function novahorror:horror_054
+execute as @a at @s if score @s novahorror.timer matches 55 run function novahorror:horror_055
+execute as @a at @s if score @s novahorror.timer matches 56 run function novahorror:horror_056
+execute as @a at @s if score @s novahorror.timer matches 57 run function novahorror:horror_057
+execute as @a at @s if score @s novahorror.timer matches 58 run function novahorror:horror_058
+execute as @a at @s if score @s novahorror.timer matches 59 run function novahorror:horror_059
+execute as @a at @s if score @s novahorror.timer matches 60 run function novahorror:horror_060
+execute as @a at @s if score @s novahorror.timer matches 61 run function novahorror:horror_061
+execute as @a at @s if score @s novahorror.timer matches 62 run function novahorror:horror_062
+execute as @a at @s if score @s novahorror.timer matches 63 run function novahorror:horror_063
+execute as @a at @s if score @s novahorror.timer matches 64 run function novahorror:horror_064
+execute as @a at @s if score @s novahorror.timer matches 65 run function novahorror:horror_065
+execute as @a at @s if score @s novahorror.timer matches 66 run function novahorror:horror_066
+execute as @a at @s if score @s novahorror.timer matches 67 run function novahorror:horror_067
+execute as @a at @s if score @s novahorror.timer matches 68 run function novahorror:horror_068
+execute as @a at @s if score @s novahorror.timer matches 69 run function novahorror:horror_069
+execute as @a at @s if score @s novahorror.timer matches 70 run function novahorror:horror_070
+execute as @a at @s if score @s novahorror.timer matches 71 run function novahorror:horror_071
+execute as @a at @s if score @s novahorror.timer matches 72 run function novahorror:horror_072
+execute as @a at @s if score @s novahorror.timer matches 73 run function novahorror:horror_073
+execute as @a at @s if score @s novahorror.timer matches 74 run function novahorror:horror_074
+execute as @a at @s if score @s novahorror.timer matches 75 run function novahorror:horror_075
+execute as @a at @s if score @s novahorror.timer matches 76 run function novahorror:horror_076
+execute as @a at @s if score @s novahorror.timer matches 77 run function novahorror:horror_077
+execute as @a at @s if score @s novahorror.timer matches 78 run function novahorror:horror_078
+execute as @a at @s if score @s novahorror.timer matches 79 run function novahorror:horror_079
+execute as @a at @s if score @s novahorror.timer matches 80 run function novahorror:horror_080
+execute as @a at @s if score @s novahorror.timer matches 81 run function novahorror:horror_081
+execute as @a at @s if score @s novahorror.timer matches 82 run function novahorror:horror_082
+execute as @a at @s if score @s novahorror.timer matches 83 run function novahorror:horror_083
+execute as @a at @s if score @s novahorror.timer matches 84 run function novahorror:horror_084
+execute as @a at @s if score @s novahorror.timer matches 85 run function novahorror:horror_085
+execute as @a at @s if score @s novahorror.timer matches 86 run function novahorror:horror_086
+execute as @a at @s if score @s novahorror.timer matches 87 run function novahorror:horror_087
+execute as @a at @s if score @s novahorror.timer matches 88 run function novahorror:horror_088
+execute as @a at @s if score @s novahorror.timer matches 89 run function novahorror:horror_089
+execute as @a at @s if score @s novahorror.timer matches 90 run function novahorror:horror_090
+execute as @a at @s if score @s novahorror.timer matches 91 run function novahorror:horror_091
+execute as @a at @s if score @s novahorror.timer matches 92 run function novahorror:horror_092
+execute as @a at @s if score @s novahorror.timer matches 93 run function novahorror:horror_093
+execute as @a at @s if score @s novahorror.timer matches 94 run function novahorror:horror_094
+execute as @a at @s if score @s novahorror.timer matches 95 run function novahorror:horror_095
+execute as @a at @s if score @s novahorror.timer matches 96 run function novahorror:horror_096
+execute as @a at @s if score @s novahorror.timer matches 97 run function novahorror:horror_097
+execute as @a at @s if score @s novahorror.timer matches 98 run function novahorror:horror_098
+execute as @a at @s if score @s novahorror.timer matches 99 run function novahorror:horror_099
+scoreboard players add @a novahorror.timer 1
+execute if score @a novahorror.timer matches 100.. run scoreboard players set @a novahorror.timer 0
 function novahorror:events/night_crows
-execute as @a at @s if predicate novahorror:is_night run scoreboard players add @s novahorror.night 1

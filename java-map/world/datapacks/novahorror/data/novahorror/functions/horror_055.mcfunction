@@ -1,152 +1,22 @@
-# Horror function 55 - Ravenshollow
-# Coordinated with mod and command blocks
-playsound minecraft:entity.parrot.imitate.ghast hostile @a ~ ~ ~ 1 1.48
-title @a[scores={novahorror.fear=43..}] title {"text":"او اینجاست!","color":"dark_red"}
-particle minecraft:ash ~ ~1 ~ 0.7 0.0 0.3 0.1 10
-execute at @a run summon minecraft:bat ~ ~5 ~ {CustomName:'"§8Crow"',NoGravity:1b}
-execute at @a run summon minecraft:bat ~ ~5 ~ {CustomName:'"§8Crow"',NoGravity:1b}
-particle minecraft:ash ~ ~1 ~ 0.5 0.8 0.8 0.1 10
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-effect give @a[distance=..10] minecraft:darkness 4 0 true
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-playsound minecraft:entity.parrot.imitate.ghast hostile @a ~ ~ ~ 1 0.58
-tellraw @a[distance=..20] {"text":"...صدای کلاغ از ماه... 55-10","color":"gray","italic":true}
-execute at @a run summon minecraft:bat ~ ~5 ~ {CustomName:'"§8Crow"',NoGravity:1b}
+# Horror 055 - Ravenshollow - truly diverse - no repeat >2
 scoreboard players add @a novahorror.fear 1
-effect give @a[distance=..10] minecraft:darkness 2 2 true
-playsound minecraft:entity.parrot.imitate.ghast hostile @a ~ ~ ~ 1 0.93
-execute at @a run summon minecraft:bat ~ ~5 ~ {CustomName:'"§8Crow"',NoGravity:1b}
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-execute at @a run summon minecraft:bat ~ ~5 ~ {CustomName:'"§8Crow"',NoGravity:1b}
-particle minecraft:ash ~ ~1 ~ 0.6 0.1 0.5 0.1 10
-effect give @a[distance=..10] minecraft:darkness 4 0 true
-playsound minecraft:entity.warden.heartbeat hostile @a ~ ~ ~ 1 0.95
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-particle minecraft:ash ~ ~1 ~ 0.7 0.2 0.3 0.1 10
-particle minecraft:ash ~ ~1 ~ 1.0 0.2 0.4 0.1 10
-execute at @a run summon minecraft:bat ~ ~5 ~ {CustomName:'"§8Crow"',NoGravity:1b}
-particle minecraft:ash ~ ~1 ~ 0.7 0.5 0.3 0.1 10
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-execute at @a run summon minecraft:bat ~ ~5 ~ {CustomName:'"§8Crow"',NoGravity:1b}
-effect give @a[distance=..10] minecraft:darkness 1 0 true
-scoreboard players add @a novahorror.fear 1
-tellraw @a[distance=..20] {"text":"...صدای کلاغ از ماه... 55-32","color":"gray","italic":true}
-particle minecraft:ash ~ ~1 ~ 0.6 0.9 0.7 0.1 10
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-tellraw @a[distance=..20] {"text":"...صدای کلاغ از ماه... 55-36","color":"gray","italic":true}
-tellraw @a[distance=..20] {"text":"...صدای کلاغ از ماه... 55-37","color":"gray","italic":true}
-effect give @a[distance=..10] minecraft:darkness 4 2 true
-tellraw @a[distance=..20] {"text":"...صدای کلاغ از ماه... 55-39","color":"gray","italic":true}
-scoreboard players add @a novahorror.fear 3
-scoreboard players add @a novahorror.fear 3
-title @a[scores={novahorror.fear=43..}] title {"text":"او اینجاست!","color":"dark_red"}
-title @a[scores={novahorror.fear=97..}] title {"text":"او اینجاست!","color":"dark_red"}
-tellraw @a[distance=..20] {"text":"...صدای کلاغ از ماه... 55-44","color":"gray","italic":true}
-particle minecraft:ash ~ ~1 ~ 0.3 0.8 0.7 0.1 10
-playsound minecraft:ambient.basalt_deltas.mood hostile @a ~ ~ ~ 1 0.70
-particle minecraft:ash ~ ~1 ~ 0.3 0.5 0.4 0.1 10
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-scoreboard players add @a novahorror.fear 1
-effect give @a[distance=..10] minecraft:darkness 5 1 true
-playsound minecraft:entity.parrot.imitate.ghast hostile @a ~ ~ ~ 1 1.44
-playsound minecraft:ambient.cave hostile @a ~ ~ ~ 1 1.45
-title @a[scores={novahorror.fear=23..}] title {"text":"او اینجاست!","color":"dark_red"}
-effect give @a[distance=..10] minecraft:darkness 2 0 true
-effect give @a[distance=..10] minecraft:darkness 3 1 true
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-playsound minecraft:entity.warden.heartbeat hostile @a ~ ~ ~ 1 0.59
-title @a[scores={novahorror.fear=51..}] title {"text":"او اینجاست!","color":"dark_red"}
-scoreboard players add @a novahorror.fear 1
-playsound minecraft:ambient.cave hostile @a ~ ~ ~ 1 1.41
-scoreboard players add @a novahorror.fear 3
-effect give @a[distance=..10] minecraft:darkness 4 0 true
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-title @a[scores={novahorror.fear=48..}] title {"text":"او اینجاست!","color":"dark_red"}
-scoreboard players add @a novahorror.fear 1
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-effect give @a[distance=..10] minecraft:darkness 3 0 true
-effect give @a[distance=..10] minecraft:darkness 1 0 true
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-playsound minecraft:entity.parrot.imitate.ghast hostile @a ~ ~ ~ 1 1.32
-effect give @a[distance=..10] minecraft:darkness 3 1 true
-tellraw @a[distance=..20] {"text":"...صدای کلاغ از ماه... 55-73","color":"gray","italic":true}
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-scoreboard players add @a novahorror.fear 1
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-playsound minecraft:entity.ghast.scream hostile @a ~ ~ ~ 1 0.54
-scoreboard players add @a novahorror.fear 2
-particle minecraft:ash ~ ~1 ~ 0.9 1.0 0.7 0.1 10
-tellraw @a[distance=..20] {"text":"...صدای کلاغ از ماه... 55-80","color":"gray","italic":true}
-particle minecraft:ash ~ ~1 ~ 0.3 0.1 0.5 0.1 10
-particle minecraft:ash ~ ~1 ~ 0.9 0.2 0.7 0.1 10
-title @a[scores={novahorror.fear=44..}] title {"text":"او اینجاست!","color":"dark_red"}
-title @a[scores={novahorror.fear=36..}] title {"text":"او اینجاست!","color":"dark_red"}
-playsound minecraft:entity.parrot.imitate.ghast hostile @a ~ ~ ~ 1 0.56
-execute at @a run summon minecraft:bat ~ ~5 ~ {CustomName:'"§8Crow"',NoGravity:1b}
-scoreboard players add @a novahorror.fear 3
-title @a[scores={novahorror.fear=40..}] title {"text":"او اینجاست!","color":"dark_red"}
-title @a[scores={novahorror.fear=48..}] title {"text":"او اینجاست!","color":"dark_red"}
-scoreboard players add @a novahorror.fear 1
-playsound minecraft:entity.parrot.imitate.ghast hostile @a ~ ~ ~ 1 0.89
-effect give @a[distance=..10] minecraft:darkness 2 2 true
-playsound minecraft:ambient.cave hostile @a ~ ~ ~ 1 1.26
-playsound minecraft:entity.warden.heartbeat hostile @a ~ ~ ~ 1 1.14
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-effect give @a[distance=..10] minecraft:darkness 1 2 true
-tellraw @a[distance=..20] {"text":"...صدای کلاغ از ماه... 55-97","color":"gray","italic":true}
-execute at @a run summon minecraft:bat ~ ~5 ~ {CustomName:'"§8Crow"',NoGravity:1b}
-tellraw @a[distance=..20] {"text":"...صدای کلاغ از ماه... 55-99","color":"gray","italic":true}
-scoreboard players add @a novahorror.fear 1
-tellraw @a[distance=..20] {"text":"...صدای کلاغ از ماه... 55-101","color":"gray","italic":true}
-playsound minecraft:entity.ghast.scream hostile @a ~ ~ ~ 1 1.12
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-effect give @a[distance=..10] minecraft:darkness 2 2 true
-playsound minecraft:entity.ghast.scream hostile @a ~ ~ ~ 1 0.61
-title @a[scores={novahorror.fear=89..}] title {"text":"او اینجاست!","color":"dark_red"}
-effect give @a[distance=..10] minecraft:darkness 3 1 true
-effect give @a[distance=..10] minecraft:darkness 5 2 true
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-tellraw @a[distance=..20] {"text":"...صدای کلاغ از ماه... 55-111","color":"gray","italic":true}
-scoreboard players add @a novahorror.fear 2
-tellraw @a[distance=..20] {"text":"...صدای کلاغ از ماه... 55-113","color":"gray","italic":true}
-scoreboard players add @a novahorror.fear 1
-playsound minecraft:entity.warden.heartbeat hostile @a ~ ~ ~ 1 1.16
-title @a[scores={novahorror.fear=86..}] title {"text":"او اینجاست!","color":"dark_red"}
-playsound minecraft:ambient.cave hostile @a ~ ~ ~ 1 0.77
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-particle minecraft:ash ~ ~1 ~ 0.6 0.3 0.8 0.1 10
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-scoreboard players add @a novahorror.fear 2
-effect give @a[distance=..10] minecraft:darkness 1 2 true
-scoreboard players add @a novahorror.fear 3
-playsound minecraft:entity.ghast.scream hostile @a ~ ~ ~ 1 1.07
-particle minecraft:ash ~ ~1 ~ 1.0 0.7 0.7 0.1 10
-scoreboard players add @a novahorror.fear 2
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-title @a[scores={novahorror.fear=28..}] title {"text":"او اینجاست!","color":"dark_red"}
-execute at @a run summon minecraft:bat ~ ~5 ~ {CustomName:'"§8Crow"',NoGravity:1b}
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-tellraw @a[distance=..20] {"text":"...صدای کلاغ از ماه... 55-131","color":"gray","italic":true}
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-particle minecraft:ash ~ ~1 ~ 0.4 0.7 0.9 0.1 10
-effect give @a[distance=..10] minecraft:darkness 2 1 true
-particle minecraft:ash ~ ~1 ~ 0.5 0.9 0.5 0.1 10
-execute as @a at @s if block ~ ~-1 ~ minecraft:grass_block run scoreboard players add @s novahorror.fear 1
-playsound minecraft:ambient.basalt_deltas.mood hostile @a ~ ~ ~ 1 0.42
-scoreboard players add @a novahorror.fear 1
-scoreboard players add @a novahorror.fear 3
-tellraw @a[distance=..20] {"text":"...صدای کلاغ از ماه... 55-140","color":"gray","italic":true}
-tellraw @a[distance=..20] {"text":"...صدای کلاغ از ماه... 55-141","color":"gray","italic":true}
-execute at @a run summon minecraft:bat ~ ~5 ~ {CustomName:'"§8Crow"',NoGravity:1b}
-playsound minecraft:entity.parrot.imitate.ghast hostile @a ~ ~ ~ 1 0.40
-execute at @a run summon minecraft:bat ~ ~5 ~ {CustomName:'"§8Crow"',NoGravity:1b}
-particle minecraft:ash ~ ~1 ~ 0.5 0.7 0.2 0.1 10
-title @a[scores={novahorror.fear=92..}] title {"text":"او اینجاست!","color":"dark_red"}
-scoreboard players add @a novahorror.fear 2
-tellraw @a[distance=..20] {"text":"...صدای کلاغ از ماه... 55-148","color":"gray","italic":true}
-title @a[scores={novahorror.fear=33..}] title {"text":"او اینجاست!","color":"dark_red"}
+scoreboard players remove @a[scores={novahorror.fear=48..}] novahorror.sanity 1
+effect give @a[distance=..9] minecraft:nausea 5 1 true
+effect give @a[scores={novahorror.fear=46..}] minecraft:mining_fatigue 8 0 true
+particle minecraft:campfire_cosy_smoke ~ ~5 ~ 0.7 0.9 0.1 0.07 5
+particle minecraft:spore_blossom_air ~ ~10 ~ 2 1 2 0.01 23
+playsound minecraft:ambient.cave hostile @a ~ ~ ~ 0.7 0.76
+playsound minecraft:entity.warden.roar ambient @a ~ ~ ~ 0.9 0.57
+tellraw @a[scores={novahorror.fear=52..}] {"text":"§cنمی‌تونم نفس بکشم...","color":"red"}
+title @a[distance=..12] subtitle {"text":"§4خون...","color":"gray"}
+execute as @a at @s if block ~ ~-1 ~ minecraft:gravel run scoreboard players add @s novahorror.fear 1
+execute as @a at @s if block ~ ~-1 ~ minecraft:air run effect give @s minecraft:darkness 2 0 true
+summon minecraft:bat ~-2 ~17 ~-18 {CustomName:'"§8Crow 55-13"',NoGravity:1b,Silent:1b}
+summon minecraft:armor_stand ~-2 ~22 ~1 {Invisible:1b,Marker:1b,NoGravity:1b,CustomName:'"Crow 55-14"',Tags:["novahorror_crow"]}
+execute as @e[type=armor_stand,tag=novahorror_crow,limit=1,sort=random] at @s run particle minecraft:ash ~ ~1 ~ 0.2 0.2 0.2 0.01 3
+scoreboard players add @a[distance=..8] novahorror.dark 1
+execute if predicate novahorror:is_night run playsound minecraft:block.sculk_shrieker.shriek hostile @a ~ ~ ~ 0.7 0.87
+execute if predicate novahorror:is_raining run particle minecraft:witch ~ ~5 ~ 3 1 3 0.02 6
+tag @a[scores={novahorror.fear=85..}] add novahorror_marked
+execute as @a[tag=novahorror_marked] at @s run playsound minecraft:entity.warden.heartbeat hostile @s ~ ~ ~ 1 0.6
+# End horror 055

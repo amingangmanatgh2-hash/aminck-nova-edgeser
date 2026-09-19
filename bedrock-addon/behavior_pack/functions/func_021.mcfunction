@@ -1,22 +1,17 @@
-# Horror func 21 - diverse real commands, coordinated with mod
-effect @a[scores={novahorror.fear=40..59}] darkness 5 0 true
-playsound mob.wolf.howl @a ~ ~ ~ 0.7 0.6
-titleraw @a[scores={novahorror.fear=80..}] title {"rawtext":[{"text":"§4§lاو اینجاست!"}]}
-tellraw @a {"rawtext":[{"text":"§7...صدای کلاغ از ماه..."}]}
-particle minecraft:sculk_soul ~ ~ ~ 1 1 1 0.1 10
-effect @a[scores={novahorror.fear=60..79}] blindness 3 0 true
-playsound mob.warden.heartbeat @a ~ ~ ~ 1 0.93
-execute as @a at @s run particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.1 5
-particle minecraft:basic_smoke ~ ~5 ~ 2 1 2 0.01 10
-effect @a[scores={novahorror.fear=40..59}] darkness 5 0 true
-execute at @a run summon minecraft:bat ~-8 ~9 ~-1 {CustomName:"§8Crow 21-10 by Moon",NoGravity:1b}
-particle minecraft:basic_smoke ~ ~5 ~ 2 1 2 0.01 10
-playsound block.sculk_shrieker.shriek @a ~ ~ ~ 1 0.78
-playsound mob.ghast.scream @a ~ ~ ~ 1 0.51
-effect @a[scores={novahorror.fear=40..59}] darkness 5 0 true
-effect @a[scores={novahorror.fear=80..}] wither 3 0 true
-particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.1 5
-effect @a[scores={novahorror.fear=40..59}] darkness 5 0 true
-particle minecraft:basic_smoke ~ ~5 ~ 2 1 2 0.01 10
-effect @a[scores={novahorror.fear=40..59}] darkness 5 0 true
-# End func 21 - fear logic
+# Horror Bedrock func 21 - truly diverse - no exact repeat
+effect @a[scores={novahorror.fear=21..34}] slowness 2 0 true
+particle minecraft:campfire_cosy_smoke ~ ~1 ~ 0.6 0.5 0.4 0.02 6
+titleraw @a[scores={novahorror.fear=81..}] title {"rawtext":[{"text":"§7...صدای کلاغ از ماه..."}]}
+effect @a[scores={novahorror.fear=88..}] weakness 4 0 true
+scoreboard players add @a novahorror.fear 1
+execute as @a at @s if block ~ ~-1 ~ grass run scoreboard players add @s novahorror.fear 1
+playsound mob.ghast.scream @a ~ ~ ~ 1.0 0.60
+playsound ambient.cave @a ~ ~ ~ 0.7 0.70
+effect @a[scores={novahorror.fear=56..70}] darkness 4 0 true
+playsound mob.parrot.imitate.warden @a ~ ~ ~ 0.6 0.69
+particle minecraft:witch ~ ~1 ~ 0.3 0.5 0.3 0.02 2
+scoreboard players add @a[distance=..5] novahorror.dark 1
+tellraw @a {"rawtext":[{"text":"§7صدای پا..."}]}
+playsound mob.ender_dragon.growl @a ~ ~ ~ 0.8 0.55
+particle minecraft:spore_blossom_air ~ ~ ~ 1 1 1 0.1 9
+# End 21

@@ -1,22 +1,17 @@
-# Horror func 0 - diverse real commands, coordinated with mod
-particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.1 5
-effect @a[scores={novahorror.fear=20..39}] slowness 3 0 true
-playsound block.sculk_shrieker.shriek @a ~ ~ ~ 1 0.51
-effect @a[scores={novahorror.fear=60..79}] blindness 3 0 true
-effect @a[scores={novahorror.fear=40..59}] darkness 5 0 true
-particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.1 5
+# Horror Bedrock func 0 - truly diverse - no exact repeat
+effect @a[scores={novahorror.fear=20..38}] wither 3 0 true
+particle minecraft:witch ~ ~1 ~ 0.3 0.7 0.3 0.07 3
+titleraw @a[scores={novahorror.fear=81..}] title {"rawtext":[{"text":"§7چرا تنها شدم؟"}]}
+effect @a[scores={novahorror.fear=86..}] slowness 4 0 true
+scoreboard players add @a novahorror.fear 2
 execute as @a at @s if block ~ ~-1 ~ grass run scoreboard players add @s novahorror.fear 1
-scoreboard players add @a novahorror.fear 1
-playsound block.sculk_shrieker.shriek @a ~ ~ ~ 1 0.67
-effect @a[scores={novahorror.fear=20..39}] slowness 3 0 true
-execute at @a run summon minecraft:bat ~3 ~11 ~9 {CustomName:"§8Crow 0-10 by Moon",NoGravity:1b}
-titleraw @a[scores={novahorror.fear=80..}] title {"rawtext":[{"text":"§4§lاو اینجاست!"}]}
-particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.1 5
-playsound mob.warden.heartbeat @a ~ ~ ~ 1 1.38
-playsound ambient.cave @a ~ ~ ~ 0.8 0.5
-particle minecraft:basic_smoke ~ ~5 ~ 2 1 2 0.01 10
-execute as @a at @s if block ~ ~-1 ~ grass run scoreboard players add @s novahorror.fear 1
-tellraw @a {"rawtext":[{"text":"§7...صدای کلاغ از ماه..."}]}
-execute as @a at @s if block ~ ~-1 ~ air run effect @s darkness 2 0 true
-effect @a[scores={novahorror.fear=80..}] wither 3 0 true
-# End func 0 - fear logic
+playsound mob.parrot.imitate.ghast @a ~ ~ ~ 0.9 0.66
+playsound block.bell.hit @a ~ ~ ~ 0.8 0.98
+effect @a[scores={novahorror.fear=62..68}] blindness 4 0 true
+playsound mob.parrot.imitate.warden @a ~ ~ ~ 0.6 0.93
+particle minecraft:soul_fire_flame ~ ~1 ~ 0.3 0.5 0.3 0.02 4
+scoreboard players add @a[distance=..7] novahorror.dark 1
+tellraw @a {"rawtext":[{"text":"§cقلبم تند میزنه..."}]}
+playsound ambient.cave @a ~ ~ ~ 0.6 0.43
+particle minecraft:sculk_soul ~ ~ ~ 1 1 1 0.1 15
+# End 0

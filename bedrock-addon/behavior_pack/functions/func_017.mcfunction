@@ -1,22 +1,17 @@
-# Horror func 17 - diverse real commands, coordinated with mod
-scoreboard players add @a novahorror.fear 1
-particle minecraft:basic_smoke ~ ~5 ~ 2 1 2 0.01 10
-playsound mob.wolf.howl @a ~ ~ ~ 0.7 0.6
-playsound mob.wolf.howl @a ~ ~ ~ 0.7 0.6
-particle minecraft:sculk_soul ~ ~ ~ 1 1 1 0.1 10
-execute as @a at @s run particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.1 5
-effect @a[scores={novahorror.fear=80..}] wither 3 0 true
-effect @a[scores={novahorror.fear=40..59}] darkness 5 0 true
-execute at @a run summon minecraft:armor_stand ~5 ~10 ~ {Invisible:1b,Marker:1b,NoGravity:1b,CustomName:"Crow by Moon"}
-particle minecraft:sculk_soul ~ ~ ~ 1 1 1 0.1 10
+# Horror Bedrock func 17 - truly diverse - no exact repeat
+effect @a[scores={novahorror.fear=12..44}] weakness 4 0 true
+particle minecraft:soul_fire_flame ~ ~1 ~ 0.8 0.4 0.8 0.05 6
+titleraw @a[scores={novahorror.fear=79..}] title {"rawtext":[{"text":"§8در بسته است..."}]}
+effect @a[scores={novahorror.fear=81..}] nausea 3 0 true
+scoreboard players add @a novahorror.fear 2
 execute as @a at @s if block ~ ~-1 ~ grass run scoreboard players add @s novahorror.fear 1
-execute at @a run summon minecraft:armor_stand ~5 ~10 ~ {Invisible:1b,Marker:1b,NoGravity:1b,CustomName:"Crow by Moon"}
-particle minecraft:soul ~ ~1 ~ 0.3 0.5 0.3 0.02 3
-particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.1 5
-playsound mob.wolf.howl @a ~ ~ ~ 0.7 0.6
-tellraw @a[scores={novahorror.fear=60..}] {"rawtext":[{"text":"§cنمی‌تونم نفس بکشم..."}]}
-playsound mob.wolf.howl @a ~ ~ ~ 0.7 0.6
-execute at @a run summon minecraft:bat ~6 ~15 ~2 {CustomName:"§8Crow 17-17 by Moon",NoGravity:1b}
-effect @a[scores={novahorror.fear=80..}] wither 3 0 true
-effect @a[scores={novahorror.fear=80..}] wither 3 0 true
-# End func 17 - fear logic
+playsound mob.ghast.scream @a ~ ~ ~ 0.6 0.49
+playsound mob.warden.heartbeat @a ~ ~ ~ 0.7 0.51
+effect @a[scores={novahorror.fear=59..66}] blindness 4 0 true
+playsound mob.parrot.imitate.warden @a ~ ~ ~ 0.6 0.71
+particle minecraft:sculk_soul ~ ~1 ~ 0.3 0.5 0.3 0.02 2
+scoreboard players add @a[distance=..7] novahorror.dark 1
+tellraw @a {"rawtext":[{"text":"§7چرا تنها شدم؟"}]}
+playsound ambient.cave @a ~ ~ ~ 0.8 0.73
+particle minecraft:white_ash ~ ~ ~ 1 1 1 0.1 9
+# End 17

@@ -1,22 +1,17 @@
-# Horror func 18 - diverse real commands, coordinated with mod
-particle minecraft:soul ~ ~1 ~ 0.3 0.5 0.3 0.02 3
-particle minecraft:basic_smoke ~ ~5 ~ 2 1 2 0.01 10
-playsound ambient.cave @a ~ ~ ~ 0.8 0.5
-particle minecraft:sculk_soul ~ ~ ~ 1 1 1 0.1 10
-execute as @a at @s if block ~ ~-1 ~ grass run scoreboard players add @s novahorror.fear 1
-effect @a[scores={novahorror.fear=80..}] wither 3 0 true
-effect @a[scores={novahorror.fear=40..59}] darkness 5 0 true
-effect @a[scores={novahorror.fear=80..}] wither 3 0 true
-scoreboard players add @a[distance=..5] novahorror.dark 1
+# Horror Bedrock func 18 - truly diverse - no exact repeat
+effect @a[scores={novahorror.fear=13..44}] wither 2 0 true
+particle minecraft:campfire_cosy_smoke ~ ~1 ~ 0.3 0.8 0.7 0.07 7
+titleraw @a[scores={novahorror.fear=81..}] title {"rawtext":[{"text":"§8در بسته است..."}]}
+effect @a[scores={novahorror.fear=77..}] slowness 3 0 true
 scoreboard players add @a novahorror.fear 1
-execute as @a at @s if block ~ ~-1 ~ air run effect @s darkness 2 0 true
-particle minecraft:sculk_soul ~ ~ ~ 1 1 1 0.1 10
-execute as @a at @s run particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.1 5
-particle minecraft:basic_smoke ~ ~5 ~ 2 1 2 0.01 10
-scoreboard players add @a[distance=..5] novahorror.dark 1
-particle minecraft:sculk_soul ~ ~ ~ 1 1 1 0.1 10
-scoreboard players add @a[distance=..5] novahorror.dark 1
-titleraw @a[scores={novahorror.fear=80..}] title {"rawtext":[{"text":"§4§lاو اینجاست!"}]}
-effect @a[scores={novahorror.fear=20..39}] slowness 3 0 true
-particle minecraft:sculk_soul ~ ~ ~ 1 1 1 0.1 10
-# End func 18 - fear logic
+execute as @a at @s if block ~ ~-1 ~ grass run scoreboard players add @s novahorror.fear 1
+playsound mob.wolf.howl @a ~ ~ ~ 0.7 0.36
+playsound mob.ender_dragon.growl @a ~ ~ ~ 0.7 0.82
+effect @a[scores={novahorror.fear=58..84}] weakness 3 0 true
+playsound mob.parrot.imitate.ender_dragon @a ~ ~ ~ 0.6 0.98
+particle minecraft:ash ~ ~1 ~ 0.3 0.5 0.3 0.02 2
+scoreboard players add @a[distance=..4] novahorror.dark 1
+tellraw @a {"rawtext":[{"text":"§4خون..."}]}
+playsound block.bell.hit @a ~ ~ ~ 0.7 0.65
+particle minecraft:sculk_soul ~ ~ ~ 1 1 1 0.1 13
+# End 18

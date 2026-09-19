@@ -16,28 +16,24 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.monster.Monster;
 import java.util.Random;
 
-/**
- * RustedMansionKey - Rusted Mansion Key - opens main door at 0,70,0
- * Real unique logic, not copy-paste
- */
+/** RustedMansionKey - Opens iron door at 0,70,0 with sound and message, consumes key - Real unique */
 public class RustedMansionKey extends Item {
     private static final Random RANDOM = new Random();
     public RustedMansionKey() { super(new Properties().stacksTo(1).rarity(Rarity.UNCOMMON)); }
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    @Override public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             
-        // Check if looking at iron door at mansion
-        BlockPos mansionDoor = new BlockPos(0, 70, 0);
-        if (player.blockPosition().distSqr(mansionDoor) < 100) {
-            level.playSound(null, mansionDoor, SoundEvents.IRON_DOOR_OPEN, SoundSource.BLOCKS, 1.0F, 0.8F);
-            player.displayClientMessage(Component.literal("§aدر عمارت باز شد..."), true);
-            // Remove key after use
+        BlockPos doorPos = new BlockPos(0, 70, 0);
+        if (player.blockPosition().distSqr(doorPos) < 150) {
+            level.playSound(null, doorPos, SoundEvents.IRON_DOOR_OPEN, SoundSource.BLOCKS, 1.0F, 0.8F);
+            level.setBlock(doorPos, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 3);
+            player.displayClientMessage(Component.literal("§aدر عمارت با صدای جیرجیر باز شد..."), true);
             stack.shrink(1);
+        } else {
+            player.displayClientMessage(Component.literal("§7باید نزدیک در اصلی عمارت باشی..."), true);
         }
     
-            player.displayClientMessage(Component.literal("§8Lore: Rusted Mansion Key - opens main door at 0,70,0"), false);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }

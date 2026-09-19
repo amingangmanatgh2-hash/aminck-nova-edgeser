@@ -1,22 +1,17 @@
-# Horror func 25 - diverse real commands, coordinated with mod
-tellraw @a {"rawtext":[{"text":"§7...صدای کلاغ از ماه..."}]}
-particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.1 5
-effect @a[scores={novahorror.fear=20..39}] slowness 3 0 true
-tellraw @a[scores={novahorror.fear=60..}] {"rawtext":[{"text":"§cنمی‌تونم نفس بکشم..."}]}
-particle minecraft:soul ~ ~1 ~ 0.3 0.5 0.3 0.02 3
-tellraw @a {"rawtext":[{"text":"§7...صدای کلاغ از ماه..."}]}
-playsound mob.ghast.scream @a ~ ~ ~ 1 1.45
+# Horror Bedrock func 25 - truly diverse - no exact repeat
+effect @a[scores={novahorror.fear=14..41}] slowness 4 0 true
+particle minecraft:sculk_soul ~ ~1 ~ 0.8 0.6 0.4 0.02 5
+titleraw @a[scores={novahorror.fear=82..}] title {"rawtext":[{"text":"§8...کسی دنبالم میاد..."}]}
+effect @a[scores={novahorror.fear=85..}] nausea 2 0 true
 scoreboard players add @a novahorror.fear 1
-execute as @a at @s if block ~ ~-1 ~ air run effect @s darkness 2 0 true
-effect @a[scores={novahorror.fear=60..79}] blindness 3 0 true
-playsound mob.parrot.imitate.ghast @a ~ ~ ~ 0.6 0.8
-execute as @a at @s run particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.1 5
-playsound block.sculk_shrieker.shriek @a ~ ~ ~ 1 1.43
-tellraw @a {"rawtext":[{"text":"§7...صدای کلاغ از ماه..."}]}
-playsound mob.ghast.scream @a ~ ~ ~ 1 0.46
-tellraw @a[scores={novahorror.fear=60..}] {"rawtext":[{"text":"§cنمی‌تونم نفس بکشم..."}]}
-particle minecraft:basic_smoke ~ ~5 ~ 2 1 2 0.01 10
-effect @a[scores={novahorror.fear=20..39}] slowness 3 0 true
-execute as @a at @s if block ~ ~-1 ~ air run effect @s darkness 2 0 true
-playsound mob.parrot.imitate.ghast @a ~ ~ ~ 0.6 0.8
-# End func 25 - fear logic
+execute as @a at @s if block ~ ~-1 ~ grass run scoreboard players add @s novahorror.fear 1
+playsound mob.warden.roar @a ~ ~ ~ 0.9 0.51
+playsound mob.parrot.imitate.ghast @a ~ ~ ~ 0.7 0.55
+effect @a[scores={novahorror.fear=55..72}] blindness 3 0 true
+playsound mob.parrot.imitate.warden @a ~ ~ ~ 0.6 0.68
+particle minecraft:white_ash ~ ~1 ~ 0.3 0.5 0.3 0.02 3
+scoreboard players add @a[distance=..4] novahorror.dark 1
+tellraw @a {"rawtext":[{"text":"§cکمک..."}]}
+playsound ambient.cave @a ~ ~ ~ 0.5 0.74
+particle minecraft:spore_blossom_air ~ ~ ~ 1 1 1 0.1 6
+# End 25

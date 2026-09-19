@@ -1,22 +1,17 @@
-# Horror func 20 - diverse real commands, coordinated with mod
-effect @a[scores={novahorror.fear=60..79}] blindness 3 0 true
-effect @a[scores={novahorror.fear=40..59}] darkness 5 0 true
-playsound block.sculk_shrieker.shriek @a ~ ~ ~ 1 1.40
-execute at @a run summon minecraft:bat ~-3 ~8 ~2 {CustomName:"§8Crow 20-3 by Moon",NoGravity:1b}
-tellraw @a {"rawtext":[{"text":"§7...صدای کلاغ از ماه..."}]}
-playsound block.sculk_shrieker.shriek @a ~ ~ ~ 1 1.31
-particle minecraft:soul ~ ~1 ~ 0.3 0.5 0.3 0.02 3
-titleraw @a[scores={novahorror.fear=80..}] title {"rawtext":[{"text":"§4§lاو اینجاست!"}]}
-execute at @a run summon minecraft:bat ~0 ~13 ~7 {CustomName:"§8Crow 20-8 by Moon",NoGravity:1b}
-playsound block.sculk_shrieker.shriek @a ~ ~ ~ 1 0.54
-particle minecraft:basic_smoke ~ ~5 ~ 2 1 2 0.01 10
-particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.1 5
-particle minecraft:basic_smoke ~ ~5 ~ 2 1 2 0.01 10
-titleraw @a[scores={novahorror.fear=80..}] title {"rawtext":[{"text":"§4§lاو اینجاست!"}]}
-titleraw @a[scores={novahorror.fear=80..}] title {"rawtext":[{"text":"§4§lاو اینجاست!"}]}
-effect @a[scores={novahorror.fear=80..}] wither 3 0 true
-tellraw @a[scores={novahorror.fear=60..}] {"rawtext":[{"text":"§cنمی‌تونم نفس بکشم..."}]}
-scoreboard players add @a[distance=..5] novahorror.dark 1
-scoreboard players add @a[distance=..5] novahorror.dark 1
-particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.1 5
-# End func 20 - fear logic
+# Horror Bedrock func 20 - truly diverse - no exact repeat
+effect @a[scores={novahorror.fear=12..45}] slowness 5 0 true
+particle minecraft:soul ~ ~1 ~ 0.7 0.5 0.3 0.09 4
+titleraw @a[scores={novahorror.fear=71..}] title {"rawtext":[{"text":"§cنمی‌تونم نفس بکشم..."}]}
+effect @a[scores={novahorror.fear=84..}] darkness 3 0 true
+scoreboard players add @a novahorror.fear 1
+execute as @a at @s if block ~ ~-1 ~ grass run scoreboard players add @s novahorror.fear 1
+playsound ambient.cave @a ~ ~ ~ 0.6 0.54
+playsound mob.ender_dragon.growl @a ~ ~ ~ 0.7 0.78
+effect @a[scores={novahorror.fear=65..88}] nausea 3 0 true
+playsound mob.parrot.imitate.ghast @a ~ ~ ~ 0.6 0.96
+particle minecraft:white_ash ~ ~1 ~ 0.3 0.5 0.3 0.02 4
+scoreboard players add @a[distance=..7] novahorror.dark 1
+tellraw @a {"rawtext":[{"text":"§cقلبم تند میزنه..."}]}
+playsound mob.wolf.howl @a ~ ~ ~ 0.6 0.45
+particle minecraft:witch ~ ~ ~ 1 1 1 0.1 14
+# End 20

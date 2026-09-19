@@ -1,22 +1,17 @@
-# Horror func 34 - diverse real commands, coordinated with mod
-playsound mob.warden.heartbeat @a ~ ~ ~ 1 0.91
+# Horror Bedrock func 34 - truly diverse - no exact repeat
+effect @a[scores={novahorror.fear=20..45}] weakness 5 0 true
+particle minecraft:spore_blossom_air ~ ~1 ~ 0.4 0.3 0.7 0.06 7
+titleraw @a[scores={novahorror.fear=81..}] title {"rawtext":[{"text":"§7چرا تنها شدم؟"}]}
+effect @a[scores={novahorror.fear=83..}] wither 4 0 true
+scoreboard players add @a novahorror.fear 2
 execute as @a at @s if block ~ ~-1 ~ grass run scoreboard players add @s novahorror.fear 1
-execute as @a at @s if block ~ ~-1 ~ grass run scoreboard players add @s novahorror.fear 1
-tellraw @a {"rawtext":[{"text":"§7...صدای کلاغ از ماه..."}]}
-execute at @a run summon minecraft:armor_stand ~5 ~10 ~ {Invisible:1b,Marker:1b,NoGravity:1b,CustomName:"Crow by Moon"}
-scoreboard players add @a novahorror.fear 1
-execute at @a run summon minecraft:bat ~5 ~14 ~9 {CustomName:"§8Crow 34-6 by Moon",NoGravity:1b}
-effect @a[distance=..8] weakness 5 0 true
-effect @a[distance=..8] weakness 5 0 true
-execute at @a run summon minecraft:bat ~-4 ~11 ~4 {CustomName:"§8Crow 34-9 by Moon",NoGravity:1b}
-playsound ambient.cave @a ~ ~ ~ 0.8 0.5
-execute at @a run summon minecraft:bat ~-8 ~6 ~-9 {CustomName:"§8Crow 34-11 by Moon",NoGravity:1b}
-particle minecraft:sculk_soul ~ ~ ~ 1 1 1 0.1 10
-playsound mob.ghast.scream @a ~ ~ ~ 1 0.63
-particle minecraft:soul ~ ~1 ~ 0.3 0.5 0.3 0.02 3
-tellraw @a[scores={novahorror.fear=60..}] {"rawtext":[{"text":"§cنمی‌تونم نفس بکشم..."}]}
+playsound mob.wolf.howl @a ~ ~ ~ 0.7 0.42
+playsound mob.warden.roar @a ~ ~ ~ 0.8 0.46
+effect @a[scores={novahorror.fear=59..75}] slowness 4 0 true
+playsound mob.parrot.imitate.ghast @a ~ ~ ~ 0.6 0.88
+particle minecraft:ash ~ ~1 ~ 0.3 0.5 0.3 0.02 5
 scoreboard players add @a[distance=..5] novahorror.dark 1
-playsound block.sculk_shrieker.shriek @a ~ ~ ~ 1 1.38
-effect @a[scores={novahorror.fear=20..39}] slowness 3 0 true
-effect @a[distance=..8] weakness 5 0 true
-# End func 34 - fear logic
+tellraw @a {"rawtext":[{"text":"§7...صدای کلاغ از ماه..."}]}
+playsound block.bell.hit @a ~ ~ ~ 0.7 0.62
+particle minecraft:white_ash ~ ~ ~ 1 1 1 0.1 9
+# End 34

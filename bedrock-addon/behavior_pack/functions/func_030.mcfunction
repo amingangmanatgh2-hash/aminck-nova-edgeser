@@ -1,22 +1,17 @@
-# Horror func 30 - diverse real commands, coordinated with mod
-effect @a[distance=..8] weakness 5 0 true
-effect @a[scores={novahorror.fear=40..59}] darkness 5 0 true
-playsound block.sculk_shrieker.shriek @a ~ ~ ~ 1 0.59
-playsound mob.warden.heartbeat @a ~ ~ ~ 1 1.40
-effect @a[scores={novahorror.fear=20..39}] slowness 3 0 true
-playsound block.sculk_shrieker.shriek @a ~ ~ ~ 1 0.48
-effect @a[scores={novahorror.fear=40..59}] darkness 5 0 true
-effect @a[distance=..8] weakness 5 0 true
-execute as @a at @s if block ~ ~-1 ~ air run effect @s darkness 2 0 true
-execute as @a at @s run particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.1 5
-scoreboard players add @a[distance=..5] novahorror.dark 1
-execute as @a at @s run particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.1 5
+# Horror Bedrock func 30 - truly diverse - no exact repeat
+effect @a[scores={novahorror.fear=15..41}] nausea 3 0 true
+particle minecraft:white_ash ~ ~1 ~ 0.3 0.3 0.3 0.08 3
+titleraw @a[scores={novahorror.fear=81..}] title {"rawtext":[{"text":"§4فرار کن!"}]}
+effect @a[scores={novahorror.fear=86..}] weakness 3 0 true
+scoreboard players add @a novahorror.fear 1
 execute as @a at @s if block ~ ~-1 ~ grass run scoreboard players add @s novahorror.fear 1
-tellraw @a[scores={novahorror.fear=60..}] {"rawtext":[{"text":"§cنمی‌تونم نفس بکشم..."}]}
-playsound mob.warden.heartbeat @a ~ ~ ~ 1 0.94
-effect @a[distance=..8] weakness 5 0 true
-effect @a[scores={novahorror.fear=80..}] wither 3 0 true
-execute at @a run summon minecraft:bat ~-3 ~9 ~0 {CustomName:"§8Crow 30-17 by Moon",NoGravity:1b}
-playsound mob.parrot.imitate.ghast @a ~ ~ ~ 0.6 0.8
-effect @a[scores={novahorror.fear=80..}] wither 3 0 true
-# End func 30 - fear logic
+playsound mob.ghast.scream @a ~ ~ ~ 0.8 0.34
+playsound block.bell.hit @a ~ ~ ~ 0.7 1.00
+effect @a[scores={novahorror.fear=65..82}] slowness 3 0 true
+playsound mob.parrot.imitate.warden @a ~ ~ ~ 0.6 0.93
+particle minecraft:soul_fire_flame ~ ~1 ~ 0.3 0.5 0.3 0.02 2
+scoreboard players add @a[distance=..4] novahorror.dark 1
+tellraw @a {"rawtext":[{"text":"§7...صدای کلاغ از ماه..."}]}
+playsound mob.parrot.imitate.ghast @a ~ ~ ~ 0.9 0.66
+particle minecraft:sculk_soul ~ ~ ~ 1 1 1 0.1 12
+# End 30

@@ -1,22 +1,17 @@
-# Horror func 10 - diverse real commands, coordinated with mod
-scoreboard players add @a[distance=..5] novahorror.dark 1
-execute at @a run summon minecraft:bat ~8 ~6 ~3 {CustomName:"§8Crow 10-1 by Moon",NoGravity:1b}
-particle minecraft:basic_smoke ~ ~5 ~ 2 1 2 0.01 10
-playsound mob.wolf.howl @a ~ ~ ~ 0.7 0.6
-effect @a[scores={novahorror.fear=60..79}] blindness 3 0 true
-tellraw @a[scores={novahorror.fear=60..}] {"rawtext":[{"text":"§cنمی‌تونم نفس بکشم..."}]}
-particle minecraft:soul ~ ~1 ~ 0.3 0.5 0.3 0.02 3
-tellraw @a[scores={novahorror.fear=60..}] {"rawtext":[{"text":"§cنمی‌تونم نفس بکشم..."}]}
-execute at @a run summon minecraft:bat ~-3 ~5 ~-2 {CustomName:"§8Crow 10-8 by Moon",NoGravity:1b}
-playsound mob.wolf.howl @a ~ ~ ~ 0.7 0.6
-playsound mob.wolf.howl @a ~ ~ ~ 0.7 0.6
-effect @a[scores={novahorror.fear=40..59}] darkness 5 0 true
-playsound mob.warden.heartbeat @a ~ ~ ~ 1 1.49
-effect @a[scores={novahorror.fear=60..79}] blindness 3 0 true
-effect @a[scores={novahorror.fear=80..}] wither 3 0 true
-playsound block.sculk_shrieker.shriek @a ~ ~ ~ 1 1.32
-effect @a[scores={novahorror.fear=40..59}] darkness 5 0 true
-execute at @a run summon minecraft:armor_stand ~5 ~10 ~ {Invisible:1b,Marker:1b,NoGravity:1b,CustomName:"Crow by Moon"}
-playsound mob.parrot.imitate.ghast @a ~ ~ ~ 0.6 0.8
-execute at @a run summon minecraft:armor_stand ~5 ~10 ~ {Invisible:1b,Marker:1b,NoGravity:1b,CustomName:"Crow by Moon"}
-# End func 10 - fear logic
+# Horror Bedrock func 10 - truly diverse - no exact repeat
+effect @a[scores={novahorror.fear=13..48}] nausea 2 0 true
+particle minecraft:white_ash ~ ~1 ~ 0.8 0.5 0.7 0.07 6
+titleraw @a[scores={novahorror.fear=76..}] title {"rawtext":[{"text":"§cکمک..."}]}
+effect @a[scores={novahorror.fear=77..}] darkness 4 0 true
+scoreboard players add @a novahorror.fear 1
+execute as @a at @s if block ~ ~-1 ~ grass run scoreboard players add @s novahorror.fear 1
+playsound block.bell.hit @a ~ ~ ~ 0.6 0.69
+playsound ambient.cave @a ~ ~ ~ 0.9 0.72
+effect @a[scores={novahorror.fear=53..84}] wither 2 0 true
+playsound mob.parrot.imitate.warden @a ~ ~ ~ 0.6 0.81
+particle minecraft:sculk_soul ~ ~1 ~ 0.3 0.5 0.3 0.02 4
+scoreboard players add @a[distance=..3] novahorror.dark 1
+tellraw @a {"rawtext":[{"text":"§7مه غلیظ..."}]}
+playsound mob.ender_dragon.growl @a ~ ~ ~ 0.7 0.54
+particle minecraft:soul ~ ~ ~ 1 1 1 0.1 11
+# End 10

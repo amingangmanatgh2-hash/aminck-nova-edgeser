@@ -1,22 +1,17 @@
-# Horror func 41 - diverse real commands, coordinated with mod
-execute as @a at @s run particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.1 5
-playsound mob.parrot.imitate.ghast @a ~ ~ ~ 0.6 0.8
-playsound mob.wolf.howl @a ~ ~ ~ 0.7 0.6
-particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.1 5
-playsound mob.parrot.imitate.ghast @a ~ ~ ~ 0.6 0.8
-execute as @a at @s run particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.1 5
+# Horror Bedrock func 41 - truly diverse - no exact repeat
+effect @a[scores={novahorror.fear=12..34}] wither 2 0 true
+particle minecraft:white_ash ~ ~1 ~ 0.3 0.5 0.2 0.08 8
+titleraw @a[scores={novahorror.fear=85..}] title {"rawtext":[{"text":"§8سایه..."}]}
+effect @a[scores={novahorror.fear=75..}] darkness 2 0 true
+scoreboard players add @a novahorror.fear 2
+execute as @a at @s if block ~ ~-1 ~ grass run scoreboard players add @s novahorror.fear 1
+playsound mob.warden.roar @a ~ ~ ~ 0.6 0.56
+playsound ambient.cave @a ~ ~ ~ 0.6 0.98
+effect @a[scores={novahorror.fear=50..82}] blindness 4 0 true
+playsound mob.parrot.imitate.ender_dragon @a ~ ~ ~ 0.6 0.77
+particle minecraft:ash ~ ~1 ~ 0.3 0.5 0.3 0.02 3
+scoreboard players add @a[distance=..3] novahorror.dark 1
 tellraw @a {"rawtext":[{"text":"§7...صدای کلاغ از ماه..."}]}
-effect @a[scores={novahorror.fear=60..79}] blindness 3 0 true
-playsound ambient.cave @a ~ ~ ~ 0.8 0.5
-particle minecraft:soul ~ ~1 ~ 0.3 0.5 0.3 0.02 3
-particle minecraft:soul ~ ~1 ~ 0.3 0.5 0.3 0.02 3
-tellraw @a {"rawtext":[{"text":"§7...صدای کلاغ از ماه..."}]}
-effect @a[scores={novahorror.fear=20..39}] slowness 3 0 true
-playsound mob.warden.heartbeat @a ~ ~ ~ 1 1.35
-tellraw @a[scores={novahorror.fear=60..}] {"rawtext":[{"text":"§cنمی‌تونم نفس بکشم..."}]}
-particle minecraft:sculk_soul ~ ~ ~ 1 1 1 0.1 10
-effect @a[distance=..8] weakness 5 0 true
-playsound block.sculk_shrieker.shriek @a ~ ~ ~ 1 0.34
-execute at @a run summon minecraft:bat ~2 ~9 ~3 {CustomName:"§8Crow 41-18 by Moon",NoGravity:1b}
-tellraw @a[scores={novahorror.fear=60..}] {"rawtext":[{"text":"§cنمی‌تونم نفس بکشم..."}]}
-# End func 41 - fear logic
+playsound mob.ender_dragon.growl @a ~ ~ ~ 0.9 0.61
+particle minecraft:campfire_cosy_smoke ~ ~ ~ 1 1 1 0.1 8
+# End 41

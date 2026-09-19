@@ -1,22 +1,17 @@
-# Horror func 38 - diverse real commands, coordinated with mod
-tellraw @a {"rawtext":[{"text":"§7...صدای کلاغ از ماه..."}]}
-playsound mob.warden.heartbeat @a ~ ~ ~ 1 0.83
-particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.1 5
-scoreboard players add @a novahorror.fear 1
-effect @a[scores={novahorror.fear=80..}] wither 3 0 true
-playsound ambient.cave @a ~ ~ ~ 0.8 0.5
-particle minecraft:soul ~ ~1 ~ 0.3 0.5 0.3 0.02 3
-playsound block.sculk_shrieker.shriek @a ~ ~ ~ 1 0.39
-particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.1 5
-playsound mob.ghast.scream @a ~ ~ ~ 1 0.76
-particle minecraft:basic_smoke ~ ~5 ~ 2 1 2 0.01 10
-effect @a[scores={novahorror.fear=20..39}] slowness 3 0 true
-scoreboard players add @a[distance=..5] novahorror.dark 1
-execute at @a run summon minecraft:armor_stand ~5 ~10 ~ {Invisible:1b,Marker:1b,NoGravity:1b,CustomName:"Crow by Moon"}
-effect @a[distance=..8] weakness 5 0 true
-execute as @a at @s run particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.1 5
-titleraw @a[scores={novahorror.fear=80..}] title {"rawtext":[{"text":"§4§lاو اینجاست!"}]}
-particle minecraft:ash ~ ~1 ~ 0.5 0.5 0.5 0.1 5
-effect @a[scores={novahorror.fear=20..39}] slowness 3 0 true
-playsound ambient.cave @a ~ ~ ~ 0.8 0.5
-# End func 38 - fear logic
+# Horror Bedrock func 38 - truly diverse - no exact repeat
+effect @a[scores={novahorror.fear=17..30}] weakness 2 0 true
+particle minecraft:white_ash ~ ~1 ~ 0.8 0.5 0.6 0.07 7
+titleraw @a[scores={novahorror.fear=82..}] title {"rawtext":[{"text":"§4خون..."}]}
+effect @a[scores={novahorror.fear=82..}] nausea 2 0 true
+scoreboard players add @a novahorror.fear 2
+execute as @a at @s if block ~ ~-1 ~ grass run scoreboard players add @s novahorror.fear 1
+playsound mob.parrot.imitate.ghast @a ~ ~ ~ 0.7 0.44
+playsound mob.warden.roar @a ~ ~ ~ 1.0 0.81
+effect @a[scores={novahorror.fear=53..67}] slowness 4 0 true
+playsound mob.parrot.imitate.warden @a ~ ~ ~ 0.6 0.85
+particle minecraft:witch ~ ~1 ~ 0.3 0.5 0.3 0.02 2
+scoreboard players add @a[distance=..4] novahorror.dark 1
+tellraw @a {"rawtext":[{"text":"§4§lاو اینجاست!"}]}
+playsound mob.warden.heartbeat @a ~ ~ ~ 0.6 0.44
+particle minecraft:spore_blossom_air ~ ~ ~ 1 1 1 0.1 5
+# End 38
