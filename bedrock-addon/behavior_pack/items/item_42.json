@@ -1,0 +1,17 @@
+{
+  "format_version": "1.20.0",
+  "minecraft:item": {
+    "description": {
+      "identifier": "novahorror:item_42",
+      "category": "Items"
+    },
+    "components": {
+      "minecraft:icon": {
+        "texture": "item_42"
+      },
+      "minecraft:display_name": {
+        "value": "Horror Item 42"
+      }
+    }
+  }
+}

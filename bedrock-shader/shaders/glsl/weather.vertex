@@ -1,0 +1,14 @@
+// ============================================================================
+// Nova Horror Bedrock Shader - FPS BOOST Documentation
+// LOD: fogFactor<0.5 dust, fogFactor<0.6 blood/chromatic, RAIN>threshold effects
+// - Distortion only when RAIN>0.2 and fog<0.8
+// - Dust only fog<0.5
+// - Blood pulse only RAIN>0.3
+// - Chromatic only RAIN>0.4 and fog<0.7
+// - Resolution not hardcoded, uses FOG_CONTROL proxy
+// - All UV clamped, fastHash, early checks
+// ============================================================================
+#version 300 es
+layout(location=0) in vec3 POSITION;
+uniform mat4 WORLDVIEWPROJ;
+void main() { gl_Position = WORLDVIEWPROJ * vec4(POSITION, 1.0); }

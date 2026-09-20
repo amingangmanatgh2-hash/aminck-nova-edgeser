@@ -1,16 +1,35 @@
-# Secrets — never commit
-.dev.vars
-.dev.vars.*
-
-# Dependencies
+# Node
 node_modules/
-
-# Build / output
-.wrangler/
-.wrangler-*/
 dist/
-coverage/
+.next/
+.cache/
+
+# Java
+*.class
+build/
+.gradle/
+out/
+
+# Minecraft
 *.log
+crash-reports/
+logs/
+
+# OS
 .DS_Store
-tmp/
-assets/
+Thumbs.db
+
+# Keep world files
+!java-map/world/
+!bedrock-map/world/
+!**/*.mca
+!**/*.dat
+!**/*.mcfunction
+!**/*.json
+!**/*.png
+!**/*.java
+!**/*.vsh
+!**/*.fsh
+!**/*.mcaddon
+!**/*.mcworld
+!**/*.mcpack

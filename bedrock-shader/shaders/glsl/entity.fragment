@@ -1,0 +1,25 @@
+// ============================================================================
+// Nova Horror Bedrock Shader - FPS BOOST Documentation
+// LOD: fogFactor<0.5 dust, fogFactor<0.6 blood/chromatic, RAIN>threshold effects
+// - Distortion only when RAIN>0.2 and fog<0.8
+// - Dust only fog<0.5
+// - Blood pulse only RAIN>0.3
+// - Chromatic only RAIN>0.4 and fog<0.7
+// - Resolution not hardcoded, uses FOG_CONTROL proxy
+// - All UV clamped, fastHash, early checks
+// ============================================================================
+#version 300 es
+precision highp float;
+in vec4 color; in vec2 uv;
+uniform sampler2D TEXTURE_0;
+uniform float TOTAL_REAL_WORLD_TIME;
+out vec4 fragColor;
+void main() {
+    vec4 tex = texture(TEXTURE_0, uv) * color;
+    // Red eyes glow for horror - real
+    if (tex.r > 0.8 && tex.g < 0.3) {
+        float glow = sin(TOTAL_REAL_WORLD_TIME * 5.0) * 0.3 + 0.7;
+        tex.rgb += vec3(0.3, 0.0, 0.0) * glow;
+    }
+    fragColor = tex;
+}

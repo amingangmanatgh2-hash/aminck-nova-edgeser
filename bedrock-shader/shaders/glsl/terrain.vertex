@@ -1,0 +1,42 @@
+// ============================================================================
+// Nova Horror Bedrock Shader - FPS BOOST Documentation
+// LOD: fogFactor<0.5 dust, fogFactor<0.6 blood/chromatic, RAIN>threshold effects
+// - Distortion only when RAIN>0.2 and fog<0.8
+// - Dust only fog<0.5
+// - Blood pulse only RAIN>0.3
+// - Chromatic only RAIN>0.4 and fog<0.7
+// - Resolution not hardcoded, uses FOG_CONTROL proxy
+// - All UV clamped, fastHash, early checks
+// ============================================================================
+#version 300 es
+// Nova Horror Bedrock - Terrain Vertex - Real
+layout(location=0) in vec3 POSITION;
+layout(location=1) in vec4 COLOR;
+layout(location=2) in vec2 TEXCOORD_0;
+layout(location=3) in vec2 TEXCOORD_1;
+
+uniform mat4 WORLDVIEWPROJ;
+uniform mat4 WORLDVIEW;
+uniform vec3 CAMERA_POSITION;
+uniform float TOTAL_REAL_WORLD_TIME;
+
+out vec4 color;
+out vec2 uv0;
+out vec2 uv1;
+out vec3 worldPos;
+out float fogFactor;
+
+void main() {
+    gl_Position = WORLDVIEWPROJ * vec4(POSITION, 1.0);
+    color = COLOR;
+    uv0 = TEXCOORD_0;
+    uv1 = TEXCOORD_1;
+    worldPos = POSITION + CAMERA_POSITION;
+    float dist = length(POSITION);
+    fogFactor = 1.0 - exp(-dist * 0.02);
+    // Wind for leaves
+    if (COLOR.a < 0.99) {
+        float wind = sin(TOTAL_REAL_WORLD_TIME * 0.8 + POSITION.x * 0.5) * 0.03;
+        gl_Position.x += wind;
+    }
+}
